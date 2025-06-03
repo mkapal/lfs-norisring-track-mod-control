@@ -187,9 +187,6 @@ import { loadConfig } from "./config";
               const frontFogLightsOnDelay = Math.round(
                 Math.random() * 2000 + 2000,
               );
-              console.log(
-                "frontFogLightsOnDelay: " + frontFogLightsOnDelay + " ms",
-              );
 
               setTimeout(() => {
                 if (state.aiControlPLID === null) {
