@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "target": "es2017",
+    "module": "NodeNext",
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "paths": {
+      "parse-lfs-message": ["./src/parse-lfs-message"],
+      "unicode-to-lfs": ["./src/unicode-to-lfs"],
+      "node-insim": ["./src/node-insim"],
+      "node-insim/packets": ["./src/node-insim/packets"]
+    }
+  },
+  "ts-node": {
+    "esm": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
