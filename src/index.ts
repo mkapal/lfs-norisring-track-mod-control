@@ -147,10 +147,10 @@ import { loadConfig } from "./config";
             }
 
             console.log(
-              `Turning on rear fog lights in ${config.ai.extraLightsOnDelay / 1000} seconds`,
+              `Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
             );
             inSim.sendLocalMessage(
-              `AIC: Turning on rear fog lights in ${config.ai.extraLightsOnDelay / 1000} seconds`,
+              `AIC: Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
               MessageSound.SND_SYSMESSAGE,
             );
 
@@ -246,7 +246,7 @@ import { loadConfig } from "./config";
                   );
                 }, config.ai.extraLightsOffDelay);
               }, frontFogLightsOnDelay);
-            }, config.ai.extraLightsOnDelay);
+            }, config.ai.rearFogLightsOnDelay);
           }
           break;
         default:

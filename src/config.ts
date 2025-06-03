@@ -13,7 +13,7 @@ const configSchema = z.object({
     admin: z.string().min(0).max(16).optional().default(""),
   }),
   ai: z.object({
-    extraLightsOnDelay: z.number().default(3000),
+    rearFogLightsOnDelay: z.number().default(3000),
     extraLightsOffDelay: z.number().default(15000),
     frontFogLightsOnDelayMin: z.number().default(2000),
     frontFogLightsOnDelayMax: z.number().default(2000),
