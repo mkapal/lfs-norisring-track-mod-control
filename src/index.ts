@@ -182,7 +182,8 @@ import { loadConfig } from "./config";
               );
 
               const frontFogLightsOnDelay = Math.round(
-                Math.random() * 2000 + 2000,
+                Math.random() * config.ai.frontFogLightsOnDelayMax +
+                  config.ai.frontFogLightsOnDelayMin,
               );
 
               setTimeout(() => {

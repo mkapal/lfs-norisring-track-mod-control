@@ -6,3 +6,5 @@ admin = ""
 [ai]
 extraLightsOnDelay = 3000
 extraLightsOffDelay = 20000
+frontFogLightsOnDelayMin = 2000
+frontFogLightsOnDelayMax = 2000
