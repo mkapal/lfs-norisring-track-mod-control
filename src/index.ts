@@ -31,9 +31,6 @@ import { loadConfig } from "./config";
     Interval: 100,
   });
 
-  const EXTRA_LIGHTS_ON_DELAY = 3_000;
-  const EXTRA_LIGHTS_OFF_DELAY = 20_000;
-
   inSim.on(PacketType.ISP_VER, (packet) => {
     if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
       return;
@@ -150,10 +147,10 @@ import { loadConfig } from "./config";
             }
 
             console.log(
-              `Turning on rear fog lights in ${EXTRA_LIGHTS_ON_DELAY / 1000} seconds`,
+              `Turning on rear fog lights in ${config.ai.extraLightsOnDelay / 1000} seconds`,
             );
             inSim.sendLocalMessage(
-              `AIC: Turning on rear fog lights in ${EXTRA_LIGHTS_ON_DELAY / 1000} seconds`,
+              `AIC: Turning on rear fog lights in ${config.ai.extraLightsOnDelay / 1000} seconds`,
               MessageSound.SND_SYSMESSAGE,
             );
 
@@ -246,9 +243,9 @@ import { loadConfig } from "./config";
                       ],
                     }),
                   );
-                }, EXTRA_LIGHTS_OFF_DELAY);
+                }, config.ai.extraLightsOffDelay);
               }, frontFogLightsOnDelay);
-            }, EXTRA_LIGHTS_ON_DELAY);
+            }, config.ai.extraLightsOnDelay);
           }
           break;
         default:

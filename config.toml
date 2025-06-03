@@ -2,3 +2,7 @@
 host = "127.0.0.1"
 port = 29999
 admin = ""
+
+[ai]
+extraLightsOnDelay = 3000
+extraLightsOffDelay = 20000

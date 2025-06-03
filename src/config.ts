@@ -12,6 +12,10 @@ const configSchema = z.object({
     port: z.number().min(1).max(65535),
     admin: z.string().min(0).max(16).optional().default(""),
   }),
+  ai: z.object({
+    extraLightsOnDelay: z.number().default(3000),
+    extraLightsOffDelay: z.number().default(15000),
+  }),
 });
 
 export async function loadConfig() {
