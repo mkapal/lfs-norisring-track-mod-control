@@ -32,7 +32,7 @@ import { loadConfig } from "./config";
   });
 
   const EXTRA_LIGHTS_ON_DELAY = 3_000;
-  const EXTRA_LIGHTS_OFF_DELAY = 15_000;
+  const EXTRA_LIGHTS_OFF_DELAY = 20_000;
 
   inSim.on(PacketType.ISP_VER, (packet) => {
     if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
