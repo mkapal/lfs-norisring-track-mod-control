@@ -146,6 +146,8 @@ import { loadConfig } from "./config";
               return;
             }
 
+            inSim.sendMessage("/rcm_all");
+
             console.log(
               `Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
             );
@@ -217,6 +219,8 @@ import { loadConfig } from "./config";
                     ],
                   }),
                 );
+
+                inSim.sendMessage("/rcc_all");
 
                 setTimeout(() => {
                   if (state.aiControlPLID === null) {
