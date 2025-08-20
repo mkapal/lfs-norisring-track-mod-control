@@ -1,4 +1,4 @@
-# LFS AI headlights
+# LFS AI track mod control
 
 ## Commands
 
