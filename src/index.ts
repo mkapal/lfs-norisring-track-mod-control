@@ -8,12 +8,28 @@ import {
   InSimFlags,
   IS_AIC,
   IS_ISI_ReqI,
+  IS_TINY,
   MessageSound,
   PacketType,
+  PlayerType,
+  TinyType,
   UserType,
 } from "node-insim/packets";
 
 import { loadConfig } from "./config";
+
+const aiPLIDs: {
+  N77_TRACK_2: number | null;
+  N77_TRACK: number | null;
+} = {
+  N77_TRACK_2: null,
+  N77_TRACK: null,
+};
+
+function clearAiPLIDs() {
+  aiPLIDs.N77_TRACK_2 = null;
+  aiPLIDs.N77_TRACK = null;
+}
 
 (async function () {
   const config = await loadConfig();
@@ -22,7 +38,7 @@ import { loadConfig } from "./config";
 
   const inSim = new InSim();
   inSim.connect({
-    IName: "AI lights",
+    IName: "Norisring AI",
     Host: config.insim.host,
     Port: config.insim.port,
     Admin: config.insim.admin,
@@ -31,61 +47,84 @@ import { loadConfig } from "./config";
     Interval: 100,
   });
 
+  function log(message: string) {
+    console.log(message);
+    inSim.sendLocalMessage(message, MessageSound.SND_SYSMESSAGE);
+  }
+
+  function success(message: string) {
+    console.error(chalk.green(message));
+    inSim.sendLocalMessage(`^2${message}`, MessageSound.SND_ERROR);
+  }
+
+  function error(message: string) {
+    console.error(chalk.red(message));
+    inSim.sendLocalMessage(`^1${message}`, MessageSound.SND_ERROR);
+  }
+
   inSim.on(PacketType.ISP_VER, (packet) => {
     if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
       return;
     }
 
     console.log(chalk.green("Connected to LFS"));
+
+    inSim.send(new IS_TINY({ ReqI: 1, SubT: TinyType.TINY_NPL }));
   });
 
-  const state: {
-    viewPLID: number | null;
-    aiControlPLID: number | null;
-  } = {
-    viewPLID: null,
-    aiControlPLID: null,
-  };
+  inSim.on(PacketType.ISP_ISM, (packet) => {
+    if (packet.ReqI > 0) {
+      return;
+    }
 
-  inSim.on(PacketType.ISP_STA, (packet) => {
-    if (packet.ViewPLID !== state.viewPLID) {
-      console.log(`View PLID: ${packet.ViewPLID}`);
-      state.viewPLID = packet.ViewPLID;
+    clearAiPLIDs();
+    inSim.send(new IS_TINY({ ReqI: 1, SubT: TinyType.TINY_NPL }));
+  });
+
+  inSim.on(PacketType.ISP_TINY, (packet) => {
+    if (packet.SubT === TinyType.TINY_CLR) {
+      clearAiPLIDs();
+    }
+  });
+
+  inSim.on(PacketType.ISP_NPL, (packet) => {
+    if (packet.PType & PlayerType.AI && packet.PName === config.ai.track) {
+      success(`Found N77 TRACK: ${config.ai.track}`);
+      aiPLIDs.N77_TRACK = packet.PLID;
+    }
+
+    if (packet.PType & PlayerType.AI && packet.PName === config.ai.track2) {
+      success(`Found N77 TRACK 2: ${config.ai.track2}`);
+      aiPLIDs.N77_TRACK_2 = packet.PLID;
+    }
+  });
+
+  inSim.on(PacketType.ISP_PLL, (packet) => {
+    if (aiPLIDs.N77_TRACK === packet.PLID) {
+      aiPLIDs.N77_TRACK = null;
+    }
+
+    if (aiPLIDs.N77_TRACK_2 === packet.PLID) {
+      aiPLIDs.N77_TRACK_2 = null;
     }
   });
 
   inSim.on(PacketType.ISP_MSO, (packet) => {
-    if ((packet.UserType & UserType.MSO_O) !== 0) {
+    if (packet.UserType === UserType.MSO_O) {
       switch (packet.Msg) {
-        case "ai": {
-          state.aiControlPLID = state.viewPLID;
-          console.log(`Set AI control to PLID ${state.aiControlPLID}`);
-          inSim.sendLocalMessage(
-            `AIC: Set AI control to PLID ${state.aiControlPLID}`,
-            MessageSound.SND_SYSMESSAGE,
-          );
-
-          break;
-        }
-
         case "light": {
-          if (state.aiControlPLID === null) {
-            inSim.sendLocalMessage(
-              "^1Cannot turn on headlights - first type /o ai when viewing an AI car",
-              MessageSound.SND_ERROR,
+          if (aiPLIDs.N77_TRACK === null) {
+            error(
+              `${config.ai.track}^1: Cannot turn on headlights - AI car was not found on track`,
             );
             return;
           }
 
-          console.log("Turn on headlights");
-          inSim.sendLocalMessage(
-            "AIC: Turn on headlights",
-            MessageSound.SND_SYSMESSAGE,
-          );
+          log(`${config.ai.track}^2: Turn on headlights`);
 
           inSim.send(
             new IS_AIC({
-              PLID: state.aiControlPLID,
+              PLID: aiPLIDs.N77_TRACK,
               Inputs: [
                 new AIInputVal({
                   Input: AICInput.CS_HEADLIGHTS,
@@ -100,23 +139,18 @@ import { loadConfig } from "./config";
 
         case "extra":
           {
-            if (state.aiControlPLID === null) {
-              inSim.sendLocalMessage(
-                "^1Cannot turn on headlights - first type /o ai when viewing an AI car",
-                MessageSound.SND_ERROR,
+            if (aiPLIDs.N77_TRACK_2 === null) {
+              error(
+                `${config.ai.track2}^1: Cannot turn on extra lights - AI car was not found on track`,
               );
               return;
             }
 
-            console.log("Turn on extra lights");
-            inSim.sendLocalMessage(
-              "AIC: Turn on extra lights",
-              MessageSound.SND_SYSMESSAGE,
-            );
+            log(`${config.ai.track2}^8: Turn on extra lights`);
 
             inSim.send(
               new IS_AIC({
-                PLID: state.aiControlPLID,
+                PLID: aiPLIDs.N77_TRACK_2,
                 Inputs: [
                   new AIInputVal({
                     Input: AICInput.CS_FOGFRONT,
@@ -138,42 +172,32 @@ import { loadConfig } from "./config";
 
         case "start":
           {
-            if (state.aiControlPLID === null) {
-              inSim.sendLocalMessage(
-                "^1Cannot initiate start sequence - first type /o ai when viewing an AI car",
-                MessageSound.SND_ERROR,
+            if (aiPLIDs.N77_TRACK_2 === null) {
+              error(
+                `${config.ai.track2}^2: Cannot initiate start sequence - AI car was not found on track`,
               );
               return;
             }
 
             inSim.sendMessage("/rcm_all");
 
-            console.log(
-              `Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
-            );
-            inSim.sendLocalMessage(
-              `AIC: Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
-              MessageSound.SND_SYSMESSAGE,
+            log(
+              `${config.ai.track2}^8: Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
             );
 
             setTimeout(() => {
-              if (state.aiControlPLID === null) {
-                inSim.sendLocalMessage(
-                  "^1Cannot turn on rear fog lights - must first call /o extra when viewing an AI car",
-                  MessageSound.SND_ERROR,
+              if (aiPLIDs.N77_TRACK_2 === null) {
+                error(
+                  `${config.ai.track2}^1: Cannot turn on rear fog lights - must first call /o extra`,
                 );
                 return;
               }
 
-              console.log("Turn on rear fog lights");
-              inSim.sendLocalMessage(
-                "AIC: Turn on rear fog lights",
-                MessageSound.SND_SYSMESSAGE,
-              );
+              log(`${config.ai.track2}^8: Turn on rear fog lights`);
 
               inSim.send(
                 new IS_AIC({
-                  PLID: state.aiControlPLID,
+                  PLID: aiPLIDs.N77_TRACK_2,
                   Inputs: [
                     new AIInputVal({
                       Input: AICInput.CS_FOGREAR,
@@ -189,24 +213,19 @@ import { loadConfig } from "./config";
               );
 
               setTimeout(() => {
-                if (state.aiControlPLID === null) {
-                  inSim.sendLocalMessage(
-                    "^1Cannot turn off rear fog lights - must first call /o extra when viewing an AI car",
-                    MessageSound.SND_ERROR,
+                if (aiPLIDs.N77_TRACK_2 === null) {
+                  error(
+                    `${config.ai.track2}^1: Cannot turn off rear fog lights - must first call /o extra`,
                   );
                   return;
                 }
 
-                console.log("Turn off rear fog lights");
-                console.log("Turn on front fog lights");
-                inSim.sendLocalMessage(
-                  "AIC: Turn on rear fog lights & turn on front fog lights",
-                  MessageSound.SND_SYSMESSAGE,
-                );
+                log(`${config.ai.track2}^8: Turn off rear fog lights`);
+                log(`${config.ai.track2}^8: Turn on front fog lights`);
 
                 inSim.send(
                   new IS_AIC({
-                    PLID: state.aiControlPLID,
+                    PLID: aiPLIDs.N77_TRACK_2,
                     Inputs: [
                       new AIInputVal({
                         Input: AICInput.CS_FOGREAR,
@@ -223,23 +242,18 @@ import { loadConfig } from "./config";
                 inSim.sendMessage("/rcc_all");
 
                 setTimeout(() => {
-                  if (state.aiControlPLID === null) {
-                    inSim.sendLocalMessage(
-                      "^1Cannot turn off extra lights - must first call /o extra when viewing an AI car",
-                      MessageSound.SND_ERROR,
+                  if (aiPLIDs.N77_TRACK_2 === null) {
+                    error(
+                      `${config.ai.track2}^2: Cannot turn off extra lights - must first call /o extra`,
                     );
                     return;
                   }
 
-                  console.log("Turn off extra lights");
-                  inSim.sendLocalMessage(
-                    "AIC: Turn off extra lights",
-                    MessageSound.SND_SYSMESSAGE,
-                  );
+                  log(`${config.ai.track2}^8: Turn off extra lights`);
 
                   inSim.send(
                     new IS_AIC({
-                      PLID: state.aiControlPLID,
+                      PLID: aiPLIDs.N77_TRACK_2,
                       Inputs: [
                         new AIInputVal({
                           Input: AICInput.CS_EXTRALIGHT,
@@ -254,7 +268,7 @@ import { loadConfig } from "./config";
           }
           break;
         default:
-          console.log(chalk.yellow(`Invalid command: ${packet.Msg}`));
+          error(`Invalid command: ${packet.Msg}`);
       }
     }
   });
