@@ -67,7 +67,9 @@ function clearAiPLIDs() {
       return;
     }
 
-    console.log(chalk.green("Connected to LFS"));
+    console.log(
+      chalk.green(`Connected to LFS ${packet.Product} ${packet.Version}`),
+    );
 
     inSim.send(new IS_TINY({ ReqI: 1, SubT: TinyType.TINY_NPL }));
   });
