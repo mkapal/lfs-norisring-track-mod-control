@@ -1,4 +1,4 @@
-# LFS AI track mod control
+# LFS Norisring AI track mod control
 
 ## Commands
 
@@ -11,11 +11,12 @@
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/) 18
+- [Node.js](https://nodejs.org/) 20
 
 ## Installation
 
 ```shell
+corepack enable
 pnpm install
 ```
 
