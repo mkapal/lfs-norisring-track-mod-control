@@ -3,7 +3,7 @@ import * as process from "node:process";
 
 import chalk from "chalk";
 import { z } from "zod";
-import { loadConfig as loadZodConfig } from "zod-config";
+import { loadConfigSync as loadZodConfig } from "zod-config";
 import { tomlAdapter } from "zod-config/toml-adapter";
 
 const configSchema = z.object({
@@ -25,8 +25,8 @@ const configSchema = z.object({
   }),
 });
 
-export async function loadConfig() {
-  const config = await loadZodConfig({
+export function loadConfig() {
+  const config = loadZodConfig({
     schema: configSchema,
     adapters: [
       tomlAdapter({
@@ -40,8 +40,8 @@ export async function loadConfig() {
     onError: (error) => {
       console.error(chalk.red("Error loading configuration:"));
       console.error(
-        error.errors
-          .map((e) => `- ${e.path.join(" -> ")}: ${e.message}`)
+        error.issues
+          .map(({ path, message }) => `- ${path.join(" -> ")}: ${message}`)
           .join("\n"),
       );
       process.exit(1);
