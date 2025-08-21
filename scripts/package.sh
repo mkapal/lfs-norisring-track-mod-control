@@ -1,3 +1,3 @@
 rm -rf dist/bin && \
-pkg -o "dist/bin/LFS AI headlights.exe" . && \
+pkg -o "dist/bin/Norisring AI.exe" . && \
 cp config.toml dist/bin/
