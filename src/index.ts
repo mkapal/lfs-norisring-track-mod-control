@@ -111,6 +111,29 @@ function clearAiPLIDs() {
     }
   });
 
+  inSim.on(PacketType.ISP_RST, () => {
+    if (aiPLIDs.N77_TRACK === null) {
+      error(
+        `${config.ai.track}^1: Cannot turn on headlights - AI car was not found on track`,
+      );
+      return;
+    }
+
+    log(`${config.ai.track}^2: Turn on headlights`);
+
+    inSim.send(
+      new IS_AIC({
+        PLID: aiPLIDs.N77_TRACK,
+        Inputs: [
+          new AIInputVal({
+            Input: AICInput.CS_HEADLIGHTS,
+            Value: AICHeadlights.LOW,
+          }),
+        ],
+      }),
+    );
+  });
+
   inSim.on(PacketType.ISP_MSO, (packet) => {
     if (packet.UserType === UserType.MSO_O) {
       switch (packet.Msg) {
