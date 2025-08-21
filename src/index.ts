@@ -179,7 +179,22 @@ function clearAiPLIDs() {
               return;
             }
 
-            inSim.sendMessage("/rcm_all");
+            inSim.send(
+              new IS_AIC({
+                PLID: aiPLIDs.N77_TRACK_2,
+                Inputs: [
+                  new AIInputVal({
+                    Input: AICInput.CS_FOGREAR,
+                    Value: AICToggleValue.SWITCH_OFF,
+                  }),
+                  new AIInputVal({
+                    Input: AICInput.CS_FOGFRONT,
+                    Value: AICToggleValue.SWITCH_OFF,
+                  }),
+                ],
+              }),
+            );
+            inSim.sendMessage("/rcc_all");
 
             log(
               `${config.ai.track2}^8: Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
@@ -195,6 +210,8 @@ function clearAiPLIDs() {
 
               log(`${config.ai.track2}^8: Turn on rear fog lights`);
 
+              inSim.sendMessage("/rcm ^3GET READY");
+              inSim.sendMessage("/rcm_all");
               inSim.send(
                 new IS_AIC({
                   PLID: aiPLIDs.N77_TRACK_2,
@@ -240,6 +257,12 @@ function clearAiPLIDs() {
                 );
 
                 inSim.sendMessage("/rcc_all");
+                inSim.sendMessage("/rcm ^2GO");
+                inSim.sendMessage("/rcm_all");
+
+                setTimeout(() => {
+                  inSim.sendMessage("/rcc_all");
+                }, 3000);
 
                 setTimeout(() => {
                   if (aiPLIDs.N77_TRACK_2 === null) {

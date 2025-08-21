@@ -2,7 +2,6 @@
 
 ## Commands
 
-- `/o ai` - set viewed AI player to control
 - `/o light` - turn on headlights
 - `/o extra` - turn on extra lights
 - `/o start` - start sequence
