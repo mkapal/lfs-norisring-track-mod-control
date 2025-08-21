@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType, PenaltyValue, PlayerFlags } from './enums';
-import { IS_LAP } from './IS_LAP';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType, PenaltyValue, PlayerFlags } from "./enums";
+import { IS_LAP } from "./IS_LAP";
 
 const size = 20;
 
@@ -40,7 +40,7 @@ const buffer = new Uint8Array([
   40, // Fuel200
 ]);
 
-describe('IS_LAP', () => {
+describe("IS_LAP", () => {
   testInfoPacket({
     packetClass: IS_LAP,
     size,

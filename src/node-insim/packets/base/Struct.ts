@@ -1,12 +1,12 @@
-import isArray from 'lodash/isArray';
+import isArray from "lodash/isArray";
 
-import { getFormat } from '../../decorators';
-import { InSimError } from '../../errors';
-import { determineLength, unpack } from '../../lfspack';
-import { log as baseLog } from '../../log';
-import type { Receivable } from '../types';
+import { getFormat } from "../../decorators";
+import { InSimError } from "../../errors";
+import { determineLength, unpack } from "../../lfspack";
+import { log as baseLog } from "../../log";
+import type { Receivable } from "../types";
 
-const log = baseLog.extend('struct');
+const log = baseLog.extend("struct");
 
 type Data = Record<string, unknown>;
 
@@ -52,7 +52,7 @@ export class Struct implements Receivable {
           propertyFormats?.[propertyName as string] ??
           getFormat(this, propertyName),
       )
-      .join('');
+      .join("");
   }
 
   /** @ignore */
@@ -89,7 +89,7 @@ export class Struct implements Receivable {
         return;
       }
 
-      if (propertyName === 'Size') {
+      if (propertyName === "Size") {
         (this[propertyName as keyof this] as unknown as number) =
           (value as number) * this.SIZE_MULTIPLIER;
         i++;
@@ -110,7 +110,7 @@ export class Struct implements Receivable {
         return;
       }
 
-      if (propertyType == 'object') {
+      if (propertyType == "object") {
         i = this.parseObject(
           this[propertyName as keyof this],
           data,
@@ -124,7 +124,7 @@ export class Struct implements Receivable {
       i++;
     });
 
-    log('Data unpacked:', this);
+    log("Data unpacked:", this);
 
     return this;
   }
@@ -137,7 +137,7 @@ export class Struct implements Receivable {
   ): number {
     for (let j = 0; j < instance.length; j++) {
       const item = instance[j];
-      if (typeof item === 'object') {
+      if (typeof item === "object") {
         i = this.parseObject(item, data, i, `${instanceName}[${j}]`);
       } else {
         instance[j] = data[i];
@@ -164,7 +164,7 @@ export class Struct implements Receivable {
         const sval = data[i];
         const propType = typeof propInstance;
         const fullName = `${instanceName}.${propertyName}`;
-        if (propType === 'object') {
+        if (propType === "object") {
           i = this.parseObject(propInstance, data, i, fullName);
           return;
         }

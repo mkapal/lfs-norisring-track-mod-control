@@ -1,8 +1,8 @@
-import { byte, unsigned } from '../decorators';
-import { SendablePacket } from './base';
-import type { CarFlags } from './enums';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte, unsigned } from "../decorators";
+import { SendablePacket } from "./base";
+import type { CarFlags } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * PLayer Cars

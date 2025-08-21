@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType, PitLaneFact } from './enums';
-import { IS_PLA } from './IS_PLA';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType, PitLaneFact } from "./enums";
+import { IS_PLA } from "./IS_PLA";
 
 const size = 8;
 
@@ -22,7 +22,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_PLA', () => {
+describe("IS_PLA", () => {
   testInfoPacket({
     packetClass: IS_PLA,
     size,

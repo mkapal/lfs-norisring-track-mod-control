@@ -1,13 +1,13 @@
-import { byte, carName, string, stringNull, word } from '../decorators';
-import { Packet } from './base';
+import { byte, carName, string, stringNull, word } from "../decorators";
+import { Packet } from "./base";
 import type {
   PassengerFlags,
   PlayerFlags,
   PlayerType,
   SetupFlags,
   TyreCompound,
-} from './enums';
-import { CarConfiguration, PacketType } from './enums';
+} from "./enums";
+import { CarConfiguration, PacketType } from "./enums";
 
 /**
  * New PLayer joining race (if PLID already exists, then leaving pits)
@@ -32,10 +32,10 @@ export class IS_NPL extends Packet {
   @word() Flags: PlayerFlags | 0 = 0;
 
   /** Nickname */
-  @stringNull(24) PName = '';
+  @stringNull(24) PName = "";
 
   /** Number plate - NO ZERO AT END! */
-  @string(8) Plate = '';
+  @string(8) Plate = "";
 
   /**
    * Car name
@@ -44,10 +44,10 @@ export class IS_NPL extends Packet {
    * - a 3-character abbreviation of an official LFS car (e.g. XRT)
    * - a hexadecimal string representation of a car mod's SkinID (e.g. 5882E6)
    */
-  @carName() CName = '';
+  @carName() CName = "";
 
   /** Skin name - MAX_CAR_TEX_NAME */
-  @stringNull(16) SName = '';
+  @stringNull(16) SName = "";
 
   /** Rear left tyre compound */
   @byte() TyreRL: TyreCompound = 0;

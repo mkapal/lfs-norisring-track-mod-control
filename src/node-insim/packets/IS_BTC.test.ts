@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { ButtonClickFlags, PacketType } from './enums';
-import { IS_BTC } from './IS_BTC';
-import { IS_BTN } from './IS_BTN';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { ButtonClickFlags, PacketType } from "./enums";
+import { IS_BTC } from "./IS_BTC";
+import { IS_BTN } from "./IS_BTN";
 
 const size = 8;
 
@@ -25,7 +25,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_BTC', () => {
+describe("IS_BTC", () => {
   testInfoPacket({
     packetClass: IS_BTC,
     type: PacketType.ISP_BTC,

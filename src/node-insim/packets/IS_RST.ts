@@ -1,7 +1,7 @@
-import { byte, stringNull, word } from '../decorators';
-import { Packet } from './base';
-import type { RaceFlags, Wind } from './enums';
-import { PacketType } from './enums';
+import { byte, stringNull, word } from "../decorators";
+import { Packet } from "./base";
+import type { RaceFlags, Wind } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * Race STart
@@ -38,7 +38,7 @@ export class IS_RST extends Packet {
   @byte() Timing = 0;
 
   /** Short track name */
-  @stringNull(6) Track = '';
+  @stringNull(6) Track = "";
 
   @byte() Weather = 0;
   @byte() Wind: Wind = 0;

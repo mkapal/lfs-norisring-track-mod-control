@@ -1,10 +1,10 @@
-import { byte } from '../decorators';
-import { copyBuffer } from '../lfspack';
-import { SendablePacket } from './base';
-import type { PMOFlags } from './enums';
-import { PacketType, PMOAction } from './enums';
-import { ObjectInfo } from './structs';
-import type { PacketData } from './types';
+import { byte } from "../decorators";
+import { copyBuffer } from "../lfspack";
+import { SendablePacket } from "./base";
+import type { PMOFlags } from "./enums";
+import { PacketType, PMOAction } from "./enums";
+import { ObjectInfo } from "./structs";
+import type { PacketData } from "./types";
 
 /**
  * AutoX Multiple objects - variable size

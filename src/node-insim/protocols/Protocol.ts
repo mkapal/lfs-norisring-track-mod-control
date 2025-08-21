@@ -1,4 +1,4 @@
-import { TypedEmitter } from 'tiny-typed-emitter';
+import { TypedEmitter } from "tiny-typed-emitter";
 
 type Events = {
   connect: () => void;

@@ -1,12 +1,12 @@
-import { stringToBytes, testInstructionPacket } from '../tests';
-import { PacketType } from './enums';
-import type { IS_MST_Data } from './IS_MST';
-import { IS_MST } from './IS_MST';
+import { stringToBytes, testInstructionPacket } from "../tests";
+import { PacketType } from "./enums";
+import type { IS_MST_Data } from "./IS_MST";
+import { IS_MST } from "./IS_MST";
 
 const size = 68;
 
 const data: IS_MST_Data = {
-  Msg: 'This is a message whose length will be sixty three characters!!',
+  Msg: "This is a message whose length will be sixty three characters!!",
 };
 
 const buffer = new Uint8Array([
@@ -18,7 +18,7 @@ const buffer = new Uint8Array([
   0,
 ]);
 
-describe('IS_MST', () => {
+describe("IS_MST", () => {
   testInstructionPacket({
     packetClass: IS_MST,
     size,
@@ -27,10 +27,10 @@ describe('IS_MST', () => {
     buffer,
   });
 
-  it('should truncate Msg if it is longer than 63 characters', () => {
+  it("should truncate Msg if it is longer than 63 characters", () => {
     expect(
       new IS_MST({
-        Msg: 'This is a message whose length will be sixty four characters yes',
+        Msg: "This is a message whose length will be sixty four characters yes",
       }).pack(),
     ).toEqual(
       new Uint8Array([
@@ -39,7 +39,7 @@ describe('IS_MST', () => {
         0, // ReqI
         0, // Zero
         ...stringToBytes(
-          'This is a message whose length will be sixty four characters ye',
+          "This is a message whose length will be sixty four characters ye",
         ), // Msg[64]
         0,
       ]),

@@ -1,7 +1,7 @@
-import { byte, unsigned } from '../decorators';
-import { SendablePacket } from './base';
-import type { CarFlags, LocalCarLights, LocalCarSwitches } from './enums';
-import { PacketType, SmallType } from './enums';
+import { byte, unsigned } from "../decorators";
+import { SendablePacket } from "./base";
+import type { CarFlags, LocalCarLights, LocalCarSwitches } from "./enums";
+import { PacketType, SmallType } from "./enums";
 
 /**
  * General purpose 8 byte packet

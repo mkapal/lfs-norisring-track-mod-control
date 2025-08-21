@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { CSCAction, PacketType } from './enums';
-import { IS_CSC } from './IS_CSC';
-import { CarContOBJ } from './structs';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { CSCAction, PacketType } from "./enums";
+import { IS_CSC } from "./IS_CSC";
+import { CarContOBJ } from "./structs";
 
 const size = 20;
 
@@ -43,7 +43,7 @@ const buffer = new Uint8Array([
   5, // C - Y (2)
 ]);
 
-describe('IS_CSC', () => {
+describe("IS_CSC", () => {
   testInfoPacket({
     packetClass: IS_CSC,
     type: PacketType.ISP_CSC,

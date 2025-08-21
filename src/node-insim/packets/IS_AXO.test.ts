@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType } from './enums';
-import { IS_AXO } from './IS_AXO';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IS_AXO } from "./IS_AXO";
 
 const size = 4;
 
@@ -16,7 +16,7 @@ const buffer = new Uint8Array([
   3, // PLID
 ]);
 
-describe('IS_AXO', () => {
+describe("IS_AXO", () => {
   testInfoPacket({
     packetClass: IS_AXO,
     type: PacketType.ISP_AXO,

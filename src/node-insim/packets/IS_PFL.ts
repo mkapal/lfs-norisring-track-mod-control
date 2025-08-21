@@ -1,7 +1,7 @@
-import { byte, word } from '../decorators';
-import { Packet } from './base';
-import type { PlayerFlags } from './enums';
-import { PacketType } from './enums';
+import { byte, word } from "../decorators";
+import { Packet } from "./base";
+import type { PlayerFlags } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * Player FLags (help flags changed)

@@ -1,7 +1,7 @@
-import { byte, stringNull } from '../decorators';
-import { SendablePacket } from './base';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte, stringNull } from "../decorators";
+import { SendablePacket } from "./base";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 export const MST_MSG_MAX_LENGTH = 64;
 
@@ -15,7 +15,7 @@ export class IS_MST extends SendablePacket {
   @byte() readonly Zero = 0;
 
   /** Last byte must be zero */
-  @stringNull(MST_MSG_MAX_LENGTH) Msg = '';
+  @stringNull(MST_MSG_MAX_LENGTH) Msg = "";
 
   constructor(data?: IS_MST_Data) {
     super();

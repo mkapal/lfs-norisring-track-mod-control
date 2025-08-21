@@ -1,6 +1,6 @@
-import { byte } from '../decorators';
-import { Packet } from './base';
-import { FlagType, PacketType } from './enums';
+import { byte } from "../decorators";
+import { Packet } from "./base";
+import { FlagType, PacketType } from "./enums";
 
 /**
  * FLaG (yellow or blue flag changed)

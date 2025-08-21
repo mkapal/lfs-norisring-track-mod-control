@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType, VoteAction } from './enums';
-import { IS_VTN } from './IS_VTN';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType, VoteAction } from "./enums";
+import { IS_VTN } from "./IS_VTN";
 
 const size = 8;
 
@@ -23,7 +23,7 @@ const buffer = new Uint8Array([
   0, // Spare3
 ]);
 
-describe('IS_VTN', () => {
+describe("IS_VTN", () => {
   testInfoPacket({
     packetClass: IS_VTN,
     size,

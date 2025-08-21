@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType, UCOAction } from './enums';
-import { IS_UCO } from './IS_UCO';
-import { CarContOBJ, ObjectInfo } from './structs';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType, UCOAction } from "./enums";
+import { IS_UCO } from "./IS_UCO";
+import { CarContOBJ, ObjectInfo } from "./structs";
 
 const size = 28;
 
@@ -59,7 +59,7 @@ const buffer = new Uint8Array([
   1, // Info - Heading
 ]);
 
-describe('IS_UCO', () => {
+describe("IS_UCO", () => {
   testInfoPacket({
     packetClass: IS_UCO,
     type: PacketType.ISP_UCO,

@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType, PlayerFlags } from './enums';
-import { IS_PFL } from './IS_PFL';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType, PlayerFlags } from "./enums";
+import { IS_PFL } from "./IS_PFL";
 
 const size = 8;
 
@@ -22,7 +22,7 @@ const buffer = new Uint8Array([
   0, // Spare (2)
 ]);
 
-describe('IS_PFL', () => {
+describe("IS_PFL", () => {
   testInfoPacket({
     packetClass: IS_PFL,
     size,

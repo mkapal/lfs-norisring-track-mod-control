@@ -1,7 +1,7 @@
-import { byte, byteArray } from '../decorators';
-import { SendablePacket } from './base';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte, byteArray } from "../decorators";
+import { SendablePacket } from "./base";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * REOrder (when race restarts after qualifying)

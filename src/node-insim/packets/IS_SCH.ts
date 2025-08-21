@@ -1,8 +1,8 @@
-import { byte } from '../decorators';
-import { SendablePacket } from './base';
-import type { CharacterModifiers } from './enums';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte } from "../decorators";
+import { SendablePacket } from "./base";
+import type { CharacterModifiers } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * Single CHaracter
@@ -33,4 +33,4 @@ export class IS_SCH extends SendablePacket {
   }
 }
 
-export type IS_SCH_Data = Pick<PacketData<IS_SCH>, 'CharB' | 'Flags'>;
+export type IS_SCH_Data = Pick<PacketData<IS_SCH>, "CharB" | "Flags">;

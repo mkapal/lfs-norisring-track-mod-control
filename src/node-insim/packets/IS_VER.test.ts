@@ -1,15 +1,15 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
-import { PacketType } from './enums';
-import { IS_VER } from './IS_VER';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IS_VER } from "./IS_VER";
 
 const size = 20;
 
 const data: PacketTestData<IS_VER> = {
   ReqI: 1,
   Zero: 0,
-  Version: '0.7A',
-  Product: 'S3',
+  Version: "0.7A",
+  Product: "S3",
   InSimVer: 9,
 };
 
@@ -18,12 +18,12 @@ const buffer = new Uint8Array([
   2, // Type
   1, // ReqI
   0, // Zero
-  ...stringToBytes('0.7A'), // Version[8]
+  ...stringToBytes("0.7A"), // Version[8]
   0,
   0,
   0,
   0,
-  ...stringToBytes('S3'), // Product[6]
+  ...stringToBytes("S3"), // Product[6]
   0,
   0,
   0,
@@ -32,7 +32,7 @@ const buffer = new Uint8Array([
   0, // Spare
 ]);
 
-describe('IS_VER', () => {
+describe("IS_VER", () => {
   testInfoPacket({
     packetClass: IS_VER,
     size,

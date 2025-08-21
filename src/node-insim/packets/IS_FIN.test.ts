@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { ConfirmationFlags, PacketType, PlayerFlags } from './enums';
-import { IS_FIN } from './IS_FIN';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { ConfirmationFlags, PacketType, PlayerFlags } from "./enums";
+import { IS_FIN } from "./IS_FIN";
 
 const size = 20;
 
@@ -44,7 +44,7 @@ const buffer = new Uint8Array([
   0, // Flags (2)
 ]);
 
-describe('IS_FIN', () => {
+describe("IS_FIN", () => {
   testInfoPacket({
     packetClass: IS_FIN,
     size,

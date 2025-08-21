@@ -1,12 +1,12 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
-import { PacketType, UserType } from './enums';
-import { IS_MSO } from './IS_MSO';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
+import { PacketType, UserType } from "./enums";
+import { IS_MSO } from "./IS_MSO";
 
-describe('IS_MSO', () => {
-  describe('ASCII characters in message', () => {
+describe("IS_MSO", () => {
+  describe("ASCII characters in message", () => {
     const size = 24;
-    const msg = 'Player : Hello!';
+    const msg = "Player : Hello!";
 
     const data: PacketTestData<IS_MSO> = {
       ReqI: 0,
@@ -40,7 +40,7 @@ describe('IS_MSO', () => {
     });
   });
 
-  xdescribe('non-ASCII characters in message', () => {
+  xdescribe("non-ASCII characters in message", () => {
     const size = 36;
 
     const data: PacketTestData<IS_MSO> = {
@@ -50,7 +50,7 @@ describe('IS_MSO', () => {
       PLID: 4,
       UserType: UserType.MSO_USER,
       TextStart: 15, // After converting Msg from bytes into UTF-8
-      Msg: '^7Player ě ^7: ^8cršč',
+      Msg: "^7Player ě ^7: ^8cršč",
     };
 
     const buffer = new Uint8Array([

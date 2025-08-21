@@ -1,13 +1,13 @@
-import defaults from 'lodash/defaults';
-import { TypedEmitter } from 'tiny-typed-emitter';
+import defaults from "lodash/defaults";
+import { TypedEmitter } from "tiny-typed-emitter";
 
-import { InSimError } from '../errors';
-import { log as baseLog } from '../log';
-import { UDP } from '../protocols';
-import { OutSimPack } from './OutSimPack';
-import { OutSimPack2 } from './OutSimPack2';
+import { InSimError } from "../errors";
+import { log as baseLog } from "../log";
+import { UDP } from "../protocols";
+import { OutSimPack } from "./OutSimPack";
+import { OutSimPack2 } from "./OutSimPack2";
 
-const log = baseLog.extend('outsim');
+const log = baseLog.extend("outsim");
 
 type OutSimEvents = {
   packet: (packet: OutSimPack | OutSimPack2) => void;
@@ -32,10 +32,10 @@ export class OutSim extends TypedEmitter<OutSimEvents> {
     super();
     this.timeout = timeout;
 
-    this.on('connect', () =>
+    this.on("connect", () =>
       log(`Connected to ${this._options.Host}:${this._options.Port}`),
     );
-    this.on('disconnect', () =>
+    this.on("disconnect", () =>
       log(`Disconnected from ${this._options.Host}:${this._options.Port}`),
     );
   }
@@ -49,33 +49,33 @@ export class OutSim extends TypedEmitter<OutSimEvents> {
       host: this._options.Host,
       port: this._options.Port,
       timeout: this.timeout,
-      socketInitialisationMode: 'bind',
+      socketInitialisationMode: "bind",
     });
     this.connection.connect();
 
-    this.connection.on('connect', () => {
-      this.emit('connect');
+    this.connection.on("connect", () => {
+      this.emit("connect");
     });
 
-    this.connection.on('disconnect', () => {
-      this.emit('disconnect');
+    this.connection.on("disconnect", () => {
+      this.emit("disconnect");
     });
 
-    this.connection.on('error', (error: Error) => {
+    this.connection.on("error", (error: Error) => {
       throw new InSimError(`UDP connection error: ${error.message}`);
     });
 
-    this.connection.on('data', (data) => this.handleMessage(data));
+    this.connection.on("data", (data) => this.handleMessage(data));
 
-    this.connection.on('timeout', () => {
-      this.emit('timeout');
+    this.connection.on("timeout", () => {
+      this.emit("timeout");
     });
   }
 
   disconnect() {
-    log('Disconnecting...');
+    log("Disconnecting...");
     if (this.connection === null) {
-      log('Cannot disconnect - not connected');
+      log("Cannot disconnect - not connected");
       return;
     }
 
@@ -87,14 +87,14 @@ export class OutSim extends TypedEmitter<OutSimEvents> {
       this._options.OutSimOpts > 0
         ? new OutSimPack2(this._options.OutSimOpts)
         : new OutSimPack();
-    this.emit('packet', outSimPack.unpack(data));
+    this.emit("packet", outSimPack.unpack(data));
   }
 }
 
 OutSim.defaultMaxListeners = 255;
 
 const defaultOutSimOptions: OutSimConnectionOptions = {
-  Host: '127.0.0.1',
+  Host: "127.0.0.1",
   Port: 29997,
   OutSimOpts: 0,
 };

@@ -1,10 +1,10 @@
-import unicodeToLfs from 'unicode-to-lfs';
+import unicodeToLfs from "unicode-to-lfs";
 
-import { byte, stringNull } from '../decorators';
-import { SendablePacket } from './base';
-import type { MessageSound } from './enums';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte, stringNull } from "../decorators";
+import { SendablePacket } from "./base";
+import type { MessageSound } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 const TEXT_MAX_LENGTH = 128;
 
@@ -31,7 +31,7 @@ export class IS_MTC extends SendablePacket {
   @byte() private readonly Sp3 = 0;
 
   /** Up to 128 characters of text - last byte must be zero */
-  @stringNull(TEXT_MAX_LENGTH) Text = '';
+  @stringNull(TEXT_MAX_LENGTH) Text = "";
 
   constructor(data?: IS_MTC_Data) {
     super();

@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
-import { PacketType, RaceFlags, Wind } from './enums';
-import { IS_RST } from './IS_RST';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
+import { PacketType, RaceFlags, Wind } from "./enums";
+import { IS_RST } from "./IS_RST";
 
 const size = 28;
 
@@ -12,7 +12,7 @@ const data: PacketTestData<IS_RST> = {
   QualMins: 45,
   NumP: 12,
   Timing: 66,
-  Track: 'BL1R',
+  Track: "BL1R",
   Weather: 2,
   Wind: Wind.STRONG,
   Flags: RaceFlags.HOSTF_CAN_SELECT | RaceFlags.HOSTF_FCV,
@@ -32,7 +32,7 @@ const buffer = new Uint8Array([
   45, // QualMins
   12, // NumP
   66, // Timing
-  ...stringToBytes('BL1R'), // Track[6]
+  ...stringToBytes("BL1R"), // Track[6]
   0,
   0,
   2, // Weather
@@ -51,7 +51,7 @@ const buffer = new Uint8Array([
   255, // Split3 (2)
 ]);
 
-describe('IS_RST', () => {
+describe("IS_RST", () => {
   testInfoPacket({
     packetClass: IS_RST,
     size,

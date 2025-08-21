@@ -1,12 +1,12 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
-import { ConnectionFlags, PacketType } from './enums';
-import { IS_NCN } from './IS_NCN';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
+import { ConnectionFlags, PacketType } from "./enums";
+import { IS_NCN } from "./IS_NCN";
 
 const size = 56;
 
-const uName = '123456789 123456789 user';
-const pName = '123456789 123456789 play';
+const uName = "123456789 123456789 user";
+const pName = "123456789 123456789 play";
 
 const data: PacketTestData<IS_NCN> = {
   ReqI: 2,
@@ -31,7 +31,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_NCN', () => {
+describe("IS_NCN", () => {
   testInfoPacket({
     packetClass: IS_NCN,
     size,

@@ -1,6 +1,6 @@
-import type { PacketType } from '../enums';
-import type { Receivable } from '../types';
-import { Struct } from './Struct';
+import type { PacketType } from "../enums";
+import type { Receivable } from "../types";
+import { Struct } from "./Struct";
 
 export abstract class Packet extends Struct implements Receivable {
   abstract Size: number;

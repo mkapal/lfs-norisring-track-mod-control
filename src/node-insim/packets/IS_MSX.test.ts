@@ -1,12 +1,12 @@
-import { stringToBytes, testInstructionPacket } from '../tests';
-import { PacketType } from './enums';
-import type { IS_MSX_Data } from './IS_MSX';
-import { IS_MSX } from './IS_MSX';
+import { stringToBytes, testInstructionPacket } from "../tests";
+import { PacketType } from "./enums";
+import type { IS_MSX_Data } from "./IS_MSX";
+import { IS_MSX } from "./IS_MSX";
 
 const size = 100;
 
 const data: IS_MSX_Data = {
-  Msg: 'You know that this is a very long text message whose length can be up to ninety five characters',
+  Msg: "You know that this is a very long text message whose length can be up to ninety five characters",
 };
 
 const buffer = new Uint8Array([
@@ -18,7 +18,7 @@ const buffer = new Uint8Array([
   0,
 ]);
 
-describe('IS_MSX', () => {
+describe("IS_MSX", () => {
   testInstructionPacket({
     packetClass: IS_MSX,
     size,
@@ -27,10 +27,10 @@ describe('IS_MSX', () => {
     buffer,
   });
 
-  it('should truncate Msg if it is longer than 95 characters', () => {
+  it("should truncate Msg if it is longer than 95 characters", () => {
     expect(
       new IS_MSX({
-        Msg: 'You know that this is a very long text message whose length can be up to ninety six characters!!',
+        Msg: "You know that this is a very long text message whose length can be up to ninety six characters!!",
       }).pack(),
     ).toEqual(
       new Uint8Array([
@@ -39,7 +39,7 @@ describe('IS_MSX', () => {
         0, // ReqI
         0, // Zero
         ...stringToBytes(
-          'You know that this is a very long text message whose length can be up to ninety six characters!',
+          "You know that this is a very long text message whose length can be up to ninety six characters!",
         ), // Msg[96]
         0,
       ]),

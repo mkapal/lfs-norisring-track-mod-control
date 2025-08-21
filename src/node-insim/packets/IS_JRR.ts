@@ -1,9 +1,9 @@
-import { byte, struct } from '../decorators';
-import { SendablePacket } from './base';
-import type { JRRAction } from './enums';
-import { PacketType } from './enums';
-import { ObjectInfo } from './structs';
-import type { PacketData } from './types';
+import { byte, struct } from "../decorators";
+import { SendablePacket } from "./base";
+import type { JRRAction } from "./enums";
+import { PacketType } from "./enums";
+import { ObjectInfo } from "./structs";
+import type { PacketData } from "./types";
 
 /**
  * Join Request Reply - send one of these back to LFS in response to a join request

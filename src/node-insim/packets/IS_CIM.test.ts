@@ -1,12 +1,12 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
 import {
   InterfaceMode,
   ObjectIndex,
   PacketType,
   ShiftUInterfaceSubmode,
-} from './enums';
-import { IS_CIM } from './IS_CIM';
+} from "./enums";
+import { IS_CIM } from "./IS_CIM";
 
 const size = 8;
 
@@ -28,7 +28,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_CIM', () => {
+describe("IS_CIM", () => {
   testInfoPacket({
     packetClass: IS_CIM,
     type: PacketType.ISP_CIM,

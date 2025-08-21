@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType } from './enums';
-import { IS_TOC } from './IS_TOC';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IS_TOC } from "./IS_TOC";
 
 const size = 8;
 
@@ -23,7 +23,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_TOC', () => {
+describe("IS_TOC", () => {
   testInfoPacket({
     packetClass: IS_TOC,
     size,

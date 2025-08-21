@@ -1,10 +1,10 @@
-import { byte } from '../decorators';
-import { InSimError } from '../errors';
-import { copyBuffer, pack } from '../lfspack';
-import { ipToUnsignedInteger, isValidIPv4 } from '../utils/ip';
-import { SendablePacket } from './base';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte } from "../decorators";
+import { InSimError } from "../errors";
+import { copyBuffer, pack } from "../lfspack";
+import { ipToUnsignedInteger, isValidIPv4 } from "../utils/ip";
+import { SendablePacket } from "./base";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * IP Bans
@@ -49,7 +49,7 @@ export class IS_IPB extends SendablePacket {
       const ipAddressBuffer = copyBuffer(
         buffer.slice(start, start + this.banIPSize),
       );
-      const ipAddress = ipAddressBuffer.join('.');
+      const ipAddress = ipAddressBuffer.join(".");
       this.BanIPs.push(ipAddress);
     }
 
@@ -79,11 +79,11 @@ export class IS_IPB extends SendablePacket {
     const dataBuffer = super.pack();
 
     const maybeIPBuffer = this.BanIPs.map((ipAddress) =>
-      pack('L', [ipToUnsignedInteger(ipAddress)]),
+      pack("L", [ipToUnsignedInteger(ipAddress)]),
     );
 
     if (maybeIPBuffer.some((buffer) => buffer === null)) {
-      throw new InSimError('IS_IPB - Failed to pack all BanIPs');
+      throw new InSimError("IS_IPB - Failed to pack all BanIPs");
     }
 
     const banIPsBuffer = (maybeIPBuffer as Uint8Array[]).reduce(
@@ -95,4 +95,4 @@ export class IS_IPB extends SendablePacket {
   }
 }
 
-export type IS_IPB_Data = Pick<PacketData<IS_IPB>, 'BanIPs'>;
+export type IS_IPB_Data = Pick<PacketData<IS_IPB>, "BanIPs">;

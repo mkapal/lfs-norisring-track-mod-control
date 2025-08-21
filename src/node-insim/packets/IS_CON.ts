@@ -1,7 +1,7 @@
-import { byte, struct, word } from '../decorators';
-import { Packet } from './base';
-import { PacketType } from './enums';
-import { CarContact } from './structs';
+import { byte, struct, word } from "../decorators";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
+import { CarContact } from "./structs";
 
 /**
  * CONtact - between two cars (A and B are sorted by PLID)

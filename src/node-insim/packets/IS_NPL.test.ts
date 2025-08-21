@@ -1,5 +1,5 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
 import {
   CarConfiguration,
   PacketType,
@@ -8,17 +8,17 @@ import {
   PlayerType,
   SetupFlags,
   TyreCompound,
-} from './enums';
-import { IS_NPL } from './IS_NPL';
+} from "./enums";
+import { IS_NPL } from "./IS_NPL";
 
 const size = 76;
 
 const pName = "Player's name max length";
-const plate = 'Numplate';
-const sName = 'MAX_CAR_TEX_NAME';
+const plate = "Numplate";
+const sName = "MAX_CAR_TEX_NAME";
 
-describe('IS_NPL', () => {
-  describe('official car', () => {
+describe("IS_NPL", () => {
+  describe("official car", () => {
     const data: PacketTestData<IS_NPL> = {
       ReqI: 0,
       PLID: 3,
@@ -27,7 +27,7 @@ describe('IS_NPL', () => {
       Flags: PlayerFlags.PIF_AUTOGEARS,
       PName: pName,
       Plate: plate,
-      CName: 'XRT',
+      CName: "XRT",
       SName: sName,
       TyreRL: TyreCompound.TYRE_R1,
       TyreRR: TyreCompound.TYRE_R2,
@@ -56,7 +56,7 @@ describe('IS_NPL', () => {
       0, // Flags (1)
       ...stringToBytes(pName), // PName[24]
       ...stringToBytes(plate), // Plate[8]
-      ...stringToBytes('XRT'), // CName[4]
+      ...stringToBytes("XRT"), // CName[4]
       0,
       ...stringToBytes(sName), // SName[16]
       0, // TyreRL
@@ -86,7 +86,7 @@ describe('IS_NPL', () => {
     });
   });
 
-  describe('car mod', () => {
+  describe("car mod", () => {
     const data: PacketTestData<IS_NPL> = {
       ReqI: 0,
       PLID: 3,
@@ -95,7 +95,7 @@ describe('IS_NPL', () => {
       Flags: PlayerFlags.PIF_AUTOGEARS,
       PName: pName,
       Plate: plate,
-      CName: '5882E6',
+      CName: "5882E6",
       SName: sName,
       TyreRL: TyreCompound.TYRE_R1,
       TyreRR: TyreCompound.TYRE_R2,

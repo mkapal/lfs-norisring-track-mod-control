@@ -1,12 +1,12 @@
-import { testInstructionPacket } from '../tests';
+import { testInstructionPacket } from "../tests";
 import {
   ObjectIndex,
   OCOAction,
   OCOAutocrossStartLights,
   PacketType,
-} from './enums';
-import type { IS_OCO_Data } from './IS_OCO';
-import { IS_OCO } from './IS_OCO';
+} from "./enums";
+import type { IS_OCO_Data } from "./IS_OCO";
+import { IS_OCO } from "./IS_OCO";
 
 const size = 8;
 
@@ -28,7 +28,7 @@ const buffer = new Uint8Array([
   3, // Data
 ]);
 
-describe('IS_OCO', () => {
+describe("IS_OCO", () => {
   testInstructionPacket({
     packetClass: IS_OCO,
     type: PacketType.ISP_OCO,

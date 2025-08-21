@@ -1,8 +1,8 @@
-import { byte, stringNull } from '../decorators';
-import { SendablePacket } from './base';
-import type { ScreenshotError } from './enums';
-import { PacketType } from './enums';
-import type { PacketDataWithRequiredReqI } from './types';
+import { byte, stringNull } from "../decorators";
+import { SendablePacket } from "./base";
+import type { ScreenshotError } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketDataWithRequiredReqI } from "./types";
 
 /**
  * ScreenSHot
@@ -30,7 +30,7 @@ export class IS_SSH extends SendablePacket {
   @byte() private readonly Sp3 = 0;
 
   /** Name of screenshot file - last byte must be zero */
-  @stringNull(32) Name = '';
+  @stringNull(32) Name = "";
 
   constructor(data?: IS_SSH_Data) {
     super();
@@ -39,11 +39,11 @@ export class IS_SSH extends SendablePacket {
 
   pack() {
     if (this.ReqI === 0) {
-      throw new RangeError('IS_SSH - ReqI must be greater than 0');
+      throw new RangeError("IS_SSH - ReqI must be greater than 0");
     }
 
     return super.pack();
   }
 }
 
-export type IS_SSH_Data = Omit<PacketDataWithRequiredReqI<IS_SSH>, 'Error'>;
+export type IS_SSH_Data = Omit<PacketDataWithRequiredReqI<IS_SSH>, "Error">;

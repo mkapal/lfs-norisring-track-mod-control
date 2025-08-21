@@ -1,8 +1,8 @@
-import { byte } from '../decorators';
-import { SendablePacket } from './base';
-import type { ViewIdentifier } from './enums';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte } from "../decorators";
+import { SendablePacket } from "./base";
+import type { ViewIdentifier } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * Set Car Camera - Simplified camera packet (not SHIFT+U mode)

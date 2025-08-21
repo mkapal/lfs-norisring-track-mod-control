@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { AdminCommandResult, PacketType } from './enums';
-import { IS_ACR } from './IS_ACR';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { AdminCommandResult, PacketType } from "./enums";
+import { IS_ACR } from "./IS_ACR";
 
 const size = 16;
 
@@ -11,7 +11,7 @@ const data: PacketTestData<IS_ACR> = {
   UCID: 2,
   Admin: 1,
   Result: AdminCommandResult.PROCESSED,
-  Text: '/laps 2',
+  Text: "/laps 2",
 };
 
 const buffer = new Uint8Array([
@@ -33,7 +33,7 @@ const buffer = new Uint8Array([
   0,
 ]);
 
-describe('IS_ACR', () => {
+describe("IS_ACR", () => {
   testInfoPacket({
     packetClass: IS_ACR,
     type: PacketType.ISP_ACR,

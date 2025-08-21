@@ -1,7 +1,7 @@
-import { testInstructionPacket } from '../tests';
-import { PacketType } from './enums';
-import type { IS_MOD_Data } from './IS_MOD';
-import { IS_MOD } from './IS_MOD';
+import { testInstructionPacket } from "../tests";
+import { PacketType } from "./enums";
+import type { IS_MOD_Data } from "./IS_MOD";
+import { IS_MOD } from "./IS_MOD";
 
 const size = 20;
 
@@ -35,7 +35,7 @@ const buffer = new Uint8Array([
   0, // Height (4)
 ]);
 
-describe('IS_MOD', () => {
+describe("IS_MOD", () => {
   testInstructionPacket({
     packetClass: IS_MOD,
     size,

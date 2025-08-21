@@ -1,6 +1,6 @@
-import { byte } from '../decorators';
-import { SendablePacket } from './base';
-import { PacketType, TinyType } from './enums';
+import { byte } from "../decorators";
+import { SendablePacket } from "./base";
+import { PacketType, TinyType } from "./enums";
 
 /**
  * General purpose 4 byte packet

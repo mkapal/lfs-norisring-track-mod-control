@@ -1,7 +1,7 @@
-import { testInstructionPacket } from '../tests';
-import { PacketType, StateFlags } from './enums';
-import type { IS_SFP_Data } from './IS_SFP';
-import { IS_SFP } from './IS_SFP';
+import { testInstructionPacket } from "../tests";
+import { PacketType, StateFlags } from "./enums";
+import type { IS_SFP_Data } from "./IS_SFP";
+import { IS_SFP } from "./IS_SFP";
 
 const size = 8;
 
@@ -21,7 +21,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_SFP', () => {
+describe("IS_SFP", () => {
   testInstructionPacket({
     packetClass: IS_SFP,
     size,

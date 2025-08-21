@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { CarContactFlags, PacketType } from './enums';
-import { IS_CON } from './IS_CON';
-import { CarContact } from './structs';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { CarContactFlags, PacketType } from "./enums";
+import { IS_CON } from "./IS_CON";
+import { CarContact } from "./structs";
 
 const size = 40;
 
@@ -86,7 +86,7 @@ const buffer = new Uint8Array([
   6, // B - Y (2)
 ]);
 
-describe('IS_CON', () => {
+describe("IS_CON", () => {
   testInfoPacket({
     packetClass: IS_CON,
     size,

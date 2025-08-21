@@ -1,5 +1,5 @@
-import { float, int, unsigned } from '../decorators';
-import { Struct } from '../packets';
+import { float, int, unsigned } from "../decorators";
+import { Struct } from "../packets";
 
 /**
  * OutSim - MOTION SIMULATOR SUPPORT AND TELEMETRY OUTPUT

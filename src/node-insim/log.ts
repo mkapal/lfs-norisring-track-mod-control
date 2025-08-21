@@ -1,4 +1,4 @@
-import debug from 'debug';
+import debug from "debug";
 
 /** @internal */
-export const log = debug('node-insim');
+export const log = debug("node-insim");

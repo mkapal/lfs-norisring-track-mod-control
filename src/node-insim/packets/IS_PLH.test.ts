@@ -1,8 +1,8 @@
-import { testInfoPacket, testInstructionPacket } from '../tests';
-import { PacketType, PlayerHCapFlags } from './enums';
-import type { IS_PLH_Data } from './IS_PLH';
-import { IS_PLH } from './IS_PLH';
-import { PlayerHCap } from './structs';
+import { testInfoPacket, testInstructionPacket } from "../tests";
+import { PacketType, PlayerHCapFlags } from "./enums";
+import type { IS_PLH_Data } from "./IS_PLH";
+import { IS_PLH } from "./IS_PLH";
+import { PlayerHCap } from "./structs";
 
 const size = 16;
 
@@ -47,7 +47,7 @@ const buffer = new Uint8Array([
   40, // HCaps[3] - H_TRes
 ]);
 
-describe('IS_PLH', () => {
+describe("IS_PLH", () => {
   testInstructionPacket({
     packetClass: IS_PLH,
     size: 4, // This is the default size in IS_PLH excluding the dynamic size
@@ -63,7 +63,7 @@ describe('IS_PLH', () => {
     buffer,
   });
 
-  it('should throw a range error if HCaps length is greater than 40', () => {
+  it("should throw a range error if HCaps length is greater than 40", () => {
     expect(() => {
       new IS_PLH({
         NumP: 41,

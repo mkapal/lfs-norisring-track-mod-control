@@ -1,9 +1,9 @@
-import { byte, getFormat, stringNull } from '../decorators';
-import { InSimError } from '../errors';
-import { unpack } from '../lfspack';
-import { Packet } from './base';
-import type { AdminCommandResult } from './enums';
-import { PacketType } from './enums';
+import { byte, getFormat, stringNull } from "../decorators";
+import { InSimError } from "../errors";
+import { unpack } from "../lfspack";
+import { Packet } from "./base";
+import type { AdminCommandResult } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * Admin Command Report - a user typed an admin command - variable size
@@ -29,13 +29,13 @@ export class IS_ACR extends Packet {
   @byte() Sp3 = 0;
 
   /** 4, 8, 12... 64 characters - last byte is zero */
-  @stringNull(64) Text = '';
+  @stringNull(64) Text = "";
 
   unpack(buffer: Uint8Array): this {
-    const data = unpack(`<${getFormat(this, 'Size')}`, buffer.buffer);
+    const data = unpack(`<${getFormat(this, "Size")}`, buffer.buffer);
 
     if (!data || data.length === 0) {
-      throw new InSimError('IS_ACR - Unpacked no data from buffer');
+      throw new InSimError("IS_ACR - Unpacked no data from buffer");
     }
 
     const size = (data[0] as number) * this.SIZE_MULTIPLIER;

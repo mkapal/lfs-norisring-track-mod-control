@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { CompCarFlags, PacketType } from './enums';
-import { IS_MCI } from './IS_MCI';
-import { CompCar } from './structs';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { CompCarFlags, PacketType } from "./enums";
+import { IS_MCI } from "./IS_MCI";
+import { CompCar } from "./structs";
 
 const size = 4 + 2 * 28;
 
@@ -104,7 +104,7 @@ const buffer = new Uint8Array([
   0, // Info[1] - AngVel (2)
 ]);
 
-describe('IS_MCI', () => {
+describe("IS_MCI", () => {
   testInfoPacket({
     packetClass: IS_MCI,
     size,

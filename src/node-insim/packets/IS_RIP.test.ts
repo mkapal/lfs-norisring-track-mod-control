@@ -1,13 +1,13 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket, testInstructionPacket } from '../tests';
-import { PacketType, ReplayError, ReplayMode, ReplayOptions } from './enums';
-import type { IS_RIP_Data } from './IS_RIP';
-import { IS_RIP } from './IS_RIP';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket, testInstructionPacket } from "../tests";
+import { PacketType, ReplayError, ReplayMode, ReplayOptions } from "./enums";
+import type { IS_RIP_Data } from "./IS_RIP";
+import { IS_RIP } from "./IS_RIP";
 
 const size = 80;
 
 const replayName =
-  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenea';
+  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenea";
 
 const instructionData: IS_RIP_Data = {
   ReqI: 2,
@@ -39,8 +39,8 @@ const instructionBuffer = new Uint8Array([
   0,
 ]);
 
-const infoData: Partial<Omit<PacketTestData<IS_RIP>, 'ReqI'>> &
-  Pick<IS_RIP, 'ReqI'> = {
+const infoData: Partial<Omit<PacketTestData<IS_RIP>, "ReqI">> &
+  Pick<IS_RIP, "ReqI"> = {
   ReqI: 2,
   Error: ReplayError.RIP_DEST_OOB,
   MPR: ReplayMode.MPR,
@@ -71,7 +71,7 @@ const infoBuffer = new Uint8Array([
   0,
 ]);
 
-describe('IS_RIP', () => {
+describe("IS_RIP", () => {
   testInstructionPacket({
     packetClass: IS_RIP,
     size,
@@ -88,7 +88,7 @@ describe('IS_RIP', () => {
     buffer: infoBuffer,
   });
 
-  it('should throw a range error if ReqI is 0', () => {
+  it("should throw a range error if ReqI is 0", () => {
     expect(() => {
       new IS_RIP({ ReqI: 0 }).pack();
     }).toThrow(RangeError);

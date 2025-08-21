@@ -6,12 +6,12 @@ import {
   string,
   struct,
   unsigned,
-} from '../decorators';
-import { Struct } from '../packets';
-import { OutSimInputs } from './OutSimInputs';
-import { OutSimMain } from './OutSimMain';
-import { OutSimOptions } from './OutSimOptions';
-import { OutSimWheel } from './OutSimWheel';
+} from "../decorators";
+import { Struct } from "../packets";
+import { OutSimInputs } from "./OutSimInputs";
+import { OutSimMain } from "./OutSimMain";
+import { OutSimOptions } from "./OutSimOptions";
+import { OutSimWheel } from "./OutSimWheel";
 
 /**
  * An extended and modular version of the {@link OutSimPack} packet.
@@ -25,7 +25,7 @@ import { OutSimWheel } from './OutSimWheel';
 export class OutSimPack2 extends Struct {
   // if (OSOpts & OSO_HEADER)
   /** Header of packet. Should be 'LFST' if OSOpts contains OSO_HEADER flag */
-  @string(4) Header = '';
+  @string(4) Header = "";
 
   // if (OSOpts & OSO_ID)
   /** OutSim ID from cfg.txt */
@@ -87,46 +87,46 @@ export class OutSimPack2 extends Struct {
     const validPropertyNames = [];
 
     if (this.OSOpts & OutSimOptions.OSO_HEADER) {
-      validPropertyNames.push('Header');
+      validPropertyNames.push("Header");
     }
 
     if (this.OSOpts & OutSimOptions.OSO_ID) {
-      validPropertyNames.push('ID');
+      validPropertyNames.push("ID");
     }
 
     if (this.OSOpts & OutSimOptions.OSO_TIME) {
-      validPropertyNames.push('Time');
+      validPropertyNames.push("Time");
     }
 
     if (this.OSOpts & OutSimOptions.OSO_MAIN) {
-      validPropertyNames.push('OSMain');
+      validPropertyNames.push("OSMain");
     }
 
     if (this.OSOpts & OutSimOptions.OSO_INPUTS) {
-      validPropertyNames.push('OSInputs');
+      validPropertyNames.push("OSInputs");
     }
 
     if (this.OSOpts & OutSimOptions.OSO_DRIVE) {
-      validPropertyNames.push('Gear');
-      validPropertyNames.push('Sp1');
-      validPropertyNames.push('Sp2');
-      validPropertyNames.push('Sp3');
-      validPropertyNames.push('EngineAngVel');
-      validPropertyNames.push('MaxTorqueAtVel');
+      validPropertyNames.push("Gear");
+      validPropertyNames.push("Sp1");
+      validPropertyNames.push("Sp2");
+      validPropertyNames.push("Sp3");
+      validPropertyNames.push("EngineAngVel");
+      validPropertyNames.push("MaxTorqueAtVel");
     }
 
     if (this.OSOpts & OutSimOptions.OSO_DISTANCE) {
-      validPropertyNames.push('CurrentLapDist');
-      validPropertyNames.push('IndexedDistance');
+      validPropertyNames.push("CurrentLapDist");
+      validPropertyNames.push("IndexedDistance");
     }
 
     if (this.OSOpts & OutSimOptions.OSO_WHEELS) {
-      validPropertyNames.push('OSWheels');
+      validPropertyNames.push("OSWheels");
     }
 
     if (this.OSOpts & OutSimOptions.OSO_EXTRA_1) {
-      validPropertyNames.push('SteerTorque');
-      validPropertyNames.push('Spare');
+      validPropertyNames.push("SteerTorque");
+      validPropertyNames.push("Spare");
     }
 
     return validPropertyNames;

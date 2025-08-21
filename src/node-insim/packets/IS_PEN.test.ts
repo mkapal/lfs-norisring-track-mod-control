@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType, PenaltyReason, PenaltyValue } from './enums';
-import { IS_PEN } from './IS_PEN';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType, PenaltyReason, PenaltyValue } from "./enums";
+import { IS_PEN } from "./IS_PEN";
 
 const size = 8;
 
@@ -24,7 +24,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_PEN', () => {
+describe("IS_PEN", () => {
   testInfoPacket({
     packetClass: IS_PEN,
     size,

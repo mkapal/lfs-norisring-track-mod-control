@@ -1,12 +1,12 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket, testInstructionPacket } from '../tests';
-import { PacketType, ScreenshotError } from './enums';
-import type { IS_SSH_Data } from './IS_SSH';
-import { IS_SSH } from './IS_SSH';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket, testInstructionPacket } from "../tests";
+import { PacketType, ScreenshotError } from "./enums";
+import type { IS_SSH_Data } from "./IS_SSH";
+import { IS_SSH } from "./IS_SSH";
 
 const size = 40;
 
-const name = 'Lorem ipsum dolor sit amet, con';
+const name = "Lorem ipsum dolor sit amet, con";
 
 const instructionData: IS_SSH_Data = {
   ReqI: 2,
@@ -26,8 +26,8 @@ const instructionBuffer = new Uint8Array([
   0,
 ]);
 
-const infoData: Partial<Omit<PacketTestData<IS_SSH>, 'ReqI'>> &
-  Pick<IS_SSH, 'ReqI'> = {
+const infoData: Partial<Omit<PacketTestData<IS_SSH>, "ReqI">> &
+  Pick<IS_SSH, "ReqI"> = {
   ReqI: 2,
   Error: ScreenshotError.SSH_NO_SAVE,
   Name: name,
@@ -46,7 +46,7 @@ const infoBuffer = new Uint8Array([
   0,
 ]);
 
-describe('IS_SSH', () => {
+describe("IS_SSH", () => {
   testInstructionPacket({
     packetClass: IS_SSH,
     size,
@@ -63,7 +63,7 @@ describe('IS_SSH', () => {
     buffer: infoBuffer,
   });
 
-  it('should throw a range error if ReqI is 0', () => {
+  it("should throw a range error if ReqI is 0", () => {
     expect(() => {
       new IS_SSH({ ReqI: 0 }).pack();
     }).toThrow(RangeError);

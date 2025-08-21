@@ -1,10 +1,10 @@
-import { stringToBytes, testInstructionPacket } from '../tests';
-import { MessageSound, PacketType } from './enums';
-import type { IS_MSL_Data } from './IS_MSL';
-import { IS_MSL } from './IS_MSL';
+import { stringToBytes, testInstructionPacket } from "../tests";
+import { MessageSound, PacketType } from "./enums";
+import type { IS_MSL_Data } from "./IS_MSL";
+import { IS_MSL } from "./IS_MSL";
 
 const msg =
-  'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque pe';
+  "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque pe";
 
 const size = 132;
 
@@ -22,7 +22,7 @@ const buffer = new Uint8Array([
   0,
 ]);
 
-describe('IS_MSL', () => {
+describe("IS_MSL", () => {
   testInstructionPacket({
     packetClass: IS_MSL,
     size,
@@ -31,10 +31,10 @@ describe('IS_MSL', () => {
     buffer,
   });
 
-  it('should truncate Msg if it is longer than 127 characters', () => {
+  it("should truncate Msg if it is longer than 127 characters", () => {
     expect(
       new IS_MSL({
-        Msg: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque pea',
+        Msg: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque pea",
       }).pack(),
     ).toEqual(
       new Uint8Array([
@@ -43,7 +43,7 @@ describe('IS_MSL', () => {
         0, // ReqI
         0, // Sound
         ...stringToBytes(
-          'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque pe',
+          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque pe",
         ), // Msg[128]
         0,
       ]),

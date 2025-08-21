@@ -1,7 +1,7 @@
-import { byte, float, stringNull, word } from '../decorators';
-import { Packet } from './base';
-import type { RaceState, ServerStatus, StateFlags, Wind } from './enums';
-import { PacketType, ViewIdentifier } from './enums';
+import { byte, float, stringNull, word } from "../decorators";
+import { Packet } from "./base";
+import type { RaceState, ServerStatus, StateFlags, Wind } from "./enums";
+import { PacketType, ViewIdentifier } from "./enums";
 
 /**
  * STAte
@@ -64,7 +64,7 @@ export class IS_STA extends Packet {
   @byte() ServerStatus: ServerStatus | number = 0;
 
   /** Short name for track e.g. FE2R */
-  @stringNull(6) Track = '';
+  @stringNull(6) Track = "";
 
   @byte() Weather = 0;
   @byte() Wind: Wind = 0;

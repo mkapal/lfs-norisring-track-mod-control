@@ -1,13 +1,13 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
-import { ConfirmationFlags, PacketType, PlayerFlags } from './enums';
-import { IS_RES } from './IS_RES';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
+import { ConfirmationFlags, PacketType, PlayerFlags } from "./enums";
+import { IS_RES } from "./IS_RES";
 
 const size = 84;
 
-const uName = '123456789 123456789 user';
-const pName = '123456789 123456789 play';
-const plate = '12345678';
+const uName = "123456789 123456789 user";
+const pName = "123456789 123456789 play";
+const plate = "12345678";
 
 const data: PacketTestData<IS_RES> = {
   ReqI: 0,
@@ -15,7 +15,7 @@ const data: PacketTestData<IS_RES> = {
   UName: uName,
   PName: pName,
   Plate: plate,
-  CName: 'XRT_',
+  CName: "XRT_",
   TTime: 67111146,
   BTime: 16843392,
   SpA: 0,
@@ -37,7 +37,7 @@ const buffer = new Uint8Array([
   ...stringToBytes(uName), // UName[24]
   ...stringToBytes(pName), // PName[24]
   ...stringToBytes(plate), // Plate[8]
-  ...stringToBytes('XRT_'), // CName[4]
+  ...stringToBytes("XRT_"), // CName[4]
   234, // TTime (1)
   8, // TTime (2)
   0, // TTime (3)
@@ -60,7 +60,7 @@ const buffer = new Uint8Array([
   0, // PSeconds (2)
 ]);
 
-describe('IS_RES', () => {
+describe("IS_RES", () => {
   testInfoPacket({
     packetClass: IS_RES,
     size,

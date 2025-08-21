@@ -1,7 +1,7 @@
-export { InSimError } from './errors';
-export type { InSimOptions } from './InSim';
-export { InSim } from './InSim';
-export type { InSimEvents, InSimPacketEvents } from './InSimEvents';
+export { InSimError } from "./errors";
+export type { InSimOptions } from "./InSim";
+export { InSim } from "./InSim";
+export type { InSimEvents, InSimPacketEvents } from "./InSimEvents";
 export {
   DashLights,
   OutGauge,
@@ -14,4 +14,4 @@ export {
   OutSimPack,
   OutSimPack2,
   OutSimWheel,
-} from './out';
+} from "./out";

@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInstructionPacket } from '../tests';
-import { PacketType } from './enums';
-import { IR_ARQ } from './IR_ARQ';
+import type { PacketTestData } from "../tests";
+import { testInstructionPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IR_ARQ } from "./IR_ARQ";
 
 const size = 4;
 
@@ -17,7 +17,7 @@ const buffer = new Uint8Array([
   0, // Sp0
 ]);
 
-describe('IR_ARQ', () => {
+describe("IR_ARQ", () => {
   testInstructionPacket({
     packetClass: IR_ARQ,
     type: PacketType.IRP_ARQ,

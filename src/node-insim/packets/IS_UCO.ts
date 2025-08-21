@@ -1,8 +1,8 @@
-import { byte, struct, unsigned } from '../decorators';
-import { Packet } from './base';
-import type { UCOAction } from './enums';
-import { PacketType } from './enums';
-import { CarContOBJ, ObjectInfo } from './structs';
+import { byte, struct, unsigned } from "../decorators";
+import { Packet } from "./base";
+import type { UCOAction } from "./enums";
+import { PacketType } from "./enums";
+import { CarContOBJ, ObjectInfo } from "./structs";
 
 /**
  * User Control Object

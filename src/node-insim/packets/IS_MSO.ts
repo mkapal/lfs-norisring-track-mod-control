@@ -1,11 +1,11 @@
-import isArray from 'lodash/isArray';
+import isArray from "lodash/isArray";
 
-import { byte, getFormat, stringNull } from '../decorators';
-import { InSimError } from '../errors';
-import { unpack } from '../lfspack';
-import { Packet } from './base';
-import type { UserType } from './enums';
-import { PacketType } from './enums';
+import { byte, getFormat, stringNull } from "../decorators";
+import { InSimError } from "../errors";
+import { unpack } from "../lfspack";
+import { Packet } from "./base";
+import type { UserType } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * MSg Out - system messages and user messages - variable size
@@ -33,13 +33,13 @@ export class IS_MSO extends Packet {
   @byte() TextStart = 0;
 
   /** 4, 8, 12... 128 characters - last byte is zero */
-  @stringNull(128) Msg = '';
+  @stringNull(128) Msg = "";
 
   unpack(buffer: Uint8Array): this {
-    const data = unpack(`<${getFormat(this, 'Size')}`, buffer.buffer);
+    const data = unpack(`<${getFormat(this, "Size")}`, buffer.buffer);
 
     if (!data || data.length === 0) {
-      throw new InSimError('IS_MSO - Unpacked no data from buffer');
+      throw new InSimError("IS_MSO - Unpacked no data from buffer");
     }
 
     const size = (data[0] as number) * this.SIZE_MULTIPLIER;

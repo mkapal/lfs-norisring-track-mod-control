@@ -1,7 +1,7 @@
-import { byte, char } from '../../decorators';
-import { SendableStruct } from '../base';
-import type { PlayerHCapFlags } from '../enums';
-import type { StructData } from '../types';
+import { byte, char } from "../../decorators";
+import { SendableStruct } from "../base";
+import type { PlayerHCapFlags } from "../enums";
+import type { StructData } from "../types";
 
 export class PlayerHCap extends SendableStruct {
   /** Player's unique id */

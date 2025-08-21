@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket, testInstructionPacket } from '../tests';
-import { PacketType, StateFlags, ViewIdentifier } from './enums';
-import type { IS_CPP_Data } from './IS_CPP';
-import { IS_CPP } from './IS_CPP';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket, testInstructionPacket } from "../tests";
+import { PacketType, StateFlags, ViewIdentifier } from "./enums";
+import type { IS_CPP_Data } from "./IS_CPP";
+import { IS_CPP } from "./IS_CPP";
 
 const size = 32;
 
@@ -96,7 +96,7 @@ const infoBuffer = new Uint8Array([
   32, // Flags (2)
 ]);
 
-describe('IS_CPP', () => {
+describe("IS_CPP", () => {
   testInstructionPacket({
     packetClass: IS_CPP,
     size,

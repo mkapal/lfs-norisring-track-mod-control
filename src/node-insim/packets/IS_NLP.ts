@@ -1,9 +1,9 @@
-import { byte } from '../decorators';
-import { InSimError } from '../errors';
-import { copyBuffer, unpack } from '../lfspack';
-import { Packet } from './base';
-import { PacketType } from './enums';
-import { NodeLap } from './structs';
+import { byte } from "../decorators";
+import { InSimError } from "../errors";
+import { copyBuffer, unpack } from "../lfspack";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
+import { NodeLap } from "./structs";
 
 /**
  * Node and Lap Packet - variable size
@@ -36,7 +36,7 @@ export class IS_NLP extends Packet {
     const data = unpack(this.getFormat(), buffer.buffer);
 
     if (!data) {
-      throw new InSimError('IS_MSO - Unpacked no data from buffer');
+      throw new InSimError("IS_MSO - Unpacked no data from buffer");
     }
 
     const nodeLapLength = new NodeLap().getFormatSize();

@@ -1,9 +1,9 @@
-import { byte } from '../decorators';
-import { InSimError } from '../errors';
-import { copyBuffer, pack, unpack } from '../lfspack';
-import { SendablePacket } from './base';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte } from "../decorators";
+import { InSimError } from "../errors";
+import { copyBuffer, pack, unpack } from "../lfspack";
+import { SendablePacket } from "./base";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * Mods ALlowed - variable size
@@ -51,7 +51,7 @@ export class IS_MAL extends SendablePacket {
       const skinIdBuffer = copyBuffer(
         buffer.slice(start, start + this.skinIdSize),
       );
-      const data = unpack('C', skinIdBuffer.buffer);
+      const data = unpack("C", skinIdBuffer.buffer);
       if (data) {
         this.SkinID.push(data[0] as string);
       }
@@ -73,11 +73,11 @@ export class IS_MAL extends SendablePacket {
     const dataBuffer = super.pack();
 
     const objectInfoBufferOrNull = this.SkinID.map((skinId) =>
-      pack('C', [skinId]),
+      pack("C", [skinId]),
     );
 
     if (objectInfoBufferOrNull.some((buffer) => buffer === null)) {
-      throw new InSimError('IS_MAL - Could not pack all SkinIDs');
+      throw new InSimError("IS_MAL - Could not pack all SkinIDs");
     }
 
     const objectInfoBuffer = (objectInfoBufferOrNull as Uint8Array[]).reduce(
@@ -89,4 +89,4 @@ export class IS_MAL extends SendablePacket {
   }
 }
 
-export type IS_MAL_Data = Pick<PacketData<IS_MAL>, 'SkinID'>;
+export type IS_MAL_Data = Pick<PacketData<IS_MAL>, "SkinID">;

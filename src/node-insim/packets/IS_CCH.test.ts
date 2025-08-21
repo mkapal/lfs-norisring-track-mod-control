@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType, ViewIdentifier } from './enums';
-import { IS_CCH } from './IS_CCH';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType, ViewIdentifier } from "./enums";
+import { IS_CCH } from "./IS_CCH";
 
 const size = 8;
 
@@ -21,7 +21,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_CCH', () => {
+describe("IS_CCH", () => {
   testInfoPacket({
     packetClass: IS_CCH,
     size,

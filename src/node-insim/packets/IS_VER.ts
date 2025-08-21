@@ -1,6 +1,6 @@
-import { byte, stringNull } from '../decorators';
-import { Packet } from './base';
-import { PacketType } from './enums';
+import { byte, stringNull } from "../decorators";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
 
 /**
  * Version request
@@ -19,10 +19,10 @@ export class IS_VER extends Packet {
   @byte() readonly Zero = 0;
 
   /** LFS version, e.g. 0.3G */
-  @stringNull(8) Version = '';
+  @stringNull(8) Version = "";
 
   /** Product: DEMO / S1 / S2 / S3 */
-  @stringNull(6) Product = '';
+  @stringNull(6) Product = "";
 
   /** InSim version */
   @byte() InSimVer = 0;

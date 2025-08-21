@@ -1,7 +1,7 @@
-import { testInstructionPacket } from '../tests';
-import { PacketType, TargetToConnectionType } from './enums';
-import type { IS_TTC_Data } from './IS_TTC';
-import { IS_TTC } from './IS_TTC';
+import { testInstructionPacket } from "../tests";
+import { PacketType, TargetToConnectionType } from "./enums";
+import type { IS_TTC_Data } from "./IS_TTC";
+import { IS_TTC } from "./IS_TTC";
 
 const size = 8;
 
@@ -25,7 +25,7 @@ const buffer = new Uint8Array([
   3, // B3
 ]);
 
-describe('IS_TTC', () => {
+describe("IS_TTC", () => {
   testInstructionPacket({
     packetClass: IS_TTC,
     type: PacketType.ISP_TTC,

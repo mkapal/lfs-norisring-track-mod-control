@@ -1,13 +1,13 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 
-const formatMetadataKey = Symbol('format');
+const formatMetadataKey = Symbol("format");
 
 /**
  * String of 1-byte characters
  * @internal
  */
 export function string(count: number) {
-  return Reflect.metadata(formatMetadataKey, count === 1 ? 'c' : `${count}s`);
+  return Reflect.metadata(formatMetadataKey, count === 1 ? "c" : `${count}s`);
 }
 
 /**
@@ -23,7 +23,7 @@ export function stringNull(count: number) {
  * @internal
  */
 export function char() {
-  return Reflect.metadata(formatMetadataKey, 'b');
+  return Reflect.metadata(formatMetadataKey, "b");
 }
 
 /**
@@ -31,7 +31,7 @@ export function char() {
  * @internal
  */
 export function byte() {
-  return Reflect.metadata(formatMetadataKey, 'B');
+  return Reflect.metadata(formatMetadataKey, "B");
 }
 
 /**
@@ -47,7 +47,7 @@ export function byteArray(count: number) {
  * @internal
  */
 export function word() {
-  return Reflect.metadata(formatMetadataKey, 'H');
+  return Reflect.metadata(formatMetadataKey, "H");
 }
 
 /**
@@ -55,7 +55,7 @@ export function word() {
  * @internal
  */
 export function short() {
-  return Reflect.metadata(formatMetadataKey, 'h');
+  return Reflect.metadata(formatMetadataKey, "h");
 }
 
 /**
@@ -63,7 +63,7 @@ export function short() {
  * @internal
  */
 export function unsigned() {
-  return Reflect.metadata(formatMetadataKey, 'L');
+  return Reflect.metadata(formatMetadataKey, "L");
 }
 
 /**
@@ -71,7 +71,7 @@ export function unsigned() {
  * @internal
  */
 export function int() {
-  return Reflect.metadata(formatMetadataKey, 'l');
+  return Reflect.metadata(formatMetadataKey, "l");
 }
 
 /**
@@ -79,7 +79,7 @@ export function int() {
  * @internal
  */
 export function float() {
-  return Reflect.metadata(formatMetadataKey, 'f');
+  return Reflect.metadata(formatMetadataKey, "f");
 }
 
 /**
@@ -87,7 +87,7 @@ export function float() {
  * @internal
  */
 export function double() {
-  return Reflect.metadata(formatMetadataKey, 'd');
+  return Reflect.metadata(formatMetadataKey, "d");
 }
 
 /**
@@ -95,7 +95,7 @@ export function double() {
  * @internal
  */
 export function Vector() {
-  return Reflect.metadata(formatMetadataKey, 'fff');
+  return Reflect.metadata(formatMetadataKey, "fff");
 }
 
 /**
@@ -103,7 +103,7 @@ export function Vector() {
  * @internal
  */
 export function Vec() {
-  return Reflect.metadata(formatMetadataKey, 'lll');
+  return Reflect.metadata(formatMetadataKey, "lll");
 }
 
 /**
@@ -119,7 +119,7 @@ export function array<S extends { new (): { getFormat: () => string } }>(
   for (let i = 0; i < cnt; i++) {
     res.push(format);
   }
-  return Reflect.metadata(formatMetadataKey, res.join(''));
+  return Reflect.metadata(formatMetadataKey, res.join(""));
 }
 
 /**
@@ -142,7 +142,7 @@ export function struct<S extends { new (): { getFormat: () => string } }>(
  * @internal
  */
 export function carName() {
-  return Reflect.metadata(formatMetadataKey, 'C');
+  return Reflect.metadata(formatMetadataKey, "C");
 }
 
 /** @internal */

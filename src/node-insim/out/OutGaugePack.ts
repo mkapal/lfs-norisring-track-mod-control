@@ -6,10 +6,10 @@ import {
   string,
   unsigned,
   word,
-} from '../decorators';
-import { Struct } from '../packets';
-import type { DashLights } from './DashLights';
-import type { OutGaugeFlags } from './OutGaugeFlags';
+} from "../decorators";
+import { Struct } from "../packets";
+import type { DashLights } from "./DashLights";
+import type { OutGaugeFlags } from "./OutGaugeFlags";
 
 /**
  * OutGauge - EXTERNAL DASHBOARD SUPPORT
@@ -36,7 +36,7 @@ export class OutGaugePack extends Struct {
   @unsigned() Time = 0;
 
   /** Car name */
-  @carName() Car = '';
+  @carName() Car = "";
 
   @word() Flags: OutGaugeFlags | 0 = 0;
 
@@ -83,10 +83,10 @@ export class OutGaugePack extends Struct {
   @float() Clutch = 0;
 
   /** Usually Fuel */
-  @string(16) Display1 = '';
+  @string(16) Display1 = "";
 
   /** Usually Settings */
-  @string(16) Display2 = '';
+  @string(16) Display2 = "";
 
   /** Optional - only if OutGauge ID is specified */
   @int() ID = 0;

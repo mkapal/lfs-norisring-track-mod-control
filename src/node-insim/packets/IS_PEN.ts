@@ -1,7 +1,7 @@
-import { byte } from '../decorators';
-import { Packet } from './base';
-import type { PenaltyReason, PenaltyValue } from './enums';
-import { PacketType } from './enums';
+import { byte } from "../decorators";
+import { Packet } from "./base";
+import type { PenaltyReason, PenaltyValue } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * PENalty (given or cleared)

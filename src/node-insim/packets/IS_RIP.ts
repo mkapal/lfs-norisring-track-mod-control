@@ -1,8 +1,8 @@
-import { byte, stringNull, unsigned } from '../decorators';
-import { SendablePacket } from './base';
-import type { ReplayError, ReplayMode, ReplayOptions } from './enums';
-import { PacketType } from './enums';
-import type { PacketDataWithRequiredReqI } from './types';
+import { byte, stringNull, unsigned } from "../decorators";
+import { SendablePacket } from "./base";
+import type { ReplayError, ReplayMode, ReplayOptions } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketDataWithRequiredReqI } from "./types";
 
 const RNAME_MAX_LENGTH = 64;
 
@@ -48,7 +48,7 @@ export class IS_RIP extends SendablePacket {
   @unsigned() TTime = 0;
 
   /** Zero or replay name - last byte must be zero */
-  @stringNull(RNAME_MAX_LENGTH) RName = '';
+  @stringNull(RNAME_MAX_LENGTH) RName = "";
 
   constructor(data?: IS_RIP_Data) {
     super();
@@ -57,7 +57,7 @@ export class IS_RIP extends SendablePacket {
 
   pack() {
     if (this.ReqI === 0) {
-      throw new RangeError('IS_RIP - ReqI must be greater than 0');
+      throw new RangeError("IS_RIP - ReqI must be greater than 0");
     }
 
     return super.pack();
@@ -66,5 +66,5 @@ export class IS_RIP extends SendablePacket {
 
 export type IS_RIP_Data = Omit<
   PacketDataWithRequiredReqI<IS_RIP>,
-  'Error' | 'TTime'
+  "Error" | "TTime"
 >;

@@ -1,7 +1,7 @@
-import { byte, stringNull } from '../decorators';
-import { Packet } from './base';
-import type { ConnectionFlags } from './enums';
-import { PacketType } from './enums';
+import { byte, stringNull } from "../decorators";
+import { Packet } from "./base";
+import type { ConnectionFlags } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * New ConN
@@ -17,10 +17,10 @@ export class IS_NCN extends Packet {
   @byte() UCID = 0;
 
   /** Username */
-  @stringNull(24) UName = '';
+  @stringNull(24) UName = "";
 
   /** Nickname */
-  @stringNull(24) PName = '';
+  @stringNull(24) PName = "";
 
   /** 1 if admin */
   @byte() Admin = 0;

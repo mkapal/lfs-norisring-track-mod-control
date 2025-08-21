@@ -1,7 +1,7 @@
-import { byte } from '../decorators';
-import { Packet } from './base';
-import type { VoteAction } from './enums';
-import { PacketType } from './enums';
+import { byte } from "../decorators";
+import { Packet } from "./base";
+import type { VoteAction } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * VoTe Notify

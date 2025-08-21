@@ -1,8 +1,8 @@
-import { byte } from '../decorators';
-import { SendablePacket } from './base';
-import type { TargetToConnectionType } from './enums';
-import { PacketType } from './enums';
-import type { PacketDataWithRequiredReqI } from './types';
+import { byte } from "../decorators";
+import { SendablePacket } from "./base";
+import type { TargetToConnectionType } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketDataWithRequiredReqI } from "./types";
 
 /**
  * General purpose 8 byte packet (Target To Connection)

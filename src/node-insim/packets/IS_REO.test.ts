@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket, testInstructionPacket } from '../tests';
-import { PacketType } from './enums';
-import type { IS_REO_Data } from './IS_REO';
-import { IS_REO } from './IS_REO';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket, testInstructionPacket } from "../tests";
+import { PacketType } from "./enums";
+import type { IS_REO_Data } from "./IS_REO";
+import { IS_REO } from "./IS_REO";
 
 const size = 44;
 
@@ -63,7 +63,7 @@ const instructionBuffer = new Uint8Array([
   40,
 ]);
 
-const infoData: Omit<PacketTestData<IS_REO>, 'ReqI'> & { ReqI: number } = {
+const infoData: Omit<PacketTestData<IS_REO>, "ReqI"> & { ReqI: number } = {
   ReqI: 2,
   NumP: 40,
   PLID: plIds,
@@ -116,7 +116,7 @@ const infoBuffer = new Uint8Array([
   40,
 ]);
 
-describe('IS_REO', () => {
+describe("IS_REO", () => {
   testInstructionPacket({
     packetClass: IS_REO,
     size,
@@ -132,7 +132,7 @@ describe('IS_REO', () => {
     buffer: infoBuffer,
   });
 
-  it('should throw a range error if PLID length is greater than 40', () => {
+  it("should throw a range error if PLID length is greater than 40", () => {
     expect(() => {
       new IS_REO({
         NumP: 41,

@@ -1,5 +1,5 @@
-import { byte, float } from '../decorators';
-import { Struct } from '../packets';
+import { byte, float } from "../decorators";
+import { Struct } from "../packets";
 
 export class OutSimWheel extends Struct {
   /** compression from unloaded */

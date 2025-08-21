@@ -1,7 +1,7 @@
-import { byte, int } from '../decorators';
-import { SendablePacket } from './base';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte, int } from "../decorators";
+import { SendablePacket } from "./base";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * MODe: send to LFS to change screen mode

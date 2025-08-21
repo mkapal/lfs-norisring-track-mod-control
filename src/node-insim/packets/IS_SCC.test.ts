@@ -1,7 +1,7 @@
-import { testInstructionPacket } from '../tests';
-import { PacketType, ViewIdentifier } from './enums';
-import type { IS_SCC_Data } from './IS_SCC';
-import { IS_SCC } from './IS_SCC';
+import { testInstructionPacket } from "../tests";
+import { PacketType, ViewIdentifier } from "./enums";
+import type { IS_SCC_Data } from "./IS_SCC";
+import { IS_SCC } from "./IS_SCC";
 
 const size = 8;
 
@@ -21,7 +21,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_SCC', () => {
+describe("IS_SCC", () => {
   testInstructionPacket({
     packetClass: IS_SCC,
     size,

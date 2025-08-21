@@ -1,7 +1,7 @@
-import { byte, unsigned, word } from '../decorators';
-import { Packet } from './base';
-import type { ConfirmationFlags, PlayerFlags } from './enums';
-import { PacketType } from './enums';
+import { byte, unsigned, word } from "../decorators";
+import { Packet } from "./base";
+import type { ConfirmationFlags, PlayerFlags } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * FINished race notification (not a final result - use {@link IS_RES})

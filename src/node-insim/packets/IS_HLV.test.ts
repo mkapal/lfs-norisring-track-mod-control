@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { HLVCViolation, PacketType } from './enums';
-import { IS_HLV } from './IS_HLV';
-import { CarContOBJ } from './structs';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { HLVCViolation, PacketType } from "./enums";
+import { IS_HLV } from "./IS_HLV";
+import { CarContOBJ } from "./structs";
 
 const size = 16;
 
@@ -40,7 +40,7 @@ const buffer = new Uint8Array([
   5, // C - Y (2)
 ]);
 
-describe('IS_HLV', () => {
+describe("IS_HLV", () => {
   testInfoPacket({
     packetClass: IS_HLV,
     size,

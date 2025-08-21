@@ -1,8 +1,8 @@
-import { byte, string, stringNull, word } from '../decorators';
-import { SendablePacket } from './base';
-import type { InSimFlags } from './enums';
-import { PacketType } from './enums';
-import type { PacketDataWithOptionalReqI } from './types';
+import { byte, string, stringNull, word } from "../decorators";
+import { SendablePacket } from "./base";
+import type { InSimFlags } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketDataWithOptionalReqI } from "./types";
 
 /**
  * InSim Init - packet to initialise the InSim system
@@ -26,16 +26,16 @@ export class IS_ISI extends SendablePacket {
   @byte() InSimVer = 0;
 
   /** Special host message prefix character */
-  @string(1) Prefix = '';
+  @string(1) Prefix = "";
 
   /** Time in ms between {@link IS_NLP} or {@link IS_MCI} (0 = none) */
   @word() Interval = 0;
 
   /** Admin password (if set in LFS) */
-  @stringNull(16) Admin = '';
+  @stringNull(16) Admin = "";
 
   /** A short name for your program */
-  @stringNull(16) IName = '';
+  @stringNull(16) IName = "";
 
   constructor(data?: IS_ISI_Data) {
     super();

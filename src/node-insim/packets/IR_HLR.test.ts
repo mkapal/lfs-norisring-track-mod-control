@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInstructionPacket } from '../tests';
-import { PacketType } from './enums';
-import { IR_HLR } from './IR_HLR';
+import type { PacketTestData } from "../tests";
+import { testInstructionPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IR_HLR } from "./IR_HLR";
 
 const size = 4;
 
@@ -17,7 +17,7 @@ const buffer = new Uint8Array([
   0, // Sp0
 ]);
 
-describe('IR_HLR', () => {
+describe("IR_HLR", () => {
   testInstructionPacket({
     packetClass: IR_HLR,
     type: PacketType.IRP_HLR,

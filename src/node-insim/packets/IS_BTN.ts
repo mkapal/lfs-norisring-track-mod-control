@@ -1,10 +1,10 @@
-import unicodeToLfs from 'unicode-to-lfs';
+import unicodeToLfs from "unicode-to-lfs";
 
-import { byte, string } from '../decorators';
-import { SendablePacket } from './base';
-import type { ButtonStyle, ButtonTextColour } from './enums';
-import { PacketType } from './enums';
-import type { PacketDataWithRequiredReqI } from './types';
+import { byte, string } from "../decorators";
+import { SendablePacket } from "./base";
+import type { ButtonStyle, ButtonTextColour } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketDataWithRequiredReqI } from "./types";
 
 /**
  * BuTtoN - button header - followed by 0 to 240 characters
@@ -115,7 +115,7 @@ export class IS_BTN extends SendablePacket {
   @byte() H = 0;
 
   /** 0 to 240 characters of text */
-  @string(0) Text = '';
+  @string(0) Text = "";
 
   constructor(data?: IS_BTN_Data) {
     super();
@@ -124,7 +124,7 @@ export class IS_BTN extends SendablePacket {
 
   pack() {
     if (this.ReqI === 0) {
-      throw new RangeError('IS_BTN - ReqI must be greater than 0');
+      throw new RangeError("IS_BTN - ReqI must be greater than 0");
     }
 
     if (this.ClickID > IS_BTN.MAX_CLICK_ID) {

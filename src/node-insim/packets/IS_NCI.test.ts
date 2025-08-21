@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { Language, License, PacketType } from './enums';
-import { IS_NCI } from './IS_NCI';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { Language, License, PacketType } from "./enums";
+import { IS_NCI } from "./IS_NCI";
 
 const size = 16;
 
@@ -11,7 +11,7 @@ const data: PacketTestData<IS_NCI> = {
   Language: Language.LFS_CZECH,
   License: License.S3,
   UserID: 17115651,
-  IPAddress: '12.34.56.78',
+  IPAddress: "12.34.56.78",
 };
 
 const buffer = new Uint8Array([
@@ -33,7 +33,7 @@ const buffer = new Uint8Array([
   78, // IPAddress (4)
 ]);
 
-describe('IS_NCI', () => {
+describe("IS_NCI", () => {
   testInfoPacket({
     packetClass: IS_NCI,
     type: PacketType.ISP_NCI,

@@ -1,5 +1,5 @@
-import { Packet } from './base';
-import { PacketType } from './enums';
+import { Packet } from "./base";
+import { PacketType } from "./enums";
 
 export class IS_NONE extends Packet {
   readonly Size = 4;

@@ -1,13 +1,13 @@
-import crypto from 'crypto';
-import defaults from 'lodash/defaults';
-import { TypedEmitter } from 'tiny-typed-emitter';
-import unicodeToLfs from 'unicode-to-lfs';
+import crypto from "crypto";
+import defaults from "lodash/defaults";
+import { TypedEmitter } from "tiny-typed-emitter";
+import unicodeToLfs from "unicode-to-lfs";
 
-import { InSimError } from './errors';
-import type { InSimEvents } from './InSimEvents';
-import { unpack } from './lfspack';
-import { log as baseLog } from './log';
-import type { IS_ISI_Data, SendablePacket } from './packets';
+import { InSimError } from "./errors";
+import type { InSimEvents } from "./InSimEvents";
+import { unpack } from "./lfspack";
+import { log as baseLog } from "./log";
+import type { IS_ISI_Data, SendablePacket } from "./packets";
 import {
   IS_ISI,
   IS_MSL,
@@ -20,26 +20,26 @@ import {
   PacketType,
   packetTypeToClass,
   TinyType,
-} from './packets';
-import type { Protocol } from './protocols';
-import { TCP, UDP } from './protocols';
+} from "./packets";
+import type { Protocol } from "./protocols";
+import { TCP, UDP } from "./protocols";
 
-const log = baseLog.extend('insim');
+const log = baseLog.extend("insim");
 
 type InSimConnectionOptions = {
   Host: string;
   Port: number;
-  Protocol?: 'TCP' | 'UDP';
+  Protocol?: "TCP" | "UDP";
 };
 
-export type InSimOptions = Omit<IS_ISI_Data, 'InSimVer'> &
+export type InSimOptions = Omit<IS_ISI_Data, "InSimVer"> &
   InSimConnectionOptions;
 
 export class InSim extends TypedEmitter<InSimEvents> {
   /** Currently supported InSim version */
   static INSIM_VERSION = 9;
 
-  private static COMMAND_PREFIX = '/';
+  private static COMMAND_PREFIX = "/";
 
   /** A unique identifier of the InSim connection to a specific host */
   id: string;
@@ -56,10 +56,10 @@ export class InSim extends TypedEmitter<InSimEvents> {
 
     this.id = id ?? crypto.randomUUID();
 
-    this.on('connect', () =>
+    this.on("connect", () =>
       log(`Connected to ${this._options.Host}:${this._options.Port}`),
     );
-    this.on('disconnect', () => {
+    this.on("disconnect", () => {
       this.connection = null;
 
       log(`Disconnected from ${this._options.Host}:${this._options.Port}`);
@@ -71,10 +71,10 @@ export class InSim extends TypedEmitter<InSimEvents> {
    * Connect to a server via InSim.
    */
   connect = (
-    options: Omit<Partial<IS_ISI_Data>, 'InSimVer'> & InSimConnectionOptions,
+    options: Omit<Partial<IS_ISI_Data>, "InSimVer"> & InSimConnectionOptions,
   ) => {
     if (this.connection !== null) {
-      log('Cannot connect - already connected');
+      log("Cannot connect - already connected");
       return;
     }
 
@@ -129,9 +129,9 @@ export class InSim extends TypedEmitter<InSimEvents> {
   connectRelay = () => {
     this._connect(
       {
-        Host: 'isrelay.lfs.net',
+        Host: "isrelay.lfs.net",
         Port: 47474,
-        Protocol: 'TCP',
+        Protocol: "TCP",
       },
       true,
     );
@@ -150,16 +150,16 @@ export class InSim extends TypedEmitter<InSimEvents> {
     this.sizeMultiplier = isRelay ? 1 : 4;
 
     this.connection =
-      this._options.Protocol === 'TCP'
+      this._options.Protocol === "TCP"
         ? new TCP(this._options.Host, this._options.Port, this.sizeMultiplier)
         : new UDP({
             host: this._options.Host,
             port: this._options.Port,
             packetSizeMultiplier: this.sizeMultiplier,
-            socketInitialisationMode: 'connect',
+            socketInitialisationMode: "connect",
           });
     this.connection.connect();
-    this.connection.on('connect', () => {
+    this.connection.on("connect", () => {
       if (!isRelay) {
         this.send(
           new IS_ISI({
@@ -174,38 +174,38 @@ export class InSim extends TypedEmitter<InSimEvents> {
           }),
         );
       }
-      this.emit('connect', this);
+      this.emit("connect", this);
     });
 
-    this.connection.on('disconnect', () => {
-      this.emit('disconnect', this);
+    this.connection.on("disconnect", () => {
+      this.emit("disconnect", this);
     });
 
-    this.connection.on('error', (error: Error) => {
+    this.connection.on("error", (error: Error) => {
       throw new InSimError(
         `${this._options.Protocol} connection error: ${error.message}`,
       );
     });
 
-    this.connection.on('data', (data) => this.handlePacket(data));
+    this.connection.on("data", (data) => this.handlePacket(data));
   };
 
   disconnect = () => {
     if (this.connection !== null) {
-      log('Disconnecting...');
+      log("Disconnecting...");
       this.connection.disconnect();
     }
   };
 
   send = (packet: SendablePacket) => {
     if (this.connection === null) {
-      log('Cannot send a packet - not connected');
+      log("Cannot send a packet - not connected");
       return;
     }
 
     packet.SIZE_MULTIPLIER = this.sizeMultiplier;
 
-    log('Send packet:', PacketType[packet.Type], packet);
+    log("Send packet:", PacketType[packet.Type], packet);
 
     const data = packet.pack();
 
@@ -225,7 +225,7 @@ export class InSim extends TypedEmitter<InSimEvents> {
    * The maximum length of the message is {@link MSX_MSG_MAX_LENGTH} characters.
    */
   sendMessage = (message: string) => {
-    log('Send message:', message);
+    log("Send message:", message);
 
     if (message.startsWith(InSim.COMMAND_PREFIX)) {
       return this.send(
@@ -261,7 +261,7 @@ export class InSim extends TypedEmitter<InSimEvents> {
     message: string,
     sound: MessageSound = MessageSound.SND_SILENT,
   ) => {
-    log('Send local message:', message);
+    log("Send local message:", message);
 
     return this.send(
       new IS_MSL({
@@ -277,7 +277,7 @@ export class InSim extends TypedEmitter<InSimEvents> {
     message: string,
     sound: MessageSound = MessageSound.SND_SILENT,
   ) => {
-    log('Send message to connection:', ucid, message);
+    log("Send message to connection:", ucid, message);
 
     this.send(
       new IS_MTC({
@@ -294,7 +294,7 @@ export class InSim extends TypedEmitter<InSimEvents> {
     message: string,
     sound: MessageSound = MessageSound.SND_SILENT,
   ) => {
-    log('Send message to player:', plid, message);
+    log("Send message to player:", plid, message);
 
     this.send(
       new IS_MTC({
@@ -306,7 +306,7 @@ export class InSim extends TypedEmitter<InSimEvents> {
   };
 
   private handlePacket = async (data: Uint8Array) => {
-    const header = unpack('<BB', data.buffer);
+    const header = unpack("<BB", data.buffer);
 
     if (!header) {
       log(`Incomplete packet header received: ${data.join()}`);
@@ -349,14 +349,14 @@ export class InSim extends TypedEmitter<InSimEvents> {
 InSim.defaultMaxListeners = 255;
 
 const defaultInSimOptions: Required<InSimOptions> = {
-  Host: '127.0.0.1',
+  Host: "127.0.0.1",
   Port: 29999,
-  Protocol: 'TCP',
+  Protocol: "TCP",
   ReqI: 0,
   UDPPort: 0,
   Flags: 0,
-  Prefix: '',
+  Prefix: "",
   Interval: 0,
-  Admin: '',
-  IName: '',
+  Admin: "",
+  IName: "",
 };

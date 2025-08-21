@@ -1,7 +1,7 @@
-import { byte, unsigned, word } from '../decorators';
-import { Packet } from './base';
-import type { PitWorkFlags, PlayerFlags } from './enums';
-import { PacketType, PenaltyValue, TyreCompound } from './enums';
+import { byte, unsigned, word } from "../decorators";
+import { Packet } from "./base";
+import type { PitWorkFlags, PlayerFlags } from "./enums";
+import { PacketType, PenaltyValue, TyreCompound } from "./enums";
 
 /**
  * PIT stop (stop at pit garage)

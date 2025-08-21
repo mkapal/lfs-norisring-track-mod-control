@@ -1,7 +1,7 @@
-import { byte, string, stringNull, unsigned, word } from '../decorators';
-import { Packet } from './base';
-import type { ConfirmationFlags, PlayerFlags } from './enums';
-import { PacketType } from './enums';
+import { byte, string, stringNull, unsigned, word } from "../decorators";
+import { Packet } from "./base";
+import type { ConfirmationFlags, PlayerFlags } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * RESult (qualify or confirmed finish)
@@ -17,16 +17,16 @@ export class IS_RES extends Packet {
   @byte() PLID = 0;
 
   /** Username */
-  @stringNull(24) UName = '';
+  @stringNull(24) UName = "";
 
   /** Nickname */
-  @stringNull(24) PName = '';
+  @stringNull(24) PName = "";
 
   /** Number plate - NO ZERO AT END! */
-  @string(8) Plate = '';
+  @string(8) Plate = "";
 
   /** Skin prefix */
-  @stringNull(4) CName = '';
+  @stringNull(4) CName = "";
 
   /** Race or autocross: total time / qualify: session time (ms) */
   @unsigned() TTime = 0;

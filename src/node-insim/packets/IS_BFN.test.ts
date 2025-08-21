@@ -1,7 +1,7 @@
-import { testBothWaysPacket } from '../tests';
-import { ButtonFunction, PacketType } from './enums';
-import type { IS_BFN_Data } from './IS_BFN';
-import { IS_BFN } from './IS_BFN';
+import { testBothWaysPacket } from "../tests";
+import { ButtonFunction, PacketType } from "./enums";
+import type { IS_BFN_Data } from "./IS_BFN";
+import { IS_BFN } from "./IS_BFN";
 
 const size = 8;
 
@@ -24,7 +24,7 @@ const buffer = new Uint8Array([
   5, // Inst
 ]);
 
-describe('IS_BFN', () => {
+describe("IS_BFN", () => {
   testBothWaysPacket({
     packetClass: IS_BFN,
     size,
@@ -33,13 +33,13 @@ describe('IS_BFN', () => {
     buffer,
   });
 
-  it('should throw a range error if ClickID is greater than 239', () => {
+  it("should throw a range error if ClickID is greater than 239", () => {
     expect(() => {
       new IS_BFN({ ClickID: 240 }).pack();
     }).toThrow(RangeError);
   });
 
-  it('should throw a range error if ClickMax is greater than 239', () => {
+  it("should throw a range error if ClickMax is greater than 239", () => {
     expect(() => {
       new IS_BFN({ ClickMax: 240 }).pack();
     }).toThrow(RangeError);

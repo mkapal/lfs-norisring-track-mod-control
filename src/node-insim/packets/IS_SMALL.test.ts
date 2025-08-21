@@ -1,7 +1,7 @@
-import { testBothWaysPacket } from '../tests';
-import { CarFlags, PacketType, SmallType } from './enums';
-import type { IS_SMALL_Data } from './IS_SMALL';
-import { IS_SMALL } from './IS_SMALL';
+import { testBothWaysPacket } from "../tests";
+import { CarFlags, PacketType, SmallType } from "./enums";
+import type { IS_SMALL_Data } from "./IS_SMALL";
+import { IS_SMALL } from "./IS_SMALL";
 
 const size = 8;
 
@@ -21,7 +21,7 @@ const buffer = new Uint8Array([
   0, // UVal (4)
 ]);
 
-describe('IS_SMALL', () => {
+describe("IS_SMALL", () => {
   testBothWaysPacket({
     packetClass: IS_SMALL,
     size,

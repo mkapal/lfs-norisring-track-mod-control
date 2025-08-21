@@ -1,6 +1,6 @@
-import { byte, unsigned } from '../decorators';
-import { Packet } from './base';
-import { PacketType } from './enums';
+import { byte, unsigned } from "../decorators";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
 
 /**
  * Pit Stop Finished

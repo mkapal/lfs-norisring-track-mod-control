@@ -1,9 +1,9 @@
-import { InSimError } from '../../errors';
-import { pack } from '../../lfspack';
-import type { PacketType } from '../enums';
-import type { Receivable, Sendable } from '../types';
-import { Packet } from './Packet';
-import { SendableStruct } from './SendableStruct';
+import { InSimError } from "../../errors";
+import { pack } from "../../lfspack";
+import type { PacketType } from "../enums";
+import type { Receivable, Sendable } from "../types";
+import { Packet } from "./Packet";
+import { SendableStruct } from "./SendableStruct";
 
 export abstract class SendablePacket
   extends Packet
@@ -22,7 +22,7 @@ export abstract class SendablePacket
     propertyNames.forEach((propertyName) => {
       const propertyValue = this[propertyName as keyof this];
 
-      if (propertyName === 'Size') {
+      if (propertyName === "Size") {
         values.push(
           (propertyValue as unknown as number) / this.SIZE_MULTIPLIER,
         );
@@ -49,7 +49,7 @@ export abstract class SendablePacket
     const packedData = pack(format, values);
 
     if (!packedData) {
-      throw new InSimError('Could not pack values into a packet');
+      throw new InSimError("Could not pack values into a packet");
     }
 
     return packedData;

@@ -1,11 +1,11 @@
-import * as dgram from 'dgram';
+import * as dgram from "dgram";
 
-import { log as baseLog } from '../log';
-import { Protocol } from './Protocol';
+import { log as baseLog } from "../log";
+import { Protocol } from "./Protocol";
 
-const log = baseLog.extend('udp');
+const log = baseLog.extend("udp");
 
-type SocketInitialisationMode = 'bind' | 'connect';
+type SocketInitialisationMode = "bind" | "connect";
 
 interface UDPOptions {
   host: string;
@@ -35,23 +35,23 @@ export class UDP extends Protocol {
   }
 
   connect = () => {
-    this.socket = dgram.createSocket('udp4');
+    this.socket = dgram.createSocket("udp4");
     log(`Connecting to ${this.host}:${this.port}...`);
 
-    if (this.socketInitialisationMode === 'bind') {
+    if (this.socketInitialisationMode === "bind") {
       this.socket.bind({
         address: this.host,
         port: this.port,
       });
-      this.socket.on('listening', () => {
-        log('Listening');
-        this.emit('connect');
+      this.socket.on("listening", () => {
+        log("Listening");
+        this.emit("connect");
       });
-    } else if (this.socketInitialisationMode === 'connect') {
+    } else if (this.socketInitialisationMode === "connect") {
       this.socket.connect(this.port, this.host);
-      this.socket.on('connect', () => {
-        log('Connected');
-        this.emit('connect');
+      this.socket.on("connect", () => {
+        log("Connected");
+        this.emit("connect");
       });
     }
 
@@ -59,19 +59,19 @@ export class UDP extends Protocol {
       this.timeoutTimer = setTimeout(this.handleTimeout, this.timeout);
     }
 
-    this.socket.on('close', () => {
-      log('Connection closed');
-      this.emit('disconnect');
+    this.socket.on("close", () => {
+      log("Connection closed");
+      this.emit("disconnect");
     });
 
-    this.socket.on('error', (error) => {
-      log('Error', error);
-      this.emit('error', error);
+    this.socket.on("error", (error) => {
+      log("Error", error);
+      this.emit("error", error);
     });
 
-    this.socket.on('message', (data) => {
-      log('Data received:', data.join());
-      this.emit('data', data);
+    this.socket.on("message", (data) => {
+      log("Data received:", data.join());
+      this.emit("data", data);
 
       if (this.timeoutTimer) {
         clearTimeout(this.timeoutTimer);
@@ -85,7 +85,7 @@ export class UDP extends Protocol {
 
   disconnect = () => {
     if (this.socket === null) {
-      log('Cannot disconnect - not connected');
+      log("Cannot disconnect - not connected");
       return;
     }
 
@@ -99,17 +99,17 @@ export class UDP extends Protocol {
 
   send = (data: Uint8Array) => {
     if (this.socket === null) {
-      log('Cannot send - not connected');
+      log("Cannot send - not connected");
       return;
     }
 
-    log('Send data:', data.join());
+    log("Send data:", data.join());
     this.socket.send(data);
   };
 
   handleTimeout = () => {
-    log('Connection timed out');
-    this.emit('timeout');
+    log("Connection timed out");
+    this.emit("timeout");
     this.timeoutTimer = null;
     this.disconnect();
   };

@@ -1,8 +1,8 @@
-import { testInfoPacket, testInstructionPacket } from '../tests';
-import { PacketType, PMOAction, PMOFlags } from './enums';
-import type { IS_AXM_Data } from './IS_AXM';
-import { IS_AXM } from './IS_AXM';
-import { ObjectInfo } from './structs';
+import { testInfoPacket, testInstructionPacket } from "../tests";
+import { PacketType, PMOAction, PMOFlags } from "./enums";
+import type { IS_AXM_Data } from "./IS_AXM";
+import { IS_AXM } from "./IS_AXM";
+import { ObjectInfo } from "./structs";
 
 const size = 488;
 
@@ -986,8 +986,8 @@ const buffer = new Uint8Array([
   128,
 ]);
 
-describe('IS_AXM', () => {
-  describe('60 objects', () => {
+describe("IS_AXM", () => {
+  describe("60 objects", () => {
     testInstructionPacket({
       packetClass: IS_AXM,
       size: 8, // This is the default size in IS_AXM excluding the dynamic size
@@ -1004,7 +1004,7 @@ describe('IS_AXM', () => {
     });
   });
 
-  describe('1 object', () => {
+  describe("1 object", () => {
     const size = 16;
 
     const data: IS_AXM_Data = {
@@ -1059,7 +1059,7 @@ describe('IS_AXM', () => {
     });
   });
 
-  it('should throw a range error if Info length is greater than 60', () => {
+  it("should throw a range error if Info length is greater than 60", () => {
     expect(() => {
       new IS_AXM({
         NumO: 61,

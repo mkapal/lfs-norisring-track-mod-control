@@ -1,8 +1,8 @@
-import { byte, word } from '../decorators';
-import { SendablePacket, SendableStruct } from './base';
-import type { PlayerFlags } from './enums';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte, word } from "../decorators";
+import { SendablePacket, SendableStruct } from "./base";
+import type { PlayerFlags } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * AI Control

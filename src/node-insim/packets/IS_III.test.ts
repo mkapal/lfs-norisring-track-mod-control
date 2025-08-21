@@ -1,11 +1,11 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
-import { PacketType } from './enums';
-import { IS_III } from './IS_III';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IS_III } from "./IS_III";
 
 const size = 72;
 
-const msg = 'This string is a very long text sixty four characters long yes.';
+const msg = "This string is a very long text sixty four characters long yes.";
 
 const data: PacketTestData<IS_III> = {
   ReqI: 0,
@@ -28,7 +28,7 @@ const buffer = new Uint8Array([
   0,
 ]);
 
-describe('IS_III', () => {
+describe("IS_III", () => {
   testInfoPacket({
     packetClass: IS_III,
     size,

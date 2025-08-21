@@ -1,8 +1,8 @@
-import { byte, stringNull } from '../decorators';
-import { SendablePacket } from './base';
-import type { MessageSound } from './enums';
-import { PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte, stringNull } from "../decorators";
+import { SendablePacket } from "./base";
+import type { MessageSound } from "./enums";
+import { PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 export const MSL_MSG_MAX_LENGTH = 128;
 
@@ -18,7 +18,7 @@ export class IS_MSL extends SendablePacket {
   @byte() Sound: MessageSound = 0;
 
   /** Last byte must be zero */
-  @stringNull(MSL_MSG_MAX_LENGTH) Msg = '';
+  @stringNull(MSL_MSG_MAX_LENGTH) Msg = "";
 
   constructor(data?: IS_MSL_Data) {
     super();

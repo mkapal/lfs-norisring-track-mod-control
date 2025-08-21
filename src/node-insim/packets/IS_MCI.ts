@@ -1,8 +1,8 @@
-import { byte } from '../decorators';
-import { copyBuffer } from '../lfspack';
-import { Packet } from './base';
-import { PacketType } from './enums';
-import { CompCar } from './structs';
+import { byte } from "../decorators";
+import { copyBuffer } from "../lfspack";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
+import { CompCar } from "./structs";
 
 /**
  * Multi Car Info - if more than {@link MCI_MAX_CARS} in race then more than one is sent

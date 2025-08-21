@@ -1,8 +1,8 @@
-import { testInstructionPacket } from '../tests';
-import { PacketType } from './enums';
-import type { IS_HCP_Data } from './IS_HCP';
-import { IS_HCP } from './IS_HCP';
-import { CarHCP } from './structs';
+import { testInstructionPacket } from "../tests";
+import { PacketType } from "./enums";
+import type { IS_HCP_Data } from "./IS_HCP";
+import { IS_HCP } from "./IS_HCP";
+import { CarHCP } from "./structs";
 
 const size = 68;
 
@@ -210,7 +210,7 @@ const buffer = new Uint8Array([
   26, // CarHCP[31] - H_TRes
 ]);
 
-describe('IS_HCP', () => {
+describe("IS_HCP", () => {
   testInstructionPacket({
     packetClass: IS_HCP,
     type: PacketType.ISP_HCP,
@@ -219,7 +219,7 @@ describe('IS_HCP', () => {
     buffer,
   });
 
-  it('should a range error if Info does not have 32 items', () => {
+  it("should a range error if Info does not have 32 items", () => {
     expect(() => {
       new IS_HCP({
         Info: [new CarHCP(), new CarHCP(), new CarHCP()],

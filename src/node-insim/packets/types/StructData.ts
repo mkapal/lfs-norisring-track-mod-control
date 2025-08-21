@@ -1,15 +1,15 @@
-import type { SendableStruct, Struct } from '../base';
+import type { SendableStruct, Struct } from "../base";
 
 export type ReadonlyPropNames =
-  | 'Zero'
-  | 'Spare'
-  | 'Spare1'
-  | 'Spare2'
-  | 'Spare3'
-  | 'Sp0'
-  | 'Sp1'
-  | 'Sp2'
-  | 'Sp3';
+  | "Zero"
+  | "Spare"
+  | "Spare1"
+  | "Spare2"
+  | "Spare3"
+  | "Sp0"
+  | "Sp1"
+  | "Sp2"
+  | "Sp3";
 
 type ReadonlyStructProps = keyof SendableStruct | ReadonlyPropNames;
 

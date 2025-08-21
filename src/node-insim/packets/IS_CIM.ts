@@ -1,13 +1,13 @@
-import { byte } from '../decorators';
-import { Packet } from './base';
+import { byte } from "../decorators";
+import { Packet } from "./base";
 import type {
   GarageInterfaceSubmode,
   InterfaceMode,
   NormalInterfaceSubmode,
   ObjectIndex,
   ShiftUInterfaceSubmode,
-} from './enums';
-import { PacketType } from './enums';
+} from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * Conn Interface Mode

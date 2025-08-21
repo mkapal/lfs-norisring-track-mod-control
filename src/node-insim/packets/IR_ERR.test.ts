@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { InSimRelayError, PacketType } from './enums';
-import { IR_ERR } from './IR_ERR';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { InSimRelayError, PacketType } from "./enums";
+import { IR_ERR } from "./IR_ERR";
 
 const size = 4 + 3 * 40;
 
@@ -17,7 +17,7 @@ const buffer = new Uint8Array([
   4, // ErrNo
 ]);
 
-describe('IR_ERR', () => {
+describe("IR_ERR", () => {
   testInfoPacket({
     packetClass: IR_ERR,
     type: PacketType.IRP_ERR,

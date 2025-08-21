@@ -1,7 +1,7 @@
-import { byte, stringNull } from '../decorators';
-import { SendablePacket } from './base';
-import { PacketType } from './enums';
-import type { PacketDataWithOptionalReqI } from './types';
+import { byte, stringNull } from "../decorators";
+import { SendablePacket } from "./base";
+import { PacketType } from "./enums";
+import type { PacketDataWithOptionalReqI } from "./types";
 
 /**
  * Relay select - packet to select a host, so relay starts sending you data.
@@ -18,13 +18,13 @@ export class IR_SEL extends SendablePacket {
   @byte() readonly Zero = 0;
 
   /** Hostname to receive data from - may be colour code stripped */
-  @stringNull(32) HName = '';
+  @stringNull(32) HName = "";
 
   /** Admin password (to gain admin access to host) */
-  @stringNull(16) Admin = '';
+  @stringNull(16) Admin = "";
 
   /** Spectator password (if host requires it) */
-  @stringNull(16) Spec = '';
+  @stringNull(16) Spec = "";
 
   constructor(data?: IR_SEL_Data) {
     super();

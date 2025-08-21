@@ -1,16 +1,16 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType } from './enums';
-import { IS_SLC } from './IS_SLC';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IS_SLC } from "./IS_SLC";
 
 const size = 8;
 
-describe('IS_SLC', () => {
-  describe('official car', () => {
+describe("IS_SLC", () => {
+  describe("official car", () => {
     const data: PacketTestData<IS_SLC> = {
       ReqI: 3,
       UCID: 2,
-      CName: 'XRT',
+      CName: "XRT",
     };
 
     const buffer = new Uint8Array([
@@ -33,11 +33,11 @@ describe('IS_SLC', () => {
     });
   });
 
-  describe('car mod', () => {
+  describe("car mod", () => {
     const data: PacketTestData<IS_SLC> = {
       ReqI: 3,
       UCID: 2,
-      CName: '5882E6',
+      CName: "5882E6",
     };
 
     const buffer = new Uint8Array([

@@ -1,8 +1,8 @@
-import { byte } from '../decorators';
-import { copyBuffer } from '../lfspack';
-import { Packet } from './base';
-import { PacketType } from './enums';
-import { HInfo } from './structs';
+import { byte } from "../decorators";
+import { copyBuffer } from "../lfspack";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
+import { HInfo } from "./structs";
 
 /**
  * Hostlist (hosts connected to the Relay)

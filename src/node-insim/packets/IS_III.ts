@@ -1,8 +1,8 @@
-import { byte, getFormat, stringNull } from '../decorators';
-import { InSimError } from '../errors';
-import { unpack } from '../lfspack';
-import { Packet } from './base';
-import { PacketType } from './enums';
+import { byte, getFormat, stringNull } from "../decorators";
+import { InSimError } from "../errors";
+import { unpack } from "../lfspack";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
 
 /**
  * InsIm Info - /i message from user to host's InSim - variable size
@@ -25,13 +25,13 @@ export class IS_III extends Packet {
   @byte() private readonly Sp3 = 0;
 
   /** 4, 8, 12... 64 characters - last byte is zero */
-  @stringNull(64) Msg = '';
+  @stringNull(64) Msg = "";
 
   unpack(buffer: Uint8Array): this {
-    const data = unpack(`<${getFormat(this, 'Size')}`, buffer.buffer);
+    const data = unpack(`<${getFormat(this, "Size")}`, buffer.buffer);
 
     if (!data || data.length === 0) {
-      throw new InSimError('IS_III - Unpacked no data from buffer');
+      throw new InSimError("IS_III - Unpacked no data from buffer");
     }
 
     const size = (data[0] as number) * this.SIZE_MULTIPLIER;

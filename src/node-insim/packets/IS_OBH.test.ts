@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { ObjectHitFlags, ObjectIndex, PacketType } from './enums';
-import { IS_OBH } from './IS_OBH';
-import { CarContOBJ } from './structs';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { ObjectHitFlags, ObjectIndex, PacketType } from "./enums";
+import { IS_OBH } from "./IS_OBH";
+import { CarContOBJ } from "./structs";
 
 const size = 24;
 
@@ -56,7 +56,7 @@ const buffer = new Uint8Array([
   11, // OBHFlags
 ]);
 
-describe('IS_OBH', () => {
+describe("IS_OBH", () => {
   testInfoPacket({
     packetClass: IS_OBH,
     size,

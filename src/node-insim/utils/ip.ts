@@ -4,7 +4,7 @@ export function isValidIPv4(ip: string): boolean {
 
 export function ipToUnsignedInteger(ip: string): number | null {
   const ipUnsigned = ip
-    .split('.')
+    .split(".")
     .map((octet) => parseInt(octet))
     .reduce((a, b) => a * 256 + b);
 

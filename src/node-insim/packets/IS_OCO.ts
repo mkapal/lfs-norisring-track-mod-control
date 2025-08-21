@@ -1,8 +1,8 @@
-import { byte } from '../decorators';
-import { SendablePacket } from './base';
-import type { OCOAutocrossStartLights, OCOMainLights } from './enums';
-import { ObjectIndex, OCOAction, PacketType } from './enums';
-import type { PacketData } from './types';
+import { byte } from "../decorators";
+import { SendablePacket } from "./base";
+import type { OCOAutocrossStartLights, OCOMainLights } from "./enums";
+import { ObjectIndex, OCOAction, PacketType } from "./enums";
+import type { PacketData } from "./types";
 
 /**
  * Object COntrol - currently used for switching start lights

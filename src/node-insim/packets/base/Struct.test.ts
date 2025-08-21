@@ -1,16 +1,16 @@
-import { byte, string, struct } from '../../decorators';
-import { stringToBytes } from '../../tests';
-import { PacketType } from '../enums';
-import { Struct } from './Struct';
+import { byte, string, struct } from "../../decorators";
+import { stringToBytes } from "../../tests";
+import { PacketType } from "../enums";
+import { Struct } from "./Struct";
 
-describe('Struct', () => {
-  describe('getValidPropertyNames', () => {
-    it('should return an empty array if no properties are annotated', () => {
+describe("Struct", () => {
+  describe("getValidPropertyNames", () => {
+    it("should return an empty array if no properties are annotated", () => {
       class CustomPacket extends Struct {
         Size = 2;
         Type = PacketType.ISP_ISI;
         ReqI = 1;
-        StringProperty = 'string';
+        StringProperty = "string";
 
         public getValidPropertyNames() {
           return super.getValidPropertyNames();
@@ -22,14 +22,14 @@ describe('Struct', () => {
       expect(packet.getValidPropertyNames()).toEqual([]);
     });
 
-    it('should return list of annotated properties', () => {
+    it("should return list of annotated properties", () => {
       class CustomPacket extends Struct {
         @byte() Size = 2;
         @byte() Type = PacketType.ISP_ISI;
         @byte() ReqI = 1;
-        @string(6) StringProperty = 'string';
+        @string(6) StringProperty = "string";
         @byte() NumberProperty = 0;
-        InvalidProperty = 'invalid';
+        InvalidProperty = "invalid";
 
         public getValidPropertyNames() {
           return super.getValidPropertyNames();
@@ -39,24 +39,24 @@ describe('Struct', () => {
       const packet = new CustomPacket();
 
       expect(packet.getValidPropertyNames()).toEqual([
-        'Size',
-        'Type',
-        'ReqI',
-        'StringProperty',
-        'NumberProperty',
+        "Size",
+        "Type",
+        "ReqI",
+        "StringProperty",
+        "NumberProperty",
       ]);
     });
   });
 
-  describe('getFormat', () => {
-    it('should return the jspack format of all valid properties', () => {
+  describe("getFormat", () => {
+    it("should return the jspack format of all valid properties", () => {
       class CustomPacket extends Struct {
         @byte() Size = 2;
         @byte() Type = PacketType.ISP_ISI;
         @byte() ReqI = 1;
-        @string(6) StringProperty = 'string';
+        @string(6) StringProperty = "string";
         @byte() NumberProperty = 0;
-        InvalidProperty = 'invalid';
+        InvalidProperty = "invalid";
 
         public getFormat() {
           return super.getFormat();
@@ -65,45 +65,45 @@ describe('Struct', () => {
 
       const packet = new CustomPacket();
 
-      expect(packet.getFormat()).toEqual('BBB6sB');
+      expect(packet.getFormat()).toEqual("BBB6sB");
     });
 
-    it('should override property format if provided', () => {
+    it("should override property format if provided", () => {
       class CustomPacket extends Struct {
         @byte() Size = 2;
         @byte() Type = PacketType.ISP_ISI;
         @byte() ReqI = 1;
-        @string(6) StringProperty = 'string';
+        @string(6) StringProperty = "string";
         @byte() NumberProperty = 0;
-        InvalidProperty = 'invalid';
+        InvalidProperty = "invalid";
 
         public getFormat() {
           return super.getFormat({
-            NumberProperty: 'C',
+            NumberProperty: "C",
           });
         }
       }
 
       const packet = new CustomPacket();
 
-      expect(packet.getFormat()).toEqual('BBB6sC');
+      expect(packet.getFormat()).toEqual("BBB6sC");
     });
   });
 
-  it('should unpack binary data', () => {
+  it("should unpack binary data", () => {
     class SubStruct extends Struct {
       @byte() Byte1 = 0;
       @byte() Byte2 = 0;
     }
 
     class CustomStruct extends Struct {
-      @string(6) StringProperty = 'string';
+      @string(6) StringProperty = "string";
       @byte() NumberProperty = 0;
       @struct(SubStruct) SubStructProperty = new SubStruct();
     }
 
     const buffer = new Uint8Array([
-      ...stringToBytes('test'), // StringProperty[6]
+      ...stringToBytes("test"), // StringProperty[6]
       0,
       0,
       25, // NumberProperty
@@ -112,7 +112,7 @@ describe('Struct', () => {
     ]);
     const packet = new CustomStruct().unpack(buffer);
 
-    expect(packet.StringProperty).toEqual('test');
+    expect(packet.StringProperty).toEqual("test");
     expect(packet.NumberProperty).toEqual(25);
     expect(packet.SubStructProperty.Byte1).toEqual(2);
     expect(packet.SubStructProperty.Byte2).toEqual(4);

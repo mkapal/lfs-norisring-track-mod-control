@@ -1,7 +1,7 @@
-import { testInstructionPacket } from '../tests';
-import { CharacterModifiers, PacketType } from './enums';
-import type { IS_SCH_Data } from './IS_SCH';
-import { IS_SCH } from './IS_SCH';
+import { testInstructionPacket } from "../tests";
+import { CharacterModifiers, PacketType } from "./enums";
+import type { IS_SCH_Data } from "./IS_SCH";
+import { IS_SCH } from "./IS_SCH";
 
 const size = 8;
 
@@ -21,7 +21,7 @@ const buffer = new Uint8Array([
   0, // Spare3
 ]);
 
-describe('IS_SCH', () => {
+describe("IS_SCH", () => {
   testInstructionPacket({
     packetClass: IS_SCH,
     size,

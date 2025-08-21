@@ -1,8 +1,8 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { PacketType } from './enums';
-import { IS_NLP } from './IS_NLP';
-import { NodeLap } from './structs';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IS_NLP } from "./IS_NLP";
+import { NodeLap } from "./structs";
 
 const size = 40;
 
@@ -44,7 +44,7 @@ const buffer = new Uint8Array([
   19, // Info[2] - Position
 ]);
 
-describe('IS_NLP', () => {
+describe("IS_NLP", () => {
   testInfoPacket({
     packetClass: IS_NLP,
     size,

@@ -1,11 +1,11 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
-import { PacketType } from './enums';
-import { IS_ISM, MultiplayerHostMode } from './IS_ISM';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IS_ISM, MultiplayerHostMode } from "./IS_ISM";
 
 const size = 40;
 
-const hostName = 'Very Long Server Name Is Longest';
+const hostName = "Very Long Server Name Is Longest";
 
 const data: PacketTestData<IS_ISM> = {
   ReqI: 1,
@@ -26,7 +26,7 @@ const buffer = new Uint8Array([
   ...stringToBytes(hostName), // HName[32]
 ]);
 
-describe('IS_ISM', () => {
+describe("IS_ISM", () => {
   testInfoPacket({
     packetClass: IS_ISM,
     size,

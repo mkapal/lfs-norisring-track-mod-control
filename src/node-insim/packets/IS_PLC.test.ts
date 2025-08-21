@@ -1,7 +1,7 @@
-import { testInstructionPacket } from '../tests';
-import { CarFlags, PacketType } from './enums';
-import type { IS_PLC_Data } from './IS_PLC';
-import { IS_PLC } from './IS_PLC';
+import { testInstructionPacket } from "../tests";
+import { CarFlags, PacketType } from "./enums";
+import type { IS_PLC_Data } from "./IS_PLC";
+import { IS_PLC } from "./IS_PLC";
 
 const size = 12;
 
@@ -25,7 +25,7 @@ const buffer = new Uint8Array([
   0, // CarFlags (4)
 ]);
 
-describe('IS_PLC', () => {
+describe("IS_PLC", () => {
   testInstructionPacket({
     packetClass: IS_PLC,
     size,

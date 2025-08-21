@@ -1,6 +1,6 @@
-import { byte, stringNull, word } from '../decorators';
-import { Packet } from './base';
-import { PacketType } from './enums';
+import { byte, stringNull, word } from "../decorators";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
 
 /**
  * AutoX Info
@@ -31,5 +31,5 @@ export class IS_AXI extends Packet {
   @word() NumO = 0;
 
   /** The name of the layout last loaded (if loaded locally) */
-  @stringNull(32) LName = '';
+  @stringNull(32) LName = "";
 }

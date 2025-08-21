@@ -1,8 +1,8 @@
-import { byte, short, struct, word } from '../decorators';
-import { Packet } from './base';
-import type { ObjectHitFlags, ObjectIndex } from './enums';
-import { PacketType } from './enums';
-import { CarContOBJ } from './structs';
+import { byte, short, struct, word } from "../decorators";
+import { Packet } from "./base";
+import type { ObjectHitFlags, ObjectIndex } from "./enums";
+import { PacketType } from "./enums";
+import { CarContOBJ } from "./structs";
 
 /**
  * OBject Hit - car hit an autocross object or an unknown object

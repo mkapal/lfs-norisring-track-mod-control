@@ -1,7 +1,7 @@
-import { byte } from '../decorators';
-import { Packet } from './base';
-import type { ButtonClickFlags } from './enums';
-import { PacketType } from './enums';
+import { byte } from "../decorators";
+import { Packet } from "./base";
+import type { ButtonClickFlags } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * BuTton Click - sent back when user clicks a button

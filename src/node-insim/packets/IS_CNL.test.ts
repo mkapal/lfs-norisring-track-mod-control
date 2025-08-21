@@ -1,7 +1,7 @@
-import type { PacketTestData } from '../tests';
-import { testInfoPacket } from '../tests';
-import { LeaveReason, PacketType } from './enums';
-import { IS_CNL } from './IS_CNL';
+import type { PacketTestData } from "../tests";
+import { testInfoPacket } from "../tests";
+import { LeaveReason, PacketType } from "./enums";
+import { IS_CNL } from "./IS_CNL";
 
 const size = 8;
 
@@ -22,7 +22,7 @@ const buffer = new Uint8Array([
   0, // Sp3
 ]);
 
-describe('IS_CNL', () => {
+describe("IS_CNL", () => {
   testInfoPacket({
     packetClass: IS_CNL,
     size,

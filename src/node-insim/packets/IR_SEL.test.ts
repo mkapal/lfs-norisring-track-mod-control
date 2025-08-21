@@ -1,16 +1,16 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInstructionPacket } from '../tests';
-import { PacketType } from './enums';
-import { IR_SEL, IR_SEL_ReqI } from './IR_SEL';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInstructionPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IR_SEL, IR_SEL_ReqI } from "./IR_SEL";
 
 const size = 68;
 
 const data: PacketTestData<IR_SEL> = {
   ReqI: IR_SEL_ReqI.SEND_VERSION,
   Zero: 0,
-  HName: 'SAVAGE SimSports',
-  Admin: 'admin password',
-  Spec: 'spec password',
+  HName: "SAVAGE SimSports",
+  Admin: "admin password",
+  Spec: "spec password",
 };
 
 const buffer = new Uint8Array([
@@ -18,7 +18,7 @@ const buffer = new Uint8Array([
   254, // Type
   1, // ReqI
   0, // Zero
-  ...stringToBytes('SAVAGE SimSports'), // HName[32]
+  ...stringToBytes("SAVAGE SimSports"), // HName[32]
   0,
   0,
   0,
@@ -35,16 +35,16 @@ const buffer = new Uint8Array([
   0,
   0,
   0,
-  ...stringToBytes('admin password'), // Admin[16]
+  ...stringToBytes("admin password"), // Admin[16]
   0,
   0,
-  ...stringToBytes('spec password'), // Spec[16]
+  ...stringToBytes("spec password"), // Spec[16]
   0,
   0,
   0,
 ]);
 
-describe('IR_SEL', () => {
+describe("IR_SEL", () => {
   testInstructionPacket({
     packetClass: IR_SEL,
     type: PacketType.IRP_SEL,

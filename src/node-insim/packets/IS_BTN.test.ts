@@ -1,10 +1,10 @@
-import { stringToBytes, testInstructionPacket } from '../tests';
-import { ButtonStyle, ButtonTextColour, PacketType } from './enums';
-import type { IS_BTN_Data } from './IS_BTN';
-import { IS_BTN } from './IS_BTN';
+import { stringToBytes, testInstructionPacket } from "../tests";
+import { ButtonStyle, ButtonTextColour, PacketType } from "./enums";
+import type { IS_BTN_Data } from "./IS_BTN";
+import { IS_BTN } from "./IS_BTN";
 
 const text =
-  '123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789$';
+  "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789$";
 
 const data: IS_BTN_Data = {
   ReqI: 1,
@@ -36,7 +36,7 @@ const buffer = new Uint8Array([
   ...stringToBytes(text), // Text[240]
 ]);
 
-describe('IS_BTN', () => {
+describe("IS_BTN", () => {
   testInstructionPacket({
     packetClass: IS_BTN,
     size: 12, // Default size without dynamic data
@@ -45,7 +45,7 @@ describe('IS_BTN', () => {
     buffer,
   });
 
-  it('should allocate 4 bytes for en empty text value', () => {
+  it("should allocate 4 bytes for en empty text value", () => {
     const data: IS_BTN_Data = {
       ReqI: 1,
       UCID: 2,
@@ -57,7 +57,7 @@ describe('IS_BTN', () => {
       T: 30,
       W: 40,
       H: 50,
-      Text: '',
+      Text: "",
     };
     const expectedBuffer = new Uint8Array([
       16 / new IS_BTN().SIZE_MULTIPLIER, // Size
@@ -72,7 +72,7 @@ describe('IS_BTN', () => {
       30, // T
       40, // W
       50, // H
-      ''.charCodeAt(0), // Text (4)
+      "".charCodeAt(0), // Text (4)
       0,
       0,
       0,
@@ -82,13 +82,13 @@ describe('IS_BTN', () => {
     expect(actualBuffer).toEqual(expectedBuffer);
   });
 
-  it('should throw a range error if ReqI is 0', () => {
+  it("should throw a range error if ReqI is 0", () => {
     expect(() => {
       new IS_BTN({ ReqI: 0 }).pack();
     }).toThrow(RangeError);
   });
 
-  it('should throw a range error if ClickID is greater than 239', () => {
+  it("should throw a range error if ClickID is greater than 239", () => {
     expect(() => {
       new IS_BTN({ ReqI: 1, ClickID: 240 }).pack();
     }).toThrow(RangeError);

@@ -1,12 +1,12 @@
-import type { PacketTestData } from '../tests';
-import { stringToBytes, testInfoPacket } from '../tests';
-import { PacketType } from './enums';
-import { IS_BTN } from './IS_BTN';
-import { IS_BTT } from './IS_BTT';
+import type { PacketTestData } from "../tests";
+import { stringToBytes, testInfoPacket } from "../tests";
+import { PacketType } from "./enums";
+import { IS_BTN } from "./IS_BTN";
+import { IS_BTT } from "./IS_BTT";
 
 const size = 104;
 const text =
-  '123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456';
+  "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456";
 
 const data: PacketTestData<IS_BTT> = {
   ReqI: 1,
@@ -27,15 +27,15 @@ const buffer = new Uint8Array([
   7, // TypeIn
   0, // Sp3
   ...stringToBytes(text), // Text[96]
-  '1'.charCodeAt(0),
-  '2'.charCodeAt(0),
-  '3'.charCodeAt(0),
-  '4'.charCodeAt(0),
-  '5'.charCodeAt(0),
-  '$'.charCodeAt(0),
+  "1".charCodeAt(0),
+  "2".charCodeAt(0),
+  "3".charCodeAt(0),
+  "4".charCodeAt(0),
+  "5".charCodeAt(0),
+  "$".charCodeAt(0),
 ]);
 
-describe('IS_BTT', () => {
+describe("IS_BTT", () => {
   testInfoPacket({
     packetClass: IS_BTT,
     size,

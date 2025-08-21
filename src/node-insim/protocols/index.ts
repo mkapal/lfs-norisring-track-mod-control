@@ -1,8 +1,8 @@
 /** @internal */
-export { TCP } from './TCP';
+export { TCP } from "./TCP";
 
 /** @internal */
-export { Protocol } from './Protocol';
+export { Protocol } from "./Protocol";
 
 /** @internal */
-export { UDP } from './UDP';
+export { UDP } from "./UDP";

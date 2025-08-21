@@ -1,7 +1,7 @@
-import { byte, unsigned } from '../decorators';
-import { Packet } from './base';
-import type { PenaltyValue } from './enums';
-import { PacketType } from './enums';
+import { byte, unsigned } from "../decorators";
+import { Packet } from "./base";
+import type { PenaltyValue } from "./enums";
+import { PacketType } from "./enums";
 
 /**
  * SPlit X time

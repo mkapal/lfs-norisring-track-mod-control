@@ -1,6 +1,6 @@
-import { byte } from '../decorators';
-import { Packet } from './base';
-import { PacketType } from './enums';
+import { byte } from "../decorators";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
 
 /**
  * Admin Response

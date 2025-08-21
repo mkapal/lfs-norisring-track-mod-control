@@ -1,7 +1,7 @@
-import { InSimError } from '../../errors';
-import { pack } from '../../lfspack';
-import type { Receivable, Sendable } from '../types';
-import { Struct } from './Struct';
+import { InSimError } from "../../errors";
+import { pack } from "../../lfspack";
+import type { Receivable, Sendable } from "../types";
+import { Struct } from "./Struct";
 
 export abstract class SendableStruct
   extends Struct
@@ -20,7 +20,7 @@ export abstract class SendableStruct
     const packedData = pack(format, values);
 
     if (!packedData) {
-      throw new InSimError('Could not pack values into a packet');
+      throw new InSimError("Could not pack values into a packet");
     }
 
     return packedData;

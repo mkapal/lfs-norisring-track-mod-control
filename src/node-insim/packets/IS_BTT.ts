@@ -1,6 +1,6 @@
-import { byte, stringNull } from '../decorators';
-import { Packet } from './base';
-import { PacketType } from './enums';
+import { byte, stringNull } from "../decorators";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
 
 /**
  * BuTton Type - sent back when user types into a text entry button
@@ -30,5 +30,5 @@ export class IS_BTT extends Packet {
   @byte() private readonly Sp3 = 0;
 
   /** Typed text, zero to {@link IS_BTN.TypeIn} specified in {@link IS_BTN} */
-  @stringNull(96) Text = '';
+  @stringNull(96) Text = "";
 }

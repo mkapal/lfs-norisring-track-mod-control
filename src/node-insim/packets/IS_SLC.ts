@@ -1,6 +1,6 @@
-import { byte, carName } from '../decorators';
-import { Packet } from './base';
-import { PacketType } from './enums';
+import { byte, carName } from "../decorators";
+import { Packet } from "./base";
+import { PacketType } from "./enums";
 
 /**
  * SeLected Car - sent when a connection selects a car (empty if no car)
@@ -25,5 +25,5 @@ export class IS_SLC extends Packet {
    * - a 3-character abbreviation of an official LFS car (e.g. XRT)
    * - a hexadecimal string representation of a car mod's SkinID (e.g. 5882E6)
    */
-  @carName() CName = '';
+  @carName() CName = "";
 }
