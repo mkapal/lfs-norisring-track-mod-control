@@ -10,3 +10,6 @@ frontFogLightsOnDelayMin = 2000
 frontFogLightsOnDelayMax = 2000
 track = "^7NORISRING"
 track2 = "^7TRACK"
+
+[rcm]
+goMessageTimeout = 3000

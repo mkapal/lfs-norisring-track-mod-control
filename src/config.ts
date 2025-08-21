@@ -20,6 +20,9 @@ const configSchema = z.object({
     track: z.string().min(0).max(24),
     track2: z.string().min(0).max(24),
   }),
+  rcm: z.object({
+    goMessageTimeout: z.number().default(3000),
+  }),
 });
 
 export async function loadConfig() {

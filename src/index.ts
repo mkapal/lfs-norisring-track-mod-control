@@ -262,7 +262,7 @@ function clearAiPLIDs() {
 
                 setTimeout(() => {
                   inSim.sendMessage("/rcc_all");
-                }, 3000);
+                }, config.rcm.goMessageTimeout);
 
                 setTimeout(() => {
                   if (aiPLIDs.N77_TRACK_2 === null) {
