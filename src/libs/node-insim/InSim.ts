@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import defaults from "lodash/defaults";
 import { TypedEmitter } from "tiny-typed-emitter";
-import unicodeToLfs from "unicode-to-lfs";
 
+import unicodeToLfs from "../unicode-to-lfs";
 import { InSimError } from "./errors";
 import type { InSimEvents } from "./InSimEvents";
 import { unpack } from "./lfspack";

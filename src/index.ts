@@ -1,5 +1,7 @@
 import chalk from "chalk";
-import { InSim } from "node-insim";
+
+import { loadConfig } from "./config";
+import { InSim } from "./libs/node-insim";
 import {
   AICHeadlights,
   AICInput,
@@ -14,9 +16,7 @@ import {
   PlayerType,
   TinyType,
   UserType,
-} from "node-insim/packets";
-
-import { loadConfig } from "./config";
+} from "./libs/node-insim/packets";
 
 const aiPLIDs: {
   N77_TRACK_2: number | null;
