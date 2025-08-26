@@ -1,5 +1,6 @@
 import chalk from "chalk";
 
+import { handleAiTrackIds } from "./aiTrackIds";
 import { loadConfig } from "./config";
 import { InSim } from "./libs/node-insim";
 import {
@@ -10,26 +11,10 @@ import {
   InSimFlags,
   IS_AIC,
   IS_ISI_ReqI,
-  IS_TINY,
-  MessageSound,
   PacketType,
-  PlayerType,
-  TinyType,
   UserType,
 } from "./libs/node-insim/packets";
-
-const aiPLIDs: {
-  N77_TRACK_2: number | null;
-  N77_TRACK: number | null;
-} = {
-  N77_TRACK_2: null,
-  N77_TRACK: null,
-};
-
-function clearAiPLIDs() {
-  aiPLIDs.N77_TRACK_2 = null;
-  aiPLIDs.N77_TRACK = null;
-}
+import { createLog } from "./log";
 
 const config = loadConfig();
 
@@ -46,6 +31,13 @@ inSim.connect({
   Interval: 100,
 });
 
+const log = createLog(inSim);
+
+const aiPLIDs = handleAiTrackIds(inSim, {
+  track1name: config.ai.track,
+  track2name: config.ai.track2,
+});
+
 inSim.on(PacketType.ISP_VER, (packet) => {
   if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
     return;
@@ -54,60 +46,23 @@ inSim.on(PacketType.ISP_VER, (packet) => {
   console.log(
     chalk.green(`Connected to LFS ${packet.Product} ${packet.Version}`),
   );
-
-  inSim.send(new IS_TINY({ ReqI: 1, SubT: TinyType.TINY_NPL }));
-});
-
-inSim.on(PacketType.ISP_ISM, (packet) => {
-  if (packet.ReqI > 0) {
-    return;
-  }
-
-  clearAiPLIDs();
-  inSim.send(new IS_TINY({ ReqI: 1, SubT: TinyType.TINY_NPL }));
-});
-
-inSim.on(PacketType.ISP_TINY, (packet) => {
-  if (packet.SubT === TinyType.TINY_CLR) {
-    clearAiPLIDs();
-  }
-});
-
-inSim.on(PacketType.ISP_NPL, (packet) => {
-  if (packet.PType & PlayerType.AI && packet.PName === config.ai.track) {
-    success(`Found N77 TRACK: ${config.ai.track}`);
-    aiPLIDs.N77_TRACK = packet.PLID;
-  }
-
-  if (packet.PType & PlayerType.AI && packet.PName === config.ai.track2) {
-    success(`Found N77 TRACK 2: ${config.ai.track2}`);
-    aiPLIDs.N77_TRACK_2 = packet.PLID;
-  }
-});
-
-inSim.on(PacketType.ISP_PLL, (packet) => {
-  if (aiPLIDs.N77_TRACK === packet.PLID) {
-    aiPLIDs.N77_TRACK = null;
-  }
-
-  if (aiPLIDs.N77_TRACK_2 === packet.PLID) {
-    aiPLIDs.N77_TRACK_2 = null;
-  }
 });
 
 inSim.on(PacketType.ISP_RST, () => {
-  if (aiPLIDs.N77_TRACK === null) {
-    error(
+  const trackPLID = aiPLIDs.getTrack1();
+
+  if (trackPLID === null) {
+    log.error(
       `${config.ai.track}^1: Cannot turn on headlights - AI car was not found on track`,
     );
     return;
   }
 
-  log(`${config.ai.track}^2: Turn on headlights`);
+  log.log(`${config.ai.track}^2: Turn on headlights`);
 
   inSim.send(
     new IS_AIC({
-      PLID: aiPLIDs.N77_TRACK,
+      PLID: trackPLID,
       Inputs: [
         new AIInputVal({
           Input: AICInput.CS_HEADLIGHTS,
@@ -122,18 +77,19 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
   if (packet.UserType === UserType.MSO_O) {
     switch (packet.Msg) {
       case "light": {
-        if (aiPLIDs.N77_TRACK === null) {
-          error(
+        const trackPLID = aiPLIDs.getTrack1();
+        if (trackPLID === null) {
+          log.error(
             `${config.ai.track}^1: Cannot turn on headlights - AI car was not found on track`,
           );
           return;
         }
 
-        log(`${config.ai.track}^2: Turn on headlights`);
+        log.log(`${config.ai.track}^2: Turn on headlights`);
 
         inSim.send(
           new IS_AIC({
-            PLID: aiPLIDs.N77_TRACK,
+            PLID: trackPLID,
             Inputs: [
               new AIInputVal({
                 Input: AICInput.CS_HEADLIGHTS,
@@ -148,18 +104,20 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
 
       case "extra":
         {
-          if (aiPLIDs.N77_TRACK_2 === null) {
-            error(
+          const track2PLID = aiPLIDs.getTrack2();
+
+          if (track2PLID === null) {
+            log.error(
               `${config.ai.track2}^1: Cannot turn on extra lights - AI car was not found on track`,
             );
             return;
           }
 
-          log(`${config.ai.track2}^8: Turn on extra lights`);
+          log.log(`${config.ai.track2}^8: Turn on extra lights`);
 
           inSim.send(
             new IS_AIC({
-              PLID: aiPLIDs.N77_TRACK_2,
+              PLID: track2PLID,
               Inputs: [
                 new AIInputVal({
                   Input: AICInput.CS_FOGFRONT,
@@ -181,8 +139,10 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
 
       case "start":
         {
-          if (aiPLIDs.N77_TRACK_2 === null) {
-            error(
+          const track2PLID = aiPLIDs.getTrack2();
+
+          if (track2PLID === null) {
+            log.error(
               `${config.ai.track2}^2: Cannot initiate start sequence - AI car was not found on track`,
             );
             return;
@@ -190,7 +150,7 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
 
           inSim.send(
             new IS_AIC({
-              PLID: aiPLIDs.N77_TRACK_2,
+              PLID: track2PLID,
               Inputs: [
                 new AIInputVal({
                   Input: AICInput.CS_FOGREAR,
@@ -205,25 +165,27 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
           );
           inSim.sendMessage("/rcc_all");
 
-          log(
+          log.log(
             `${config.ai.track2}^8: Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
           );
 
           setTimeout(() => {
-            if (aiPLIDs.N77_TRACK_2 === null) {
-              error(
+            const track2PLID = aiPLIDs.getTrack2();
+
+            if (track2PLID === null) {
+              log.error(
                 `${config.ai.track2}^1: Cannot turn on rear fog lights - must first call /o extra`,
               );
               return;
             }
 
-            log(`${config.ai.track2}^8: Turn on rear fog lights`);
+            log.log(`${config.ai.track2}^8: Turn on rear fog lights`);
 
             inSim.sendMessage("/rcm ^3GET READY");
             inSim.sendMessage("/rcm_all");
             inSim.send(
               new IS_AIC({
-                PLID: aiPLIDs.N77_TRACK_2,
+                PLID: track2PLID,
                 Inputs: [
                   new AIInputVal({
                     Input: AICInput.CS_FOGREAR,
@@ -239,19 +201,21 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
             );
 
             setTimeout(() => {
-              if (aiPLIDs.N77_TRACK_2 === null) {
-                error(
+              const track2PLID = aiPLIDs.getTrack2();
+
+              if (track2PLID === null) {
+                log.error(
                   `${config.ai.track2}^1: Cannot turn off rear fog lights - must first call /o extra`,
                 );
                 return;
               }
 
-              log(`${config.ai.track2}^8: Turn off rear fog lights`);
-              log(`${config.ai.track2}^8: Turn on front fog lights`);
+              log.log(`${config.ai.track2}^8: Turn off rear fog lights`);
+              log.log(`${config.ai.track2}^8: Turn on front fog lights`);
 
               inSim.send(
                 new IS_AIC({
-                  PLID: aiPLIDs.N77_TRACK_2,
+                  PLID: track2PLID,
                   Inputs: [
                     new AIInputVal({
                       Input: AICInput.CS_FOGREAR,
@@ -274,18 +238,20 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
               }, config.rcm.goMessageTimeout);
 
               setTimeout(() => {
-                if (aiPLIDs.N77_TRACK_2 === null) {
-                  error(
+                const track2PLID = aiPLIDs.getTrack2();
+
+                if (track2PLID === null) {
+                  log.error(
                     `${config.ai.track2}^2: Cannot turn off extra lights - must first call /o extra`,
                   );
                   return;
                 }
 
-                log(`${config.ai.track2}^8: Turn off extra lights`);
+                log.log(`${config.ai.track2}^8: Turn off extra lights`);
 
                 inSim.send(
                   new IS_AIC({
-                    PLID: aiPLIDs.N77_TRACK_2,
+                    PLID: track2PLID,
                     Inputs: [
                       new AIInputVal({
                         Input: AICInput.CS_EXTRALIGHT,
@@ -300,25 +266,10 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
         }
         break;
       default:
-        error(`Invalid command: ${packet.Msg}`);
+        log.error(`Invalid command: ${packet.Msg}`);
     }
   }
 });
-
-function log(message: string) {
-  console.log(message);
-  inSim.sendLocalMessage(message, MessageSound.SND_SYSMESSAGE);
-}
-
-function success(message: string) {
-  console.error(chalk.green(message));
-  inSim.sendLocalMessage(`^2${message}`, MessageSound.SND_ERROR);
-}
-
-function error(message: string) {
-  console.error(chalk.red(message));
-  inSim.sendLocalMessage(`^1${message}`, MessageSound.SND_ERROR);
-}
 
 process.on("uncaughtException", (error) => {
   console.error(chalk.red(error));
