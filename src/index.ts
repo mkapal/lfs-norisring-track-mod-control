@@ -1,8 +1,5 @@
 import chalk from "chalk";
-
-import { handleAiTrackIds } from "./aiTrackIds";
-import { loadConfig } from "./config";
-import { InSim } from "./libs/node-insim";
+import { InSim } from "node-insim";
 import {
   AICHeadlights,
   AICInput,
@@ -13,8 +10,13 @@ import {
   IS_ISI_ReqI,
   PacketType,
   UserType,
-} from "./libs/node-insim/packets";
+} from "node-insim/packets";
+
+import { handleAiTrackIds } from "./aiTrackIds";
+import { loadConfig } from "./config";
 import { createLog } from "./log";
+import { handlePitLaneSpeedLimit } from "./pitLaneSpeedLimit";
+import { playerTracking } from "./playerTracking";
 
 const config = loadConfig();
 
@@ -26,7 +28,7 @@ inSim.connect({
   Host: config.insim.host,
   Port: config.insim.port,
   Admin: config.insim.admin,
-  Flags: InSimFlags.ISF_LOCAL,
+  Flags: InSimFlags.ISF_MCI,
   ReqI: IS_ISI_ReqI.SEND_VERSION,
   Interval: 100,
 });
@@ -36,7 +38,16 @@ const log = createLog(inSim);
 const aiPLIDs = handleAiTrackIds(inSim, {
   track1name: config.ai.track,
   track2name: config.ai.track2,
+  track3name: config.ai.track3,
 });
+
+const playersConnections = playerTracking(inSim);
+
+handlePitLaneSpeedLimit(
+  inSim,
+  config.general.pitLaneSpeedLimitKmh,
+  playersConnections,
+);
 
 inSim.on(PacketType.ISP_VER, (packet) => {
   if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
@@ -50,7 +61,6 @@ inSim.on(PacketType.ISP_VER, (packet) => {
 
 inSim.on(PacketType.ISP_RST, () => {
   const trackPLID = aiPLIDs.getTrack1();
-
   if (trackPLID === null) {
     log.error(
       `${config.ai.track}^1: Cannot turn on headlights - AI car was not found on track`,
@@ -58,8 +68,7 @@ inSim.on(PacketType.ISP_RST, () => {
     return;
   }
 
-  log.log(`${config.ai.track}^2: Turn on headlights`);
-
+  log.message(`${config.ai.track}^2: Turn on headlights`);
   inSim.send(
     new IS_AIC({
       PLID: trackPLID,
@@ -71,6 +80,22 @@ inSim.on(PacketType.ISP_RST, () => {
       ],
     }),
   );
+
+  const track3PLID = aiPLIDs.getTrack3();
+  if (track3PLID !== null) {
+    log.message(`${config.ai.track3}^2: Turn on headlights`);
+    inSim.send(
+      new IS_AIC({
+        PLID: track3PLID,
+        Inputs: [
+          new AIInputVal({
+            Input: AICInput.CS_HEADLIGHTS,
+            Value: AICHeadlights.LOW,
+          }),
+        ],
+      }),
+    );
+  }
 });
 
 inSim.on(PacketType.ISP_MSO, (packet) => {
@@ -80,16 +105,36 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
         const trackPLID = aiPLIDs.getTrack1();
         if (trackPLID === null) {
           log.error(
-            `${config.ai.track}^1: Cannot turn on headlights - AI car was not found on track`,
+            `${config.ai.track}^1: Cannot turn on headlights - track car was not found on track`,
           );
           return;
         }
 
-        log.log(`${config.ai.track}^2: Turn on headlights`);
+        const track3PLID = aiPLIDs.getTrack3();
+        if (track3PLID === null) {
+          log.error(
+            `${config.ai.track}^1: Cannot turn on headlights - track 3 car was not found on track`,
+          );
+          return;
+        }
 
+        log.message(`${config.ai.track}^2: Turn on headlights`);
         inSim.send(
           new IS_AIC({
             PLID: trackPLID,
+            Inputs: [
+              new AIInputVal({
+                Input: AICInput.CS_HEADLIGHTS,
+                Value: AICHeadlights.LOW,
+              }),
+            ],
+          }),
+        );
+
+        log.message(`${config.ai.track3}^2: Turn on headlights`);
+        inSim.send(
+          new IS_AIC({
+            PLID: track3PLID,
             Inputs: [
               new AIInputVal({
                 Input: AICInput.CS_HEADLIGHTS,
@@ -113,7 +158,7 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
             return;
           }
 
-          log.log(`${config.ai.track2}^8: Turn on extra lights`);
+          log.message(`${config.ai.track2}^8: Turn on extra lights`);
 
           inSim.send(
             new IS_AIC({
@@ -140,17 +185,22 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
       case "start":
         {
           const track2PLID = aiPLIDs.getTrack2();
+          const track3PLID = aiPLIDs.getTrack3();
+
+          const name = track3PLID ? config.ai.track3 : config.ai.track2;
 
           if (track2PLID === null) {
             log.error(
-              `${config.ai.track2}^2: Cannot initiate start sequence - AI car was not found on track`,
+              `${name}^2: Cannot initiate start sequence - track 2 car was not found on track`,
             );
             return;
           }
 
+          const PLID = track3PLID ?? track2PLID;
+
           inSim.send(
             new IS_AIC({
-              PLID: track2PLID,
+              PLID,
               Inputs: [
                 new AIInputVal({
                   Input: AICInput.CS_FOGREAR,
@@ -165,27 +215,32 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
           );
           inSim.sendMessage("/rcc_all");
 
-          log.log(
-            `${config.ai.track2}^8: Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
+          log.message(
+            `${name}^8: Turning on rear fog lights in ${config.ai.rearFogLightsOnDelay / 1000} seconds`,
           );
 
           setTimeout(() => {
             const track2PLID = aiPLIDs.getTrack2();
+            const track3PLID = aiPLIDs.getTrack3();
+
+            const name = track3PLID ? config.ai.track3 : config.ai.track2;
 
             if (track2PLID === null) {
               log.error(
-                `${config.ai.track2}^1: Cannot turn on rear fog lights - must first call /o extra`,
+                `${name}^1: Cannot turn on rear fog lights - must first call /o extra`,
               );
               return;
             }
 
-            log.log(`${config.ai.track2}^8: Turn on rear fog lights`);
+            const PLID = track3PLID ?? track2PLID;
+
+            log.message(`${name}^8: Turn on rear fog lights`);
 
             inSim.sendMessage("/rcm ^3GET READY");
             inSim.sendMessage("/rcm_all");
             inSim.send(
               new IS_AIC({
-                PLID: track2PLID,
+                PLID,
                 Inputs: [
                   new AIInputVal({
                     Input: AICInput.CS_FOGREAR,
@@ -202,20 +257,23 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
 
             setTimeout(() => {
               const track2PLID = aiPLIDs.getTrack2();
+              const track3PLID = aiPLIDs.getTrack3();
+
+              const name = track3PLID ? config.ai.track3 : config.ai.track2;
 
               if (track2PLID === null) {
                 log.error(
-                  `${config.ai.track2}^1: Cannot turn off rear fog lights - must first call /o extra`,
+                  `${name}^1: Cannot turn off rear fog lights - must first call /o extra`,
                 );
                 return;
               }
 
-              log.log(`${config.ai.track2}^8: Turn off rear fog lights`);
-              log.log(`${config.ai.track2}^8: Turn on front fog lights`);
+              log.message(`${name}^8: Turn off rear fog lights`);
+              log.message(`${name}^8: Turn on front fog lights`);
 
               inSim.send(
                 new IS_AIC({
-                  PLID: track2PLID,
+                  PLID,
                   Inputs: [
                     new AIInputVal({
                       Input: AICInput.CS_FOGREAR,
@@ -239,19 +297,22 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
 
               setTimeout(() => {
                 const track2PLID = aiPLIDs.getTrack2();
+                const track3PLID = aiPLIDs.getTrack3();
+
+                const name = track3PLID ? config.ai.track3 : config.ai.track2;
 
                 if (track2PLID === null) {
                   log.error(
-                    `${config.ai.track2}^2: Cannot turn off extra lights - must first call /o extra`,
+                    `${name}^2: Cannot turn off extra lights - must first call /o extra`,
                   );
                   return;
                 }
 
-                log.log(`${config.ai.track2}^8: Turn off extra lights`);
+                log.message(`${name}^8: Turn off extra lights`);
 
                 inSim.send(
                   new IS_AIC({
-                    PLID: track2PLID,
+                    PLID,
                     Inputs: [
                       new AIInputVal({
                         Input: AICInput.CS_EXTRALIGHT,

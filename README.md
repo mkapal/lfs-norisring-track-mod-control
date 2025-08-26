@@ -9,6 +9,12 @@
   - turn off rear fog lights and turn on front fog lights after a random time between `config.ai.frontFogLightsOnDelayMin` and `config.ai.frontFogLightsOnDelayMax` seconds
   - turn off extra lights after `config.ai.extraLightsOffDelay`
 
+## Features
+
+- Pit lane speed limit with penalties
+  - When going over the speed limit, the player is given a drive-through penalty
+  - When going over the speed limit by more than 20 km/h, the player is given a stop & go penalty
+
 ## Requirements
 
 - [Node.js](https://nodejs.org/) 20

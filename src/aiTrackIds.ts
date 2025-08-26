@@ -1,24 +1,30 @@
-import type { InSim } from "./libs/node-insim";
+import type { InSim } from "node-insim";
 import {
+  AICHeadlights,
+  AICInput,
+  AIInputVal,
+  IS_AIC,
   IS_ISI_ReqI,
-  IS_TINY,
   PacketType,
   PlayerType,
   TinyType,
-} from "./libs/node-insim/packets";
+} from "node-insim/packets";
+
 import { createLog } from "./log";
 
 const aiPLIDs: {
-  N77_TRACK_2: number | null;
   N77_TRACK: number | null;
+  N77_TRACK_2: number | null;
+  N77_TRACK_3: number | null;
 } = {
-  N77_TRACK_2: null,
   N77_TRACK: null,
+  N77_TRACK_2: null,
+  N77_TRACK_3: null,
 };
 
 export function handleAiTrackIds(
   inSim: InSim,
-  config: { track1name: string; track2name: string },
+  config: { track1name: string; track2name: string; track3name: string },
 ) {
   const log = createLog(inSim);
 
@@ -26,17 +32,6 @@ export function handleAiTrackIds(
     if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
       return;
     }
-
-    inSim.send(new IS_TINY({ ReqI: 1, SubT: TinyType.TINY_NPL }));
-  });
-
-  inSim.on(PacketType.ISP_ISM, (packet) => {
-    if (packet.ReqI > 0) {
-      return;
-    }
-
-    clear();
-    inSim.send(new IS_TINY({ ReqI: 1, SubT: TinyType.TINY_NPL }));
   });
 
   inSim.on(PacketType.ISP_TINY, (packet) => {
@@ -49,11 +44,44 @@ export function handleAiTrackIds(
     if (packet.PType & PlayerType.AI && packet.PName === config.track1name) {
       log.success(`Found N77 TRACK: ${config.track1name}`);
       aiPLIDs.N77_TRACK = packet.PLID;
+
+      log.message(`${config.track1name}^2: Turn on headlights`);
+
+      inSim.send(
+        new IS_AIC({
+          PLID: packet.PLID,
+          Inputs: [
+            new AIInputVal({
+              Input: AICInput.CS_HEADLIGHTS,
+              Value: AICHeadlights.LOW,
+            }),
+          ],
+        }),
+      );
     }
 
     if (packet.PType & PlayerType.AI && packet.PName === config.track2name) {
       log.success(`Found N77 TRACK 2: ${config.track2name}`);
       aiPLIDs.N77_TRACK_2 = packet.PLID;
+    }
+
+    if (packet.PType & PlayerType.AI && packet.PName === config.track3name) {
+      log.success(`Found N77 TRACK 3: ${config.track3name}`);
+      aiPLIDs.N77_TRACK_3 = packet.PLID;
+
+      log.message(`${config.track3name}^2: Turn on headlights`);
+
+      inSim.send(
+        new IS_AIC({
+          PLID: packet.PLID,
+          Inputs: [
+            new AIInputVal({
+              Input: AICInput.CS_HEADLIGHTS,
+              Value: AICHeadlights.LOW,
+            }),
+          ],
+        }),
+      );
     }
   });
 
@@ -78,6 +106,9 @@ export function handleAiTrackIds(
     },
     getTrack2: () => {
       return aiPLIDs.N77_TRACK_2;
+    },
+    getTrack3: () => {
+      return aiPLIDs.N77_TRACK_3;
     },
   };
 }
