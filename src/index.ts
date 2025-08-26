@@ -15,6 +15,7 @@ import {
   UserType,
 } from "./libs/node-insim/packets";
 import { createLog } from "./log";
+import { handlePitLaneSpeedLimit } from "./pitLaneSpeedLimit";
 
 const config = loadConfig();
 
@@ -26,9 +27,9 @@ inSim.connect({
   Host: config.insim.host,
   Port: config.insim.port,
   Admin: config.insim.admin,
-  Flags: InSimFlags.ISF_LOCAL,
+  Flags: InSimFlags.ISF_MCI,
   ReqI: IS_ISI_ReqI.SEND_VERSION,
-  Interval: 100,
+  Interval: 500,
 });
 
 const log = createLog(inSim);
@@ -37,6 +38,8 @@ const aiPLIDs = handleAiTrackIds(inSim, {
   track1name: config.ai.track,
   track2name: config.ai.track2,
 });
+
+handlePitLaneSpeedLimit(inSim, 50);
 
 inSim.on(PacketType.ISP_VER, (packet) => {
   if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
