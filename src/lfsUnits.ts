@@ -10,6 +10,10 @@ export function convertLfsSpeedToMetersPerSecond(value: number) {
   return value / 327.68;
 }
 
+export function convertLfsSpeedToKmh(value: number) {
+  return (value / 327.68) * 3.6;
+}
+
 export function convertMetersToLfsCarPositionUnits(value: number) {
   return value * 65536;
 }

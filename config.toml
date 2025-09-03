@@ -3,6 +3,9 @@ host = "127.0.0.1"
 port = 29999
 admin = ""
 
+[general]
+pitLaneSpeedLimitKmh = 80
+
 [ai]
 rearFogLightsOnDelay = 3000
 extraLightsOffDelay = 20000
@@ -10,6 +13,7 @@ frontFogLightsOnDelayMin = 2000
 frontFogLightsOnDelayMax = 2000
 track = "^7NORISRING"
 track2 = "^7TRACK"
+track3 = "^72009"
 
 [rcm]
 goMessageTimeout = 3000

@@ -1,13 +1,41 @@
-import { convertLfsSpeedToMetersPerSecond } from "./lfsUnits";
-import type { InSim } from "./libs/node-insim";
-import { ObjectIndex, PacketType, UCOAction } from "./libs/node-insim/packets";
-import { createLog } from "./log";
+import type { InSim } from "node-insim";
+import {
+  ObjectIndex,
+  PacketType,
+  PenaltyValue,
+  UCOAction,
+} from "node-insim/packets";
 
-export function handlePitLaneSpeedLimit(inSim: InSim, speedLimitKph: number) {
+import { convertLfsSpeedToKmh } from "./lfsUnits";
+import { createLog } from "./log";
+import type { PlayerTrackingAPI } from "./playerTracking";
+
+export function handlePitLaneSpeedLimit(
+  inSim: InSim,
+  speedLimitKmh: number,
+  { players }: PlayerTrackingAPI,
+) {
   const log = createLog(inSim);
   const playersInPitLane = new Set<number>();
 
   inSim.on(PacketType.ISP_UCO, (packet) => {
+    // Pit start points
+    const PIT_START_POINT_CIRCLE = 1;
+    if (
+      packet.UCOAction === UCOAction.UCO_CIRCLE_ENTER &&
+      packet.Info.Index === ObjectIndex.MARSH_IS_AREA &&
+      packet.Info.Heading === PIT_START_POINT_CIRCLE
+    ) {
+      playersInPitLane.add(packet.PLID);
+
+      const player = players.get(packet.PLID);
+
+      if (player) {
+        log.message(`${player.PName}^8 entered the pit lane`);
+      }
+    }
+
+    // Pit lane start / end
     if (packet.Info.Index === ObjectIndex.MARSH_IS_CP) {
       const isCheckpoint1 =
         (packet.Info.Flags & 1) !== 0 && (packet.Info.Flags & 2) === 0;
@@ -22,7 +50,12 @@ export function handlePitLaneSpeedLimit(inSim: InSim, speedLimitKph: number) {
         (isCheckpoint1 && hasCrossedInForwardDirection) ||
         (isCheckpoint2 && hasCrossedInReverseDirection)
       ) {
-        inSim.sendMessageToPlayer(packet.PLID, "Entered the pit lane");
+        const player = players.get(packet.PLID);
+
+        if (player) {
+          log.message(`${player.PName}^8 entered the pit lane`);
+        }
+
         playersInPitLane.add(packet.PLID);
       }
 
@@ -30,7 +63,12 @@ export function handlePitLaneSpeedLimit(inSim: InSim, speedLimitKph: number) {
         (isCheckpoint2 && hasCrossedInForwardDirection) ||
         (isCheckpoint1 && hasCrossedInReverseDirection)
       ) {
-        inSim.sendMessageToPlayer(packet.PLID, "Left the pit lane");
+        const player = players.get(packet.PLID);
+
+        if (player) {
+          log.message(`${player.PName}^8 left the pit lane`);
+        }
+
         playersInPitLane.delete(packet.PLID);
       }
     }
@@ -38,14 +76,63 @@ export function handlePitLaneSpeedLimit(inSim: InSim, speedLimitKph: number) {
 
   inSim.on(PacketType.ISP_MCI, (packet) => {
     packet.Info.forEach((compCar) => {
-      if (
-        playersInPitLane.has(compCar.PLID) &&
-        convertLfsSpeedToMetersPerSecond(compCar.Speed) > speedLimitKph / 3.6
-      ) {
-        log.log("A player is speeding!");
-        // inSim.sendMessageToPlayer(compCar.PLID, `You are speeding!`);
-        // TODO keep track of players
+      if (!playersInPitLane.has(compCar.PLID)) {
+        return;
+      }
+
+      const player = players.get(compCar.PLID);
+      if (!player) {
+        log.error(`Player with ${compCar.PLID} not found`);
+        return;
+      }
+
+      const speedInKmh = convertLfsSpeedToKmh(compCar.Speed);
+      const OVERSPEED = 20;
+
+      if (speedInKmh > speedLimitKmh + OVERSPEED) {
+        if (
+          player.penalty !== PenaltyValue.PENALTY_NONE &&
+          player.penalty !== PenaltyValue.PENALTY_DT_VALID
+        ) {
+          return;
+        }
+
+        log.message(
+          `Player ${player.PName}^8 is speeding more than ${OVERSPEED} over the speed limit of ${speedLimitKmh} km/h in pit lane`,
+        );
+
+        inSim.sendMessage(`/p_sg ${player.PName}`);
+        return;
+      }
+
+      if (speedInKmh > speedLimitKmh) {
+        if (player.penalty !== PenaltyValue.PENALTY_NONE) {
+          return;
+        }
+
+        log.message(
+          `Player ${player.PName}^8 is going more than ${speedLimitKmh} km/h in pit lane`,
+        );
+
+        inSim.sendMessage(`/p_dt ${player.PName}`);
+        return;
       }
     });
+  });
+
+  inSim.on(PacketType.ISP_PLP, (packet) => {
+    playersInPitLane.delete(packet.PLID);
+
+    const player = players.get(packet.PLID);
+
+    if (player) {
+      log.message(`${player.PName}^8 left the pit lane`);
+    }
+  });
+
+  inSim.on(PacketType.ISP_PLL, (packet) => {
+    playersInPitLane.delete(packet.PLID);
+
+    log.message(`PLID ${packet.PLID}^8 left the pit lane`);
   });
 }

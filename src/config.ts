@@ -12,6 +12,9 @@ const configSchema = z.object({
     port: z.number().min(1).max(65535),
     admin: z.string().min(0).max(16).optional().default(""),
   }),
+  general: z.object({
+    pitLaneSpeedLimitKmh: z.number().min(0).max(1000).default(80),
+  }),
   ai: z.object({
     rearFogLightsOnDelay: z.number().default(3000),
     extraLightsOffDelay: z.number().default(15000),
@@ -19,6 +22,7 @@ const configSchema = z.object({
     frontFogLightsOnDelayMax: z.number().default(2000),
     track: z.string().min(0).max(24),
     track2: z.string().min(0).max(24),
+    track3: z.string().min(0).max(24),
   }),
   rcm: z.object({
     goMessageTimeout: z.number().default(3000),
