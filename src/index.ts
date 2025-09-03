@@ -43,6 +43,19 @@ const aiPLIDs = handleAiTrackIds(inSim, {
 
 const playersConnections = playerTracking(inSim);
 
+let track3BlinkTimeout1: NodeJS.Timeout | null = null;
+let track3BlinkTimeout2: NodeJS.Timeout | null = null;
+
+function clearTrack3BlinkTimeouts() {
+  if (track3BlinkTimeout1) {
+    clearTimeout(track3BlinkTimeout1);
+  }
+
+  if (track3BlinkTimeout2) {
+    clearTimeout(track3BlinkTimeout2);
+  }
+}
+
 handlePitLaneSpeedLimit(
   inSim,
   config.general.pitLaneSpeedLimitKmh,
@@ -59,91 +72,29 @@ inSim.on(PacketType.ISP_VER, (packet) => {
   );
 });
 
+inSim.on(PacketType.ISP_PLL, (packet) => {
+  if (packet.PLID === aiPLIDs.getTrack3()) {
+    clearTrack3BlinkTimeouts();
+  }
+});
+
+inSim.on(PacketType.ISP_PLP, (packet) => {
+  if (packet.PLID === aiPLIDs.getTrack3()) {
+    clearTrack3BlinkTimeouts();
+  }
+});
+
 inSim.on(PacketType.ISP_RST, () => {
-  const trackPLID = aiPLIDs.getTrack1();
-  if (trackPLID === null) {
-    log.error(
-      `${config.ai.track}^1: Cannot turn on headlights - AI car was not found on track`,
-    );
-    return;
-  }
-
-  log.message(`${config.ai.track}^2: Turn on headlights`);
-  inSim.send(
-    new IS_AIC({
-      PLID: trackPLID,
-      Inputs: [
-        new AIInputVal({
-          Input: AICInput.CS_HEADLIGHTS,
-          Value: AICHeadlights.LOW,
-        }),
-      ],
-    }),
-  );
-
-  const track3PLID = aiPLIDs.getTrack3();
-  if (track3PLID !== null) {
-    log.message(`${config.ai.track3}^2: Turn on headlights`);
-    inSim.send(
-      new IS_AIC({
-        PLID: track3PLID,
-        Inputs: [
-          new AIInputVal({
-            Input: AICInput.CS_HEADLIGHTS,
-            Value: AICHeadlights.LOW,
-          }),
-        ],
-      }),
-    );
-  }
+  turnOnHeadlights();
+  track3extraLightsBlink();
 });
 
 inSim.on(PacketType.ISP_MSO, (packet) => {
   if (packet.UserType === UserType.MSO_O) {
     switch (packet.Msg) {
       case "light": {
-        const trackPLID = aiPLIDs.getTrack1();
-        if (trackPLID === null) {
-          log.error(
-            `${config.ai.track}^1: Cannot turn on headlights - track car was not found on track`,
-          );
-          return;
-        }
-
-        const track3PLID = aiPLIDs.getTrack3();
-        if (track3PLID === null) {
-          log.error(
-            `${config.ai.track}^1: Cannot turn on headlights - track 3 car was not found on track`,
-          );
-          return;
-        }
-
-        log.message(`${config.ai.track}^2: Turn on headlights`);
-        inSim.send(
-          new IS_AIC({
-            PLID: trackPLID,
-            Inputs: [
-              new AIInputVal({
-                Input: AICInput.CS_HEADLIGHTS,
-                Value: AICHeadlights.LOW,
-              }),
-            ],
-          }),
-        );
-
-        log.message(`${config.ai.track3}^2: Turn on headlights`);
-        inSim.send(
-          new IS_AIC({
-            PLID: track3PLID,
-            Inputs: [
-              new AIInputVal({
-                Input: AICInput.CS_HEADLIGHTS,
-                Value: AICHeadlights.LOW,
-              }),
-            ],
-          }),
-        );
-
+        turnOnHeadlights();
+        track3extraLightsBlink();
         break;
       }
 
@@ -335,3 +286,91 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
 process.on("uncaughtException", (error) => {
   console.error(chalk.red(error));
 });
+
+function turnOnHeadlights() {
+  const trackPLID = aiPLIDs.getTrack1();
+  if (trackPLID === null) {
+    log.error(
+      `${config.ai.track}^1: Cannot turn on headlights - track car was not found on track`,
+    );
+    return;
+  }
+
+  const track3PLID = aiPLIDs.getTrack3();
+  if (track3PLID === null) {
+    log.error(
+      `${config.ai.track}^1: Cannot turn on headlights - track 3 car was not found on track`,
+    );
+    return;
+  }
+
+  log.message(`${config.ai.track}^8: Turn on headlights`);
+  inSim.send(
+    new IS_AIC({
+      PLID: trackPLID,
+      Inputs: [
+        new AIInputVal({
+          Input: AICInput.CS_HEADLIGHTS,
+          Value: AICHeadlights.LOW,
+        }),
+      ],
+    }),
+  );
+
+  log.message(`${config.ai.track3}^8: Turn on headlights`);
+  inSim.send(
+    new IS_AIC({
+      PLID: track3PLID,
+      Inputs: [
+        new AIInputVal({
+          Input: AICInput.CS_HEADLIGHTS,
+          Value: AICHeadlights.LOW,
+        }),
+      ],
+    }),
+  );
+}
+
+function track3extraLightsBlink() {
+  clearTrack3BlinkTimeouts();
+
+  const track3PLID = aiPLIDs.getTrack3();
+  if (track3PLID === null) {
+    log.debug(
+      `${config.ai.track3}^1: Cannot turn on extra lights on track 3 - car was not found on track`,
+    );
+    return;
+  }
+
+  log.debug(`${config.ai.track3}^8: Turn on extra lights`);
+  inSim.send(
+    new IS_AIC({
+      PLID: track3PLID,
+      Inputs: [
+        new AIInputVal({
+          Input: AICInput.CS_EXTRALIGHT,
+          Value: AICToggleValue.SWITCH_ON,
+        }),
+      ],
+    }),
+  );
+
+  track3BlinkTimeout1 = setTimeout(() => {
+    log.debug(`${config.ai.track3}^8: Turn off extra lights`);
+    inSim.send(
+      new IS_AIC({
+        PLID: track3PLID,
+        Inputs: [
+          new AIInputVal({
+            Input: AICInput.CS_EXTRALIGHT,
+            Value: AICToggleValue.SWITCH_OFF,
+          }),
+        ],
+      }),
+    );
+
+    track3BlinkTimeout2 = setTimeout(() => {
+      track3extraLightsBlink();
+    }, config.ai.track3BlinkTimeout);
+  }, config.ai.track3BlinkTimeout);
+}

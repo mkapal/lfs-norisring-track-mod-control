@@ -8,7 +8,7 @@ export function createLog(inSim: InSim) {
       console.debug(message);
     },
     message: (message: string) => {
-      console.log(message);
+      console.log(chalk.blue(message));
       inSim.sendLocalMessage(message, MessageSound.SND_SILENT);
     },
     success: (message: string) => {
