@@ -1,9 +1,5 @@
 import type { InSim } from "node-insim";
 import {
-  AICHeadlights,
-  AICInput,
-  AIInputVal,
-  IS_AIC,
   IS_ISI_ReqI,
   PacketType,
   PlayerType,
@@ -44,20 +40,6 @@ export function handleAiTrackIds(
     if (packet.PType & PlayerType.AI && packet.PName === config.track1name) {
       log.success(`Found N77 TRACK: ${config.track1name}`);
       aiPLIDs.N77_TRACK = packet.PLID;
-
-      log.message(`${config.track1name}^2: Turn on headlights`);
-
-      inSim.send(
-        new IS_AIC({
-          PLID: packet.PLID,
-          Inputs: [
-            new AIInputVal({
-              Input: AICInput.CS_HEADLIGHTS,
-              Value: AICHeadlights.LOW,
-            }),
-          ],
-        }),
-      );
     }
 
     if (packet.PType & PlayerType.AI && packet.PName === config.track2name) {
@@ -68,20 +50,6 @@ export function handleAiTrackIds(
     if (packet.PType & PlayerType.AI && packet.PName === config.track3name) {
       log.success(`Found N77 TRACK 3: ${config.track3name}`);
       aiPLIDs.N77_TRACK_3 = packet.PLID;
-
-      log.message(`${config.track3name}^2: Turn on headlights`);
-
-      inSim.send(
-        new IS_AIC({
-          PLID: packet.PLID,
-          Inputs: [
-            new AIInputVal({
-              Input: AICInput.CS_HEADLIGHTS,
-              Value: AICHeadlights.LOW,
-            }),
-          ],
-        }),
-      );
     }
   });
 

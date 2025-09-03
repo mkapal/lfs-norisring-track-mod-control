@@ -2,9 +2,9 @@
 
 ## Commands
 
-- `/o light` - turn on headlights
-- `/o extra` - turn on extra lights
-- `/o start` - start sequence
+- `/o light` - turn on headlights on N77 TRACK and blink extra lights on N77 TRACK 3 if it is present
+- `/o extra` - turn on extra lights on N77 TRACK 2
+- `/o start` - start sequence on N77 TRACK 2, and on N77 TRACK 3 if it is present
   - turn on rear fog lights after `config.ai.rearFogLightsOnDelay` seconds
   - turn off rear fog lights and turn on front fog lights after a random time between `config.ai.frontFogLightsOnDelayMin` and `config.ai.frontFogLightsOnDelayMax` seconds
   - turn off extra lights after `config.ai.extraLightsOffDelay`
