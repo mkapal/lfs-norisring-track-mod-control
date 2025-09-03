@@ -245,34 +245,6 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
               setTimeout(() => {
                 inSim.sendMessage("/rcc_all");
               }, config.rcm.goMessageTimeout);
-
-              setTimeout(() => {
-                const track2PLID = aiPLIDs.getTrack2();
-                const track3PLID = aiPLIDs.getTrack3();
-
-                const name = track3PLID ? config.ai.track3 : config.ai.track2;
-
-                if (track2PLID === null) {
-                  log.error(
-                    `${name}^2: Cannot turn off extra lights - must first call /o extra`,
-                  );
-                  return;
-                }
-
-                log.message(`${name}^8: Turn off extra lights`);
-
-                inSim.send(
-                  new IS_AIC({
-                    PLID,
-                    Inputs: [
-                      new AIInputVal({
-                        Input: AICInput.CS_EXTRALIGHT,
-                        Value: AICToggleValue.SWITCH_OFF,
-                      }),
-                    ],
-                  }),
-                );
-              }, config.ai.extraLightsOffDelay);
             }, frontFogLightsOnDelay);
           }, config.ai.rearFogLightsOnDelay);
         }
