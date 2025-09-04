@@ -216,24 +216,6 @@ export function playerTracking(inSim: InSim): PlayerTrackingAPI {
     );
   });
 
-  inSim.on(PacketType.ISP_PEN, (packet) => {
-    const player = players.get(packet.PLID);
-
-    if (!player) {
-      log.error(
-        `Failed to update player penalty - PLID not found: ${packet.PLID}`,
-      );
-      return;
-    }
-
-    player.penalty = packet.NewPen;
-    player.penaltyReason = packet.Reason;
-
-    log.debug(
-      `Player penalty updated: ${player.PName} (PLID ${packet.PLID}) - Penalty: ${PenaltyValue[packet.NewPen]}, Reason: ${PenaltyReason[packet.Reason]}`,
-    );
-  });
-
   return {
     players,
     connections,

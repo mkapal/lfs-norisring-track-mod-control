@@ -29,7 +29,7 @@ inSim.connect({
   Host: config.insim.host,
   Port: config.insim.port,
   Admin: config.insim.admin,
-  Flags: InSimFlags.ISF_MCI,
+  Flags: InSimFlags.ISF_MCI | InSimFlags.ISF_LOCAL,
   ReqI: IS_ISI_ReqI.SEND_VERSION,
   Interval: 100,
 });
@@ -283,7 +283,7 @@ function turnOnHeadlights() {
     return;
   }
 
-  log.message(`${config.ai.track}^8: Turn on headlights`);
+  log.debug(`${config.ai.track}^8: Turn on headlights`);
   inSim.send(
     new IS_AIC({
       PLID: trackPLID,
@@ -296,7 +296,7 @@ function turnOnHeadlights() {
     }),
   );
 
-  log.message(`${config.ai.track3}^8: Turn on headlights`);
+  log.debug(`${config.ai.track3}^8: Turn on headlights`);
   inSim.send(
     new IS_AIC({
       PLID: track3PLID,

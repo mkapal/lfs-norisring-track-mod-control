@@ -19,6 +19,15 @@ export function handlePitLaneSpeedLimit(
   const playersInPitLane = new Set<number>();
 
   inSim.on(PacketType.ISP_UCO, (packet) => {
+    const player = players.get(packet.PLID);
+
+    if (!player) {
+      log.error(
+        `Player with ${packet.PLID} not found when crossing an InSim checkpoint or circle`,
+      );
+      return;
+    }
+
     // Pit start points
     const PIT_START_POINT_CIRCLE = 1;
     if (
@@ -28,11 +37,7 @@ export function handlePitLaneSpeedLimit(
     ) {
       playersInPitLane.add(packet.PLID);
 
-      const player = players.get(packet.PLID);
-
-      if (player) {
-        log.message(`${player.PName}^8 entered the pit lane`);
-      }
+      log.debug(`${player.PName}^8 entered the pit lane from pits`);
     }
 
     // Pit lane start / end
@@ -50,13 +55,25 @@ export function handlePitLaneSpeedLimit(
         (isCheckpoint1 && hasCrossedInForwardDirection) ||
         (isCheckpoint2 && hasCrossedInReverseDirection)
       ) {
-        const player = players.get(packet.PLID);
+        playersInPitLane.add(packet.PLID);
 
-        if (player) {
-          log.message(`${player.PName}^8 entered the pit lane`);
+        if (
+          player.penalty === PenaltyValue.PENALTY_DT_VALID ||
+          player.penalty === PenaltyValue.PENALTY_DT
+        ) {
+          log.message(
+            `${player.PName}^8 entered the pit lane for drive-through penalty`,
+          );
         }
 
-        playersInPitLane.add(packet.PLID);
+        if (
+          player.penalty === PenaltyValue.PENALTY_SG_VALID ||
+          player.penalty === PenaltyValue.PENALTY_SG
+        ) {
+          log.message(
+            `${player.PName}^8 entered the pit lane for stop-go penalty`,
+          );
+        }
       }
 
       if (
@@ -65,11 +82,43 @@ export function handlePitLaneSpeedLimit(
       ) {
         const player = players.get(packet.PLID);
 
-        if (player) {
-          log.message(`${player.PName}^8 left the pit lane`);
+        if (!player) {
+          log.error(`Player with ${packet.PLID} not found leaving pit lane`);
+          return;
         }
 
+        log.debug(`${player.PName}^8 left the pit lane`);
+
         playersInPitLane.delete(packet.PLID);
+
+        // Clear penalty if player has left the pit lane with a valid penalty
+        if (
+          player.penalty === PenaltyValue.PENALTY_DT_VALID ||
+          player.penalty === PenaltyValue.PENALTY_SG_VALID
+        ) {
+          log.debug(
+            `${player.PName} has left the pit lane with a valid penalty - penalty cleared`,
+          );
+          inSim.sendMessage(`/p_clear ${player.PName}`);
+          return;
+        }
+
+        // Make penalty valid if player has left the pit lane with a penalty
+        if (player.penalty === PenaltyValue.PENALTY_DT) {
+          player.penalty = PenaltyValue.PENALTY_DT_VALID;
+          log.debug(
+            `${player.PName} has left the pit lane with a drive-through penalty`,
+          );
+          return;
+        }
+
+        if (player.penalty === PenaltyValue.PENALTY_SG) {
+          player.penalty = PenaltyValue.PENALTY_SG_VALID;
+          log.debug(
+            `${player.PName} has left the pit lane with a stop-go penalty`,
+          );
+          return;
+        }
       }
     }
   });
@@ -90,49 +139,112 @@ export function handlePitLaneSpeedLimit(
       const OVERSPEED = 20;
 
       if (speedInKmh > speedLimitKmh + OVERSPEED) {
-        if (
-          player.penalty !== PenaltyValue.PENALTY_NONE &&
-          player.penalty !== PenaltyValue.PENALTY_DT_VALID
-        ) {
-          return;
+        // Invalidate existing speeding penalties
+        if (player.penalty === PenaltyValue.PENALTY_DT_VALID) {
+          player.penalty = PenaltyValue.PENALTY_DT;
+          inSim.sendMessage(`/p_dt ${player.PName}`);
         }
 
-        log.message(
-          `${player.PName}^8 is speeding more than ${OVERSPEED} over the speed limit of ${speedLimitKmh} km/h in pit lane`,
-        );
+        if (player.penalty === PenaltyValue.PENALTY_SG_VALID) {
+          player.penalty = PenaltyValue.PENALTY_SG;
+          inSim.sendMessage(`/p_sg ${player.PName}`);
+        }
 
-        inSim.sendMessage(`/p_sg ${player.PName}`);
+        if (player.penalty === PenaltyValue.PENALTY_DT) {
+          player.penalty = PenaltyValue.PENALTY_SG;
+          inSim.sendMessage(`/p_sg ${player.PName}`);
+          log.debug(
+            `${player.PName}^8 is speeding more than ${OVERSPEED} over the limit of ${speedLimitKmh} km/h in pit lane`,
+          );
+        }
+
         return;
       }
 
       if (speedInKmh > speedLimitKmh) {
-        if (player.penalty !== PenaltyValue.PENALTY_NONE) {
-          return;
+        const speedingMessage = `${player.PName}^8 is going more than ${speedLimitKmh} km/h in pit lane`;
+
+        // Drive-through penalty for speeding
+        if (player.penalty === PenaltyValue.PENALTY_NONE) {
+          player.penalty = PenaltyValue.PENALTY_DT;
+          inSim.sendMessage(`/p_dt ${player.PName}`);
+          log.debug(speedingMessage);
         }
 
-        log.message(
-          `${player.PName}^8 is going more than ${speedLimitKmh} km/h in pit lane`,
-        );
+        // Invalidate existing speeding penalties
+        if (player.penalty === PenaltyValue.PENALTY_DT_VALID) {
+          player.penalty = PenaltyValue.PENALTY_DT;
+          inSim.sendMessage(`/p_dt ${player.PName}`);
 
-        inSim.sendMessage(`/p_dt ${player.PName}`);
+          log.debug(speedingMessage);
+          log.debug(
+            `${player.PName} - invalidate existing drive-through penalty`,
+          );
+        }
+
+        if (player.penalty === PenaltyValue.PENALTY_SG_VALID) {
+          player.penalty = PenaltyValue.PENALTY_SG;
+          inSim.sendMessage(`/p_sg ${player.PName}`);
+
+          log.debug(speedingMessage);
+          log.debug(`${player.PName} - invalidate existing stop-go penalty`);
+        }
+
         return;
       }
     });
   });
 
   inSim.on(PacketType.ISP_PLP, (packet) => {
+    if (!playersInPitLane.has(packet.PLID)) {
+      return;
+    }
+
     playersInPitLane.delete(packet.PLID);
 
     const player = players.get(packet.PLID);
 
     if (player) {
-      log.message(`${player.PName}^8 left the pit lane`);
+      log.debug(`${player.PName}^8 left the pit lane`);
     }
   });
 
   inSim.on(PacketType.ISP_PLL, (packet) => {
+    if (!playersInPitLane.has(packet.PLID)) {
+      return;
+    }
+
     playersInPitLane.delete(packet.PLID);
 
-    log.message(`PLID ${packet.PLID}^8 left the pit lane`);
+    log.debug(`PLID ${packet.PLID}^8 left the pit lane`);
+  });
+
+  inSim.on(PacketType.ISP_PEN, (packet) => {
+    const player = players.get(packet.PLID);
+
+    if (!player) {
+      log.error(
+        `Failed to update player penalty - PLID not found: ${packet.PLID}`,
+      );
+      return;
+    }
+
+    if (playersInPitLane.has(packet.PLID)) {
+      if (packet.NewPen === PenaltyValue.PENALTY_DT_VALID) {
+        player.penalty = PenaltyValue.PENALTY_DT;
+        log.debug(
+          `${player.PName} got a drive-through penalty while in pit lane`,
+        );
+      }
+
+      if (packet.NewPen === PenaltyValue.PENALTY_SG_VALID) {
+        player.penalty = PenaltyValue.PENALTY_SG;
+        log.debug(`${player.PName} got a stop-go penalty while in pit lane`);
+      }
+    } else {
+      player.penalty = packet.NewPen;
+    }
+
+    player.penaltyReason = packet.Reason;
   });
 }
