@@ -26,6 +26,7 @@ export type Player = Pick<
   connection: Connection | null;
   penalty: PenaltyValue;
   penaltyReason: PenaltyReason;
+  lapsDone: number;
 };
 
 const players = new Map<number, Player>();
@@ -167,6 +168,7 @@ export function playerTracking(inSim: InSim): PlayerTrackingAPI {
       connection: connection ?? null,
       penalty: PenaltyValue.PENALTY_NONE,
       penaltyReason: PenaltyReason.PENR_UNKNOWN,
+      lapsDone: 0,
     });
 
     log.debug(
@@ -214,6 +216,20 @@ export function playerTracking(inSim: InSim): PlayerTrackingAPI {
     log.debug(
       `Player took over: ${foundPlayer.PName} (UCID ${packet.NewUCID}, PLID ${packet.PLID})`,
     );
+  });
+
+  inSim.on(PacketType.ISP_LAP, (packet) => {
+    const foundPlayer = players.get(packet.PLID);
+    if (!foundPlayer) {
+      log.error(
+        `Failed to update player after lap - PLID not found: ${packet.PLID}`,
+      );
+
+      return;
+    }
+
+    log.debug(`${foundPlayer.PName} has completed ${packet.LapsDone} lap(s)`);
+    foundPlayer.lapsDone = packet.LapsDone;
   });
 
   return {

@@ -21,3 +21,31 @@ export function convertMetersToLfsCarPositionUnits(value: number) {
 export function convertLfsCarPositionUnitsToMeters(value: number) {
   return value / 65536;
 }
+
+export function lfsLapsToLapsOrHours(raceLaps: number): {
+  value: number;
+  unit: "laps" | "hours";
+} | null {
+  if (raceLaps >= 0 && raceLaps <= 99) {
+    return {
+      value: raceLaps,
+      unit: "laps",
+    };
+  }
+
+  if (raceLaps >= 100 && raceLaps <= 190) {
+    return {
+      value: (raceLaps - 100) * 10 + 100,
+      unit: "laps",
+    };
+  }
+
+  if (raceLaps >= 191 && raceLaps <= 238) {
+    return {
+      value: raceLaps - 190,
+      unit: "hours",
+    };
+  }
+
+  return null;
+}

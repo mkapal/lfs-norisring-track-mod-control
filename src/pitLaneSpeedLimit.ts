@@ -9,11 +9,13 @@ import {
 import { convertLfsSpeedToKmh } from "./lfsUnits";
 import { createLog } from "./log";
 import type { PlayerTrackingAPI } from "./playerTracking";
+import type { RaceState } from "./raceState";
 
 export function handlePitLaneSpeedLimit(
   inSim: InSim,
   speedLimitKmh: number,
   { players }: PlayerTrackingAPI,
+  raceState: RaceState,
 ) {
   const log = createLog(inSim);
   const playersInPitLane = new Set<number>();
@@ -145,23 +147,44 @@ export function handlePitLaneSpeedLimit(
       const OVERSPEED = 20;
 
       if (speedInKmh > speedLimitKmh + OVERSPEED) {
+        const overSpeedingMessage = `${player.PName}^8 is speeding more than ${OVERSPEED} over the limit of ${speedLimitKmh} km/h in pit lane`;
+
         // Invalidate existing speeding penalties
         if (player.penalty === PenaltyValue.PENALTY_DT_VALID) {
           player.penalty = PenaltyValue.PENALTY_DT;
           inSim.sendMessage(`/p_dt ${player.PName}`);
+
+          return;
         }
 
         if (player.penalty === PenaltyValue.PENALTY_SG_VALID) {
           player.penalty = PenaltyValue.PENALTY_SG;
           inSim.sendMessage(`/p_sg ${player.PName}`);
+
+          return;
         }
 
+        // Give stop-go penalty for speeding
         if (player.penalty === PenaltyValue.PENALTY_DT) {
           player.penalty = PenaltyValue.PENALTY_SG;
           inSim.sendMessage(`/p_sg ${player.PName}`);
-          log.debug(
-            `${player.PName}^8 is speeding more than ${OVERSPEED} over the limit of ${speedLimitKmh} km/h in pit lane`,
-          );
+          log.debug(overSpeedingMessage);
+
+          return;
+        }
+
+        // Give a time penalty if not enough laps remaining
+        if (
+          raceState.raceLaps !== null &&
+          raceState.raceLaps > 0 &&
+          raceState.raceLaps - player.lapsDone <= 2 &&
+          player.penalty === PenaltyValue.PENALTY_30
+        ) {
+          player.penalty = PenaltyValue.PENALTY_45;
+          inSim.sendMessage(`/p_45 ${player.PName}`);
+          log.debug(overSpeedingMessage);
+
+          return;
         }
 
         return;
@@ -170,11 +193,25 @@ export function handlePitLaneSpeedLimit(
       if (speedInKmh > speedLimitKmh) {
         const speedingMessage = `${player.PName}^8 is going more than ${speedLimitKmh} km/h in pit lane`;
 
-        // Drive-through penalty for speeding
         if (player.penalty === PenaltyValue.PENALTY_NONE) {
+          log.debug(speedingMessage);
+
+          // Give a time penalty if not enough laps remaining
+          if (
+            raceState.raceLaps !== null &&
+            raceState.raceLaps > 0 &&
+            raceState.raceLaps - player.lapsDone <= 2
+          ) {
+            player.penalty = PenaltyValue.PENALTY_30;
+            inSim.sendMessage(`/p_30 ${player.PName}`);
+            return;
+          }
+
+          // Drive-through penalty for speeding
           player.penalty = PenaltyValue.PENALTY_DT;
           inSim.sendMessage(`/p_dt ${player.PName}`);
-          log.debug(speedingMessage);
+
+          return;
         }
 
         // Invalidate existing speeding penalties
@@ -186,6 +223,8 @@ export function handlePitLaneSpeedLimit(
           log.debug(
             `${player.PName} - invalidate existing drive-through penalty`,
           );
+
+          return;
         }
 
         if (player.penalty === PenaltyValue.PENALTY_SG_VALID) {
@@ -194,6 +233,8 @@ export function handlePitLaneSpeedLimit(
 
           log.debug(speedingMessage);
           log.debug(`${player.PName} - invalidate existing stop-go penalty`);
+
+          return;
         }
 
         return;
@@ -243,22 +284,43 @@ export function handlePitLaneSpeedLimit(
       return;
     }
 
+    player.penaltyReason = packet.Reason;
+    player.penalty = packet.NewPen;
+
     if (playersInPitLane.has(packet.PLID)) {
+      if (packet.NewPen === PenaltyValue.PENALTY_30) {
+        log.debug(
+          `${player.PName} got a 30 second time penalty for speeding in the pit lane`,
+        );
+
+        return;
+      }
+
+      if (packet.NewPen === PenaltyValue.PENALTY_45) {
+        log.debug(
+          `${player.PName} got a 45 second time penalty for speeding in the pit lane`,
+        );
+
+        return;
+      }
+
       if (packet.NewPen === PenaltyValue.PENALTY_DT_VALID) {
         player.penalty = PenaltyValue.PENALTY_DT;
         log.debug(
-          `${player.PName} got a drive-through penalty while in pit lane`,
+          `${player.PName} got a drive-through penalty for speeding in the pit lane`,
         );
+
+        return;
       }
 
       if (packet.NewPen === PenaltyValue.PENALTY_SG_VALID) {
         player.penalty = PenaltyValue.PENALTY_SG;
-        log.debug(`${player.PName} got a stop-go penalty while in pit lane`);
-      }
-    } else {
-      player.penalty = packet.NewPen;
-    }
+        log.debug(
+          `${player.PName} got a stop-go penalty for speeding in pit lane`,
+        );
 
-    player.penaltyReason = packet.Reason;
+        return;
+      }
+    }
   });
 }

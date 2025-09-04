@@ -18,6 +18,7 @@ import { loadConfig } from "./config";
 import { createLog } from "./log";
 import { handlePitLaneSpeedLimit } from "./pitLaneSpeedLimit";
 import { playerTracking } from "./playerTracking";
+import { handleRaceState } from "./raceState";
 
 const config = loadConfig();
 
@@ -42,6 +43,7 @@ const aiPLIDs = handleAiTrackIds(inSim, {
   track3name: config.ai.track3,
 });
 
+const raceState = handleRaceState(inSim);
 const playersConnections = playerTracking(inSim);
 
 let track3BlinkTimeout1: NodeJS.Timeout | null = null;
@@ -61,6 +63,7 @@ handlePitLaneSpeedLimit(
   inSim,
   config.general.pitLaneSpeedLimitKmh,
   playersConnections,
+  raceState,
 );
 
 inSim.on(PacketType.ISP_VER, (packet) => {
