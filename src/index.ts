@@ -9,6 +9,7 @@ import {
   IS_AIC,
   IS_ISI_ReqI,
   PacketType,
+  TinyType,
   UserType,
 } from "node-insim/packets";
 
@@ -80,6 +81,12 @@ inSim.on(PacketType.ISP_PLL, (packet) => {
 
 inSim.on(PacketType.ISP_PLP, (packet) => {
   if (packet.PLID === aiPLIDs.getTrack3()) {
+    clearTrack3BlinkTimeouts();
+  }
+});
+
+inSim.on(PacketType.ISP_TINY, (packet) => {
+  if (packet.SubT === TinyType.TINY_REN) {
     clearTrack3BlinkTimeouts();
   }
 });
