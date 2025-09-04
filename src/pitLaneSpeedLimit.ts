@@ -17,6 +17,7 @@ export function handlePitLaneSpeedLimit(
 ) {
   const log = createLog(inSim);
   const playersInPitLane = new Set<number>();
+  let pitSpeedMessageTimeout: NodeJS.Timeout | null = null;
 
   inSim.on(PacketType.ISP_UCO, (packet) => {
     const player = players.get(packet.PLID);
@@ -37,7 +38,15 @@ export function handlePitLaneSpeedLimit(
     ) {
       playersInPitLane.add(packet.PLID);
 
+      inSim.sendMessage(`/rcm Pit speed limit: ^3${speedLimitKmh}^8 km/h`);
+      inSim.sendMessage(`/rcm_ply ${player.PName}`);
+
+      pitSpeedMessageTimeout = setTimeout(() => {
+        inSim.sendMessage(`/rcc_ply ${player.PName}`);
+      }, 5000);
+
       log.debug(`${player.PName}^8 entered the pit lane from pits`);
+      return;
     }
 
     // Pit lane start / end
@@ -61,7 +70,7 @@ export function handlePitLaneSpeedLimit(
           player.penalty === PenaltyValue.PENALTY_DT_VALID ||
           player.penalty === PenaltyValue.PENALTY_DT
         ) {
-          log.message(
+          log.debug(
             `${player.PName}^8 entered the pit lane for drive-through penalty`,
           );
         }
@@ -70,23 +79,18 @@ export function handlePitLaneSpeedLimit(
           player.penalty === PenaltyValue.PENALTY_SG_VALID ||
           player.penalty === PenaltyValue.PENALTY_SG
         ) {
-          log.message(
+          log.debug(
             `${player.PName}^8 entered the pit lane for stop-go penalty`,
           );
         }
+
+        return;
       }
 
       if (
         (isCheckpoint2 && hasCrossedInForwardDirection) ||
         (isCheckpoint1 && hasCrossedInReverseDirection)
       ) {
-        const player = players.get(packet.PLID);
-
-        if (!player) {
-          log.error(`Player with ${packet.PLID} not found leaving pit lane`);
-          return;
-        }
-
         log.debug(`${player.PName}^8 left the pit lane`);
 
         playersInPitLane.delete(packet.PLID);
@@ -119,6 +123,8 @@ export function handlePitLaneSpeedLimit(
           );
           return;
         }
+
+        return;
       }
     }
   });
@@ -196,6 +202,10 @@ export function handlePitLaneSpeedLimit(
   });
 
   inSim.on(PacketType.ISP_PLP, (packet) => {
+    if (pitSpeedMessageTimeout) {
+      clearTimeout(pitSpeedMessageTimeout);
+    }
+
     if (!playersInPitLane.has(packet.PLID)) {
       return;
     }
@@ -210,6 +220,10 @@ export function handlePitLaneSpeedLimit(
   });
 
   inSim.on(PacketType.ISP_PLL, (packet) => {
+    if (pitSpeedMessageTimeout) {
+      clearTimeout(pitSpeedMessageTimeout);
+    }
+
     if (!playersInPitLane.has(packet.PLID)) {
       return;
     }
