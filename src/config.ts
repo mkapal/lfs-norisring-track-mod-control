@@ -13,7 +13,7 @@ const configSchema = z.object({
     admin: z.string().min(0).max(16).optional().default(""),
     carPositionPacketInterval: z
       .number()
-      .min(1)
+      .min(0)
       .max(10000)
       .optional()
       .default(100),
