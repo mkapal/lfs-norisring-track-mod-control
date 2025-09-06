@@ -179,7 +179,7 @@ export function handlePitLaneSpeedLimit(
       const OVERSPEED = 20;
 
       if (speedInKmh > speedLimitKmh + OVERSPEED) {
-        const overSpeedingMessage = `${player.PName}^8 is speeding more than ${OVERSPEED} over the limit of ${speedLimitKmh} km/h in pit lane`;
+        const overSpeedingMessage = `${player.PName}^8 is speeding more than ${OVERSPEED} over the limit of ${speedLimitKmh} km/h in pit lane (${speedInKmh} km/h)`;
 
         // Invalidate existing speeding penalties
         if (player.penalty === PenaltyValue.PENALTY_DT_VALID) {
@@ -223,7 +223,7 @@ export function handlePitLaneSpeedLimit(
       }
 
       if (speedInKmh > speedLimitKmh) {
-        const speedingMessage = `${player.PName}^8 is going more than ${speedLimitKmh} km/h in pit lane`;
+        const speedingMessage = `${player.PName}^8 is going more than ${speedLimitKmh} km/h in pit lane (${speedInKmh} km/h)`;
 
         if (player.penalty === PenaltyValue.PENALTY_NONE) {
           log.debug(speedingMessage);
