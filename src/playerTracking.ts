@@ -23,6 +23,7 @@ export type Player = Pick<
   IS_NPL,
   "UCID" | "PLID" | "PName" | "Flags" | "PType" | "Plate"
 > & {
+  rawName: string;
   connection: Connection | null;
   penalty: PenaltyValue;
   penaltyReason: PenaltyReason;
@@ -162,6 +163,7 @@ export function playerTracking(inSim: InSim): PlayerTrackingAPI {
       UCID: packet.UCID,
       PLID: packet.PLID,
       PName: packet.PName,
+      rawName: packet._raw.PName,
       Flags: packet.Flags,
       PType: packet.PType,
       Plate: packet.Plate,

@@ -22,37 +22,24 @@ export function handlePitLaneSpeedLimit(
   let pitSpeedMessageTimeout: NodeJS.Timeout | null = null;
 
   inSim.on(PacketType.ISP_UCO, (packet) => {
-    const player = players.get(packet.PLID);
-
-    if (!player) {
-      log.error(
-        `Player with ${packet.PLID} not found when crossing an InSim checkpoint or circle`,
-      );
-      return;
-    }
-
-    // Pit start points
-    const PIT_START_POINT_CIRCLE = 1;
-    if (
-      packet.UCOAction === UCOAction.UCO_CIRCLE_ENTER &&
-      packet.Info.Index === ObjectIndex.MARSH_IS_AREA &&
-      packet.Info.Heading === PIT_START_POINT_CIRCLE
-    ) {
-      playersInPitLane.add(packet.PLID);
-
-      inSim.sendMessage(`/rcm Pit speed limit: ^3${speedLimitKmh}^8 km/h`);
-      inSim.sendMessage(`/rcm_ply ${player.PName}`);
-
-      pitSpeedMessageTimeout = setTimeout(() => {
-        inSim.sendMessage(`/rcc_ply ${player.PName}`);
-      }, 5000);
-
-      log.debug(`${player.PName}^8 entered the pit lane from pits`);
-      return;
-    }
-
     // Pit lane start / end
     if (packet.Info.Index === ObjectIndex.MARSH_IS_CP) {
+      const player = players.get(packet.PLID);
+      if (!player) {
+        log.error(
+          `Player with PLID ${packet.PLID} not found when crossing an InSim checkpoint`,
+        );
+        return;
+      }
+
+      const connection = player.connection;
+      if (!connection) {
+        log.error(
+          `Connection for player ${player.PName}^8 not found when crossing an InSim checkpoint`,
+        );
+        return;
+      }
+
       const isCheckpoint1 =
         (packet.Info.Flags & 1) !== 0 && (packet.Info.Flags & 2) === 0;
       const isCheckpoint2 =
@@ -105,7 +92,7 @@ export function handlePitLaneSpeedLimit(
           log.debug(
             `${player.PName} has left the pit lane with a valid penalty - penalty cleared`,
           );
-          inSim.sendMessage(`/p_clear ${player.PName}`);
+          inSim.sendMessage(`/p_clear ${connection.UName}`);
           return;
         }
 
@@ -129,6 +116,45 @@ export function handlePitLaneSpeedLimit(
         return;
       }
     }
+
+    // Pit start points
+    const PIT_START_POINT_CIRCLE = 1;
+    if (
+      packet.UCOAction === UCOAction.UCO_CIRCLE_ENTER &&
+      packet.Info.Index === ObjectIndex.MARSH_IS_AREA &&
+      packet.Info.Heading === PIT_START_POINT_CIRCLE
+    ) {
+      // Delay to allow the player to register in player tracker
+      setTimeout(() => {
+        const player = players.get(packet.PLID);
+        if (!player) {
+          log.error(
+            `Player with PLID ${packet.PLID} not found when leaving pits`,
+          );
+          return;
+        }
+
+        const connection = player.connection;
+        if (!connection) {
+          log.error(
+            `Connection for player ${player.PName}^8 not found when leaving pits`,
+          );
+          return;
+        }
+
+        playersInPitLane.add(packet.PLID);
+
+        inSim.sendMessage(`/rcm Pit speed limit: ^3${speedLimitKmh}^8 km/h`);
+        inSim.sendMessage(`/rcm_ply ${player.rawName}`);
+
+        pitSpeedMessageTimeout = setTimeout(() => {
+          log.debug(`${player.PName}^8 - cleared pit lane speed limit message`);
+          inSim.sendMessage(`/rcc_ply ${player.rawName}`);
+        }, 5000);
+
+        log.debug(`${player.PName}^8 entered the pit lane from pits`);
+      }, 500);
+    }
   });
 
   inSim.on(PacketType.ISP_MCI, (packet) => {
@@ -143,6 +169,12 @@ export function handlePitLaneSpeedLimit(
         return;
       }
 
+      const connection = player.connection;
+      if (!connection) {
+        log.error(`Connection for player ${player.PName}^8 not found`);
+        return;
+      }
+
       const speedInKmh = convertLfsSpeedToKmh(compCar.Speed);
       const OVERSPEED = 20;
 
@@ -152,14 +184,14 @@ export function handlePitLaneSpeedLimit(
         // Invalidate existing speeding penalties
         if (player.penalty === PenaltyValue.PENALTY_DT_VALID) {
           player.penalty = PenaltyValue.PENALTY_DT;
-          inSim.sendMessage(`/p_dt ${player.PName}`);
+          inSim.sendMessage(`/p_dt ${connection.UName}`);
 
           return;
         }
 
         if (player.penalty === PenaltyValue.PENALTY_SG_VALID) {
           player.penalty = PenaltyValue.PENALTY_SG;
-          inSim.sendMessage(`/p_sg ${player.PName}`);
+          inSim.sendMessage(`/p_sg ${connection.UName}`);
 
           return;
         }
@@ -167,7 +199,7 @@ export function handlePitLaneSpeedLimit(
         // Give stop-go penalty for speeding
         if (player.penalty === PenaltyValue.PENALTY_DT) {
           player.penalty = PenaltyValue.PENALTY_SG;
-          inSim.sendMessage(`/p_sg ${player.PName}`);
+          inSim.sendMessage(`/p_sg ${connection.UName}`);
           log.debug(overSpeedingMessage);
 
           return;
@@ -181,7 +213,7 @@ export function handlePitLaneSpeedLimit(
           player.penalty === PenaltyValue.PENALTY_30
         ) {
           player.penalty = PenaltyValue.PENALTY_45;
-          inSim.sendMessage(`/p_45 ${player.PName}`);
+          inSim.sendMessage(`/p_45 ${connection.UName}`);
           log.debug(overSpeedingMessage);
 
           return;
@@ -203,13 +235,13 @@ export function handlePitLaneSpeedLimit(
             raceState.raceLaps - player.lapsDone <= 2
           ) {
             player.penalty = PenaltyValue.PENALTY_30;
-            inSim.sendMessage(`/p_30 ${player.PName}`);
+            inSim.sendMessage(`/p_30 ${connection.UName}`);
             return;
           }
 
           // Drive-through penalty for speeding
           player.penalty = PenaltyValue.PENALTY_DT;
-          inSim.sendMessage(`/p_dt ${player.PName}`);
+          inSim.sendMessage(`/p_dt ${connection.UName}`);
 
           return;
         }
@@ -217,7 +249,7 @@ export function handlePitLaneSpeedLimit(
         // Invalidate existing speeding penalties
         if (player.penalty === PenaltyValue.PENALTY_DT_VALID) {
           player.penalty = PenaltyValue.PENALTY_DT;
-          inSim.sendMessage(`/p_dt ${player.PName}`);
+          inSim.sendMessage(`/p_dt ${connection.UName}`);
 
           log.debug(speedingMessage);
           log.debug(
@@ -229,7 +261,7 @@ export function handlePitLaneSpeedLimit(
 
         if (player.penalty === PenaltyValue.PENALTY_SG_VALID) {
           player.penalty = PenaltyValue.PENALTY_SG;
-          inSim.sendMessage(`/p_sg ${player.PName}`);
+          inSim.sendMessage(`/p_sg ${connection.UName}`);
 
           log.debug(speedingMessage);
           log.debug(`${player.PName} - invalidate existing stop-go penalty`);
