@@ -32,7 +32,7 @@ inSim.connect({
   Admin: config.insim.admin,
   Flags: InSimFlags.ISF_MCI | InSimFlags.ISF_LOCAL,
   ReqI: IS_ISI_ReqI.SEND_VERSION,
-  Interval: 100,
+  Interval: config.insim.carPositionPacketInterval,
 });
 
 const log = createLog(inSim);

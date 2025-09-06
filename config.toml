@@ -2,6 +2,7 @@
 host = "127.0.0.1"
 port = 29999
 admin = ""
+carPositionPacketInterval = 100
 
 [general]
 pitLaneSpeedLimitKmh = 80

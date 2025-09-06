@@ -11,6 +11,12 @@ const configSchema = z.object({
     host: z.string().min(1).optional().default("127.0.0.1"),
     port: z.number().min(1).max(65535),
     admin: z.string().min(0).max(16).optional().default(""),
+    carPositionPacketInterval: z
+      .number()
+      .min(1)
+      .max(10000)
+      .optional()
+      .default(100),
   }),
   general: z.object({
     pitLaneSpeedLimitKmh: z.number().min(0).max(1000).default(80),
