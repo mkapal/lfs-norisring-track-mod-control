@@ -1,4 +1,4 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { testInfoPacket } from "../tests";
 import { InSimRelayError, PacketType } from "./enums";
 import { IR_ERR } from "./IR_ERR";

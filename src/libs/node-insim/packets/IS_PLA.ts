@@ -1,6 +1,6 @@
 import { byte } from "../decorators";
 import { Packet } from "./base";
-import type { PitLaneFact } from "./enums";
+import { type PitLaneFact } from "./enums";
 import { PacketType } from "./enums";
 
 /**

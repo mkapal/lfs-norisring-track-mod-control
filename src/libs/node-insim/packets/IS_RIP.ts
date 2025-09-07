@@ -1,8 +1,8 @@
 import { byte, stringNull, unsigned } from "../decorators";
 import { SendablePacket } from "./base";
-import type { ReplayError, ReplayMode, ReplayOptions } from "./enums";
+import { type ReplayError, type ReplayMode, type ReplayOptions } from "./enums";
 import { PacketType } from "./enums";
-import type { PacketDataWithRequiredReqI } from "./types";
+import { type PacketDataWithRequiredReqI } from "./types";
 
 const RNAME_MAX_LENGTH = 64;
 

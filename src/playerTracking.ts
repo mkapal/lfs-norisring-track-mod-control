@@ -1,5 +1,5 @@
-import type { InSim } from "node-insim";
-import type { IS_NCN, IS_NPL } from "node-insim/packets";
+import { type InSim } from "node-insim";
+import { type IS_NCN, type IS_NPL } from "node-insim/packets";
 import {
   IS_ISI_ReqI,
   IS_TINY,

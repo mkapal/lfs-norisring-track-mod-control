@@ -1,6 +1,6 @@
 import { byte } from "../decorators";
 import { Packet } from "./base";
-import type { ViewIdentifier } from "./enums";
+import { type ViewIdentifier } from "./enums";
 import { PacketType } from "./enums";
 
 /**

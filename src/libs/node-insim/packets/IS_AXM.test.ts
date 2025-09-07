@@ -1,6 +1,6 @@
 import { testInfoPacket, testInstructionPacket } from "../tests";
 import { PacketType, PMOAction, PMOFlags } from "./enums";
-import type { IS_AXM_Data } from "./IS_AXM";
+import { type IS_AXM_Data } from "./IS_AXM";
 import { IS_AXM } from "./IS_AXM";
 import { ObjectInfo } from "./structs";
 

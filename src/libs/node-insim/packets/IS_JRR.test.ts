@@ -1,6 +1,6 @@
 import { testInstructionPacket } from "../tests";
 import { JRRAction, PacketType } from "./enums";
-import type { IS_JRR_Data } from "./IS_JRR";
+import { type IS_JRR_Data } from "./IS_JRR";
 import { IS_JRR } from "./IS_JRR";
 import { ObjectInfo } from "./structs";
 

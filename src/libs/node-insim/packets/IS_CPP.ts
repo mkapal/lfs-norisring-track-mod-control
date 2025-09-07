@@ -1,8 +1,8 @@
 import { byte, float, int, word } from "../decorators";
 import { SendablePacket } from "./base";
-import type { StateFlags, ViewIdentifier } from "./enums";
+import { type StateFlags, type ViewIdentifier } from "./enums";
 import { PacketType } from "./enums";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 /**
  * Cam Pos Pack - Full camera packet (in car OR SHIFT+U mode)

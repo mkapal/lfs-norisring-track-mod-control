@@ -1,6 +1,6 @@
 import { stringToBytes, testInstructionPacket } from "../tests";
 import { MessageSound, PacketType } from "./enums";
-import type { IS_MTC_Data } from "./IS_MTC";
+import { type IS_MTC_Data } from "./IS_MTC";
 import { IS_MTC } from "./IS_MTC";
 
 const text =

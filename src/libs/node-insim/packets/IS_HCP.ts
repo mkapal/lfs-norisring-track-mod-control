@@ -1,8 +1,8 @@
 import { byte } from "../decorators";
 import { SendablePacket } from "./base";
 import { PacketType } from "./enums";
-import type { CarHCP } from "./structs";
-import type { PacketData } from "./types";
+import { type CarHCP } from "./structs";
+import { type PacketData } from "./types";
 
 /**
  * HandiCaPs

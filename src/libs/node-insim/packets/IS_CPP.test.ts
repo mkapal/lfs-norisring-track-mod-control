@@ -1,7 +1,7 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { testInfoPacket, testInstructionPacket } from "../tests";
 import { PacketType, StateFlags, ViewIdentifier } from "./enums";
-import type { IS_CPP_Data } from "./IS_CPP";
+import { type IS_CPP_Data } from "./IS_CPP";
 import { IS_CPP } from "./IS_CPP";
 
 const size = 32;

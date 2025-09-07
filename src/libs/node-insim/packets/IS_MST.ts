@@ -1,7 +1,7 @@
 import { byte, stringNull } from "../decorators";
 import { SendablePacket } from "./base";
 import { PacketType } from "./enums";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 export const MST_MSG_MAX_LENGTH = 64;
 

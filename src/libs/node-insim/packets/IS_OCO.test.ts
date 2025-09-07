@@ -5,7 +5,7 @@ import {
   OCOAutocrossStartLights,
   PacketType,
 } from "./enums";
-import type { IS_OCO_Data } from "./IS_OCO";
+import { type IS_OCO_Data } from "./IS_OCO";
 import { IS_OCO } from "./IS_OCO";
 
 const size = 8;

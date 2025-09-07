@@ -1,6 +1,6 @@
 import { byte } from "../decorators";
 import { Packet } from "./base";
-import type { ButtonClickFlags } from "./enums";
+import { type ButtonClickFlags } from "./enums";
 import { PacketType } from "./enums";
 
 /**

@@ -1,6 +1,6 @@
 import { byte } from "../decorators";
 import { Packet } from "./base";
-import type { PenaltyReason, PenaltyValue } from "./enums";
+import { type PenaltyReason, type PenaltyValue } from "./enums";
 import { PacketType } from "./enums";
 
 /**

@@ -2,7 +2,7 @@ import { byte, getFormat, stringNull } from "../decorators";
 import { InSimError } from "../errors";
 import { unpack } from "../lfspack";
 import { Packet } from "./base";
-import type { AdminCommandResult } from "./enums";
+import { type AdminCommandResult } from "./enums";
 import { PacketType } from "./enums";
 
 /**

@@ -1,6 +1,6 @@
 import { stringToBytes, testInstructionPacket } from "../tests";
 import { ButtonStyle, ButtonTextColour, PacketType } from "./enums";
-import type { IS_BTN_Data } from "./IS_BTN";
+import { type IS_BTN_Data } from "./IS_BTN";
 import { IS_BTN } from "./IS_BTN";
 
 const text =

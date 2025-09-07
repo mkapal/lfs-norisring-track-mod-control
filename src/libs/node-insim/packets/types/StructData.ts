@@ -1,4 +1,4 @@
-import type { SendableStruct, Struct } from "../base";
+import { type SendableStruct, type Struct } from "../base";
 
 export type ReadonlyPropNames =
   | "Zero"

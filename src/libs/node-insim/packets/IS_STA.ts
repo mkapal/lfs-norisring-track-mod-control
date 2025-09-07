@@ -1,6 +1,11 @@
 import { byte, float, stringNull, word } from "../decorators";
 import { Packet } from "./base";
-import type { RaceState, ServerStatus, StateFlags, Wind } from "./enums";
+import {
+  type RaceState,
+  type ServerStatus,
+  type StateFlags,
+  type Wind,
+} from "./enums";
 import { PacketType, ViewIdentifier } from "./enums";
 
 /**

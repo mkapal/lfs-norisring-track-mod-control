@@ -1,6 +1,6 @@
 import { byte, short, struct, word } from "../decorators";
 import { Packet } from "./base";
-import type { ObjectHitFlags, ObjectIndex } from "./enums";
+import { type ObjectHitFlags, type ObjectIndex } from "./enums";
 import { PacketType } from "./enums";
 import { CarContOBJ } from "./structs";
 

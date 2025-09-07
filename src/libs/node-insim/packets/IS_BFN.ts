@@ -1,9 +1,9 @@
 import { byte } from "../decorators";
 import { SendablePacket } from "./base";
-import type { ButtonFunction } from "./enums";
+import { type ButtonFunction } from "./enums";
 import { PacketType } from "./enums";
 import { IS_BTN } from "./IS_BTN";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 /**
  * Button FunctioN - delete buttons / receive button requests

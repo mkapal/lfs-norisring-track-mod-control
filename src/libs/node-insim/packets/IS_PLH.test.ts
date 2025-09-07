@@ -1,6 +1,6 @@
 import { testInfoPacket, testInstructionPacket } from "../tests";
 import { PacketType, PlayerHCapFlags } from "./enums";
-import type { IS_PLH_Data } from "./IS_PLH";
+import { type IS_PLH_Data } from "./IS_PLH";
 import { IS_PLH } from "./IS_PLH";
 import { PlayerHCap } from "./structs";
 

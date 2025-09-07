@@ -1,4 +1,4 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { testInfoPacket } from "../tests";
 import { CarContactFlags, PacketType } from "./enums";
 import { IS_CON } from "./IS_CON";

@@ -1,6 +1,6 @@
 import { stringToBytes, testInstructionPacket } from "../tests";
 import { PacketType } from "./enums";
-import type { IS_ISI_Data } from "./IS_ISI";
+import { type IS_ISI_Data } from "./IS_ISI";
 import { IS_ISI } from "./IS_ISI";
 
 const size = 44;

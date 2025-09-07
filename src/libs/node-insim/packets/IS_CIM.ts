@@ -1,11 +1,11 @@
 import { byte } from "../decorators";
 import { Packet } from "./base";
-import type {
-  GarageInterfaceSubmode,
-  InterfaceMode,
-  NormalInterfaceSubmode,
-  ObjectIndex,
-  ShiftUInterfaceSubmode,
+import {
+  type GarageInterfaceSubmode,
+  type InterfaceMode,
+  type NormalInterfaceSubmode,
+  type ObjectIndex,
+  type ShiftUInterfaceSubmode,
 } from "./enums";
 import { PacketType } from "./enums";
 

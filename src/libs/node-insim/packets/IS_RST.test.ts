@@ -1,4 +1,4 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { stringToBytes, testInfoPacket } from "../tests";
 import { PacketType, RaceFlags, Wind } from "./enums";
 import { IS_RST } from "./IS_RST";

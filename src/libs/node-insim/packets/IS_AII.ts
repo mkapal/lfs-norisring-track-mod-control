@@ -1,8 +1,8 @@
 import { byte, float, struct, unsigned } from "../decorators";
-import type { DashLights } from "../out/DashLights";
+import { type DashLights } from "../out/DashLights";
 import { OutSimMain } from "../out/OutSimMain";
 import { Packet } from "./base";
-import type { AIFlags } from "./enums";
+import { type AIFlags } from "./enums";
 import { PacketType } from "./enums";
 import { AICGear } from "./IS_AIC";
 

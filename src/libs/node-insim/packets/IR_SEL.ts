@@ -1,7 +1,7 @@
 import { byte, stringNull } from "../decorators";
 import { SendablePacket } from "./base";
 import { PacketType } from "./enums";
-import type { PacketDataWithOptionalReqI } from "./types";
+import { type PacketDataWithOptionalReqI } from "./types";
 
 /**
  * Relay select - packet to select a host, so relay starts sending you data.

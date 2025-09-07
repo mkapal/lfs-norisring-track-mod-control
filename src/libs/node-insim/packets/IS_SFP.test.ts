@@ -1,6 +1,6 @@
 import { testInstructionPacket } from "../tests";
 import { PacketType, StateFlags } from "./enums";
-import type { IS_SFP_Data } from "./IS_SFP";
+import { type IS_SFP_Data } from "./IS_SFP";
 import { IS_SFP } from "./IS_SFP";
 
 const size = 8;

@@ -1,4 +1,4 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { testInfoPacket } from "../tests";
 import { PacketType, ViewIdentifier } from "./enums";
 import { IS_CCH } from "./IS_CCH";

@@ -1,5 +1,5 @@
-import type { InSim } from "./InSim";
-import type { packetTypeToClass } from "./packets";
+import { type InSim } from "./InSim";
+import { type packetTypeToClass } from "./packets";
 
 export type InSimPacketEvents = {
   [k in keyof typeof packetTypeToClass]: (

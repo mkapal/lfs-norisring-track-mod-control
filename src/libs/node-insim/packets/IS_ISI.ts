@@ -1,8 +1,8 @@
 import { byte, string, stringNull, word } from "../decorators";
 import { SendablePacket } from "./base";
-import type { InSimFlags } from "./enums";
+import { type InSimFlags } from "./enums";
 import { PacketType } from "./enums";
-import type { PacketDataWithOptionalReqI } from "./types";
+import { type PacketDataWithOptionalReqI } from "./types";
 
 /**
  * InSim Init - packet to initialise the InSim system

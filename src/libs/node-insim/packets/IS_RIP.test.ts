@@ -1,7 +1,7 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { stringToBytes, testInfoPacket, testInstructionPacket } from "../tests";
 import { PacketType, ReplayError, ReplayMode, ReplayOptions } from "./enums";
-import type { IS_RIP_Data } from "./IS_RIP";
+import { type IS_RIP_Data } from "./IS_RIP";
 import { IS_RIP } from "./IS_RIP";
 
 const size = 80;

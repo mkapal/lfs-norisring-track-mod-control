@@ -1,6 +1,6 @@
 import { byte } from "../decorators";
 import { Packet } from "./base";
-import type { VoteAction } from "./enums";
+import { type VoteAction } from "./enums";
 import { PacketType } from "./enums";
 
 /**

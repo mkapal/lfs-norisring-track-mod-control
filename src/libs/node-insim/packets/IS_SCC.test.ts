@@ -1,6 +1,6 @@
 import { testInstructionPacket } from "../tests";
 import { PacketType, ViewIdentifier } from "./enums";
-import type { IS_SCC_Data } from "./IS_SCC";
+import { type IS_SCC_Data } from "./IS_SCC";
 import { IS_SCC } from "./IS_SCC";
 
 const size = 8;

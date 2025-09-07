@@ -3,7 +3,7 @@ import { InSimError } from "../errors";
 import { copyBuffer, pack, unpack } from "../lfspack";
 import { SendablePacket } from "./base";
 import { PacketType } from "./enums";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 /**
  * Mods ALlowed - variable size

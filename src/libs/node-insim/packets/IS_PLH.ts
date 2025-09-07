@@ -3,7 +3,7 @@ import { copyBuffer } from "../lfspack";
 import { SendablePacket } from "./base";
 import { PacketType } from "./enums";
 import { PlayerHCap } from "./structs";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 /**
  * PLayer Handicaps - variable size

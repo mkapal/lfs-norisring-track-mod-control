@@ -1,4 +1,4 @@
-import type { InSim } from "node-insim";
+import { type InSim } from "node-insim";
 import {
   IS_ISI_ReqI,
   PacketType,

@@ -1,9 +1,9 @@
 import unicodeToLfs from "../../unicode-to-lfs";
 import { byte, string } from "../decorators";
 import { SendablePacket } from "./base";
-import type { ButtonStyle, ButtonTextColour } from "./enums";
+import { type ButtonStyle, type ButtonTextColour } from "./enums";
 import { PacketType } from "./enums";
-import type { PacketDataWithRequiredReqI } from "./types";
+import { type PacketDataWithRequiredReqI } from "./types";
 
 /**
  * BuTtoN - button header - followed by 0 to 240 characters

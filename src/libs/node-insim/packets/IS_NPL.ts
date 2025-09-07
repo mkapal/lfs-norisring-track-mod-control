@@ -1,11 +1,11 @@
 import { byte, carName, string, stringNull, word } from "../decorators";
 import { Packet } from "./base";
-import type {
-  PassengerFlags,
-  PlayerFlags,
-  PlayerType,
-  SetupFlags,
-  TyreCompound,
+import {
+  type PassengerFlags,
+  type PlayerFlags,
+  type PlayerType,
+  type SetupFlags,
+  type TyreCompound,
 } from "./enums";
 import { CarConfiguration, PacketType } from "./enums";
 

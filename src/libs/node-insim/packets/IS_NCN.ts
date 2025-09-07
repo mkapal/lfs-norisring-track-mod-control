@@ -1,6 +1,6 @@
 import { byte, stringNull } from "../decorators";
 import { Packet } from "./base";
-import type { ConnectionFlags } from "./enums";
+import { type ConnectionFlags } from "./enums";
 import { PacketType } from "./enums";
 
 /**

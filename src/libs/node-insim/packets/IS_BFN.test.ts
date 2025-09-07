@@ -1,6 +1,6 @@
 import { testBothWaysPacket } from "../tests";
 import { ButtonFunction, PacketType } from "./enums";
-import type { IS_BFN_Data } from "./IS_BFN";
+import { type IS_BFN_Data } from "./IS_BFN";
 import { IS_BFN } from "./IS_BFN";
 
 const size = 8;

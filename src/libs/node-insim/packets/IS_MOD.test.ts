@@ -1,6 +1,6 @@
 import { testInstructionPacket } from "../tests";
 import { PacketType } from "./enums";
-import type { IS_MOD_Data } from "./IS_MOD";
+import { type IS_MOD_Data } from "./IS_MOD";
 import { IS_MOD } from "./IS_MOD";
 
 const size = 20;

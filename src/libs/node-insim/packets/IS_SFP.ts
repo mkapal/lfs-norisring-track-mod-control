@@ -1,8 +1,8 @@
 import { byte, word } from "../decorators";
 import { SendablePacket } from "./base";
-import type { StateFlags } from "./enums";
+import { type StateFlags } from "./enums";
 import { PacketType } from "./enums";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 /**
  * State Flags Pack

@@ -1,6 +1,6 @@
 import { byte, unsigned } from "../decorators";
 import { Packet } from "./base";
-import type { Language, License } from "./enums";
+import { type Language, type License } from "./enums";
 import { PacketType } from "./enums";
 
 /**

@@ -1,6 +1,6 @@
 import { testInstructionPacket } from "../tests";
 import { PacketType } from "./enums";
-import type { IS_HCP_Data } from "./IS_HCP";
+import { type IS_HCP_Data } from "./IS_HCP";
 import { IS_HCP } from "./IS_HCP";
 import { CarHCP } from "./structs";
 

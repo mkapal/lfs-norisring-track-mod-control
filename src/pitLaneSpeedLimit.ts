@@ -1,4 +1,4 @@
-import type { InSim } from "node-insim";
+import { type InSim } from "node-insim";
 import {
   ObjectIndex,
   PacketType,
@@ -8,8 +8,8 @@ import {
 
 import { convertLfsSpeedToKmh } from "./lfsUnits";
 import { createLog } from "./log";
-import type { PlayerTrackingAPI } from "./playerTracking";
-import type { RaceState } from "./raceState";
+import { type PlayerTrackingAPI } from "./playerTracking";
+import { type RaceState } from "./raceState";
 
 export function handlePitLaneSpeedLimit(
   inSim: InSim,

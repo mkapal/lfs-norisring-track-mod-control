@@ -1,8 +1,8 @@
 import { byte, stringNull } from "../decorators";
 import { SendablePacket } from "./base";
-import type { ScreenshotError } from "./enums";
+import { type ScreenshotError } from "./enums";
 import { PacketType } from "./enums";
-import type { PacketDataWithRequiredReqI } from "./types";
+import { type PacketDataWithRequiredReqI } from "./types";
 
 /**
  * ScreenSHot

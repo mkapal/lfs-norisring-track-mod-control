@@ -1,7 +1,7 @@
 import { byte } from "../decorators";
 import { SendablePacket } from "./base";
 import { PacketType } from "./enums";
-import type { PacketDataWithOptionalReqI } from "./types";
+import { type PacketDataWithOptionalReqI } from "./types";
 
 /**
  * HostList Request

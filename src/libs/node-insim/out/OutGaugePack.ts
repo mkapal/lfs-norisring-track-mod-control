@@ -8,8 +8,8 @@ import {
   word,
 } from "../decorators";
 import { Struct } from "../packets";
-import type { DashLights } from "./DashLights";
-import type { OutGaugeFlags } from "./OutGaugeFlags";
+import { type DashLights } from "./DashLights";
+import { type OutGaugeFlags } from "./OutGaugeFlags";
 
 /**
  * OutGauge - EXTERNAL DASHBOARD SUPPORT

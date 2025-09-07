@@ -1,6 +1,6 @@
 import { InSimError } from "../../errors";
 import { pack } from "../../lfspack";
-import type { Receivable, Sendable } from "../types";
+import { type Receivable, type Sendable } from "../types";
 import { Struct } from "./Struct";
 
 export abstract class SendableStruct

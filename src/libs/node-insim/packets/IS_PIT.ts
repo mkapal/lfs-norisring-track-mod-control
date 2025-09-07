@@ -1,6 +1,6 @@
 import { byte, unsigned, word } from "../decorators";
 import { Packet } from "./base";
-import type { PitWorkFlags, PlayerFlags } from "./enums";
+import { type PitWorkFlags, type PlayerFlags } from "./enums";
 import { PacketType, PenaltyValue, TyreCompound } from "./enums";
 
 /**

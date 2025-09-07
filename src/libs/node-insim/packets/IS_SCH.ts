@@ -1,8 +1,8 @@
 import { byte } from "../decorators";
 import { SendablePacket } from "./base";
-import type { CharacterModifiers } from "./enums";
+import { type CharacterModifiers } from "./enums";
 import { PacketType } from "./enums";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 /**
  * Single CHaracter

@@ -4,10 +4,10 @@ import { TypedEmitter } from "tiny-typed-emitter";
 
 import unicodeToLfs from "../unicode-to-lfs";
 import { InSimError } from "./errors";
-import type { InSimEvents } from "./InSimEvents";
+import { type InSimEvents } from "./InSimEvents";
 import { unpack } from "./lfspack";
 import { log as baseLog } from "./log";
-import type { IS_ISI_Data, SendablePacket } from "./packets";
+import { type IS_ISI_Data, type SendablePacket } from "./packets";
 import {
   IS_ISI,
   IS_MSL,
@@ -21,7 +21,7 @@ import {
   packetTypeToClass,
   TinyType,
 } from "./packets";
-import type { Protocol } from "./protocols";
+import { type Protocol } from "./protocols";
 import { TCP, UDP } from "./protocols";
 
 const log = baseLog.extend("insim");

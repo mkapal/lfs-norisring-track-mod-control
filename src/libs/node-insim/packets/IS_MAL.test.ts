@@ -1,7 +1,7 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { testInfoPacket, testInstructionPacket } from "../tests";
 import { PacketType } from "./enums";
-import type { IS_MAL_Data } from "./IS_MAL";
+import { type IS_MAL_Data } from "./IS_MAL";
 import { IS_MAL } from "./IS_MAL";
 
 describe("IS_MAL", () => {

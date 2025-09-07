@@ -1,4 +1,4 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { testInfoPacket } from "../tests";
 import { CSCAction, PacketType } from "./enums";
 import { IS_CSC } from "./IS_CSC";

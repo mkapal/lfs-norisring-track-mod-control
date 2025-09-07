@@ -1,6 +1,6 @@
 import { byte, stringNull, word } from "../decorators";
 import { Packet } from "./base";
-import type { RaceFlags, Wind } from "./enums";
+import { type RaceFlags, type Wind } from "./enums";
 import { PacketType } from "./enums";
 
 /**

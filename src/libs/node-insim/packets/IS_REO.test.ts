@@ -1,7 +1,7 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { testInfoPacket, testInstructionPacket } from "../tests";
 import { PacketType } from "./enums";
-import type { IS_REO_Data } from "./IS_REO";
+import { type IS_REO_Data } from "./IS_REO";
 import { IS_REO } from "./IS_REO";
 
 const size = 44;

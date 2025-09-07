@@ -1,6 +1,6 @@
 import { testInstructionPacket } from "../tests";
 import { CarFlags, PacketType } from "./enums";
-import type { IS_PLC_Data } from "./IS_PLC";
+import { type IS_PLC_Data } from "./IS_PLC";
 import { IS_PLC } from "./IS_PLC";
 
 const size = 12;

@@ -1,7 +1,7 @@
 import { byte, word } from "../decorators";
 import { copyBuffer } from "../lfspack";
 import { Packet } from "./base";
-import type { HLVCViolation } from "./enums";
+import { type HLVCViolation } from "./enums";
 import { PacketType } from "./enums";
 import { CarContOBJ } from "./structs";
 

@@ -1,5 +1,5 @@
-import type { Packet, SendablePacket } from "../base";
-import type { ReadonlyPropNames } from "./StructData";
+import { type Packet, type SendablePacket } from "../base";
+import { type ReadonlyPropNames } from "./StructData";
 
 type ReadonlyProps = keyof SendablePacket | ReadonlyPropNames;
 

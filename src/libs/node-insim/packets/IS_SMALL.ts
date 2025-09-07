@@ -1,6 +1,10 @@
 import { byte, unsigned } from "../decorators";
 import { SendablePacket } from "./base";
-import type { CarFlags, LocalCarLights, LocalCarSwitches } from "./enums";
+import {
+  type CarFlags,
+  type LocalCarLights,
+  type LocalCarSwitches,
+} from "./enums";
 import { PacketType, SmallType } from "./enums";
 
 /**

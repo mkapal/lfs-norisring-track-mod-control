@@ -1,4 +1,4 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { stringToBytes, testInfoPacket } from "../tests";
 import { PacketType } from "./enums";
 import { IS_ISM, MultiplayerHostMode } from "./IS_ISM";

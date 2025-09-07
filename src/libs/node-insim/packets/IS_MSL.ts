@@ -1,8 +1,8 @@
 import { byte, stringNull } from "../decorators";
 import { SendablePacket } from "./base";
-import type { MessageSound } from "./enums";
+import { type MessageSound } from "./enums";
 import { PacketType } from "./enums";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 export const MSL_MSG_MAX_LENGTH = 128;
 

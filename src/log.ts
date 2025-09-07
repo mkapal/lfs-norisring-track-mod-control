@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import type { InSim } from "node-insim";
+import { type InSim } from "node-insim";
 import { MessageSound } from "node-insim/packets";
 
 export function createLog(inSim: InSim) {

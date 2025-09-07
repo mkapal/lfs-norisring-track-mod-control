@@ -4,7 +4,7 @@ import { copyBuffer, pack } from "../lfspack";
 import { ipToUnsignedInteger, isValidIPv4 } from "../utils/ip";
 import { SendablePacket } from "./base";
 import { PacketType } from "./enums";
-import type { PacketData } from "./types";
+import { type PacketData } from "./types";
 
 /**
  * IP Bans

@@ -4,7 +4,7 @@ import { byte, getFormat, stringNull } from "../decorators";
 import { InSimError } from "../errors";
 import { unpack } from "../lfspack";
 import { Packet } from "./base";
-import type { UserType } from "./enums";
+import { type UserType } from "./enums";
 import { PacketType } from "./enums";
 
 /**

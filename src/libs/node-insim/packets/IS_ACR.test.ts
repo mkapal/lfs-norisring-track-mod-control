@@ -1,4 +1,4 @@
-import type { PacketTestData } from "../tests";
+import { type PacketTestData } from "../tests";
 import { testInfoPacket } from "../tests";
 import { AdminCommandResult, PacketType } from "./enums";
 import { IS_ACR } from "./IS_ACR";

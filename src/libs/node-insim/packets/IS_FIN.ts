@@ -1,6 +1,6 @@
 import { byte, unsigned, word } from "../decorators";
 import { Packet } from "./base";
-import type { ConfirmationFlags, PlayerFlags } from "./enums";
+import { type ConfirmationFlags, type PlayerFlags } from "./enums";
 import { PacketType } from "./enums";
 
 /**
