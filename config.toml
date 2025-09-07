@@ -5,7 +5,7 @@ admin = ""
 carPositionPacketInterval = 100
 
 [general]
-pitLaneSpeedLimitKmh = 80
+#pitLaneSpeedLimitKmh = 80
 
 [ai]
 rearFogLightsOnDelay = 3000

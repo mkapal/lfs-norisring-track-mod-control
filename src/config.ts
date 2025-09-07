@@ -19,7 +19,7 @@ const configSchema = z.object({
       .default(100),
   }),
   general: z.object({
-    pitLaneSpeedLimitKmh: z.number().min(0).max(1000).default(80),
+    pitLaneSpeedLimitKmh: z.number().min(0).max(1000).optional(),
   }),
   ai: z.object({
     rearFogLightsOnDelay: z.number().min(0).default(3000),

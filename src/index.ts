@@ -59,12 +59,14 @@ function clearTrack3BlinkTimeouts() {
   }
 }
 
-handlePitLaneSpeedLimit(
-  inSim,
-  config.general.pitLaneSpeedLimitKmh,
-  playersConnections,
-  raceState,
-);
+if (config.general.pitLaneSpeedLimitKmh !== undefined) {
+  handlePitLaneSpeedLimit(
+    inSim,
+    config.general.pitLaneSpeedLimitKmh,
+    playersConnections,
+    raceState,
+  );
+}
 
 inSim.on(PacketType.ISP_VER, (packet) => {
   if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
