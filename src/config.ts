@@ -60,5 +60,17 @@ export function loadConfig() {
 
   console.log(chalk.green("Configuration loaded"));
 
+  console.log(
+    `- Car position packet interval: ${config.insim.carPositionPacketInterval} ms`,
+  );
+
+  if (config.general.pitLaneSpeedLimitKmh === undefined) {
+    console.log("- Pit lane speed limit: disabled");
+  } else {
+    console.log(
+      `- Pit lane speed limit: ${config.general.pitLaneSpeedLimitKmh} km/h`,
+    );
+  }
+
   return config;
 }
