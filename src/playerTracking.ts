@@ -140,9 +140,6 @@ export function playerTracking(inSim: InSim): PlayerTrackingAPI {
     );
 
     if (!matchingPlayer) {
-      log.error(
-        `Failed to rename player - human player not found for UCID ${packet.UCID}`,
-      );
       return;
     }
 
