@@ -13,8 +13,9 @@ import {
   UserType,
 } from "node-insim/packets";
 
-import { handleAiTrackIds } from "./aiTrackIds";
+import { handleAITrackIDs } from "./aiTrackIds";
 import { loadConfig } from "./config";
+import { gridOrder } from "./gridOrder";
 import { createLog } from "./log";
 import { handlePitLaneSpeedLimit } from "./pitLaneSpeedLimit";
 import { playerTracking } from "./playerTracking";
@@ -37,7 +38,7 @@ inSim.connect({
 
 const log = createLog(inSim);
 
-const aiPLIDs = handleAiTrackIds(inSim, {
+const aiPLIDs = handleAITrackIDs(inSim, {
   track1name: config.ai.track,
   track2name: config.ai.track2,
   track3name: config.ai.track3,
@@ -45,6 +46,7 @@ const aiPLIDs = handleAiTrackIds(inSim, {
 
 const raceState = handleRaceState(inSim);
 const playersConnections = playerTracking(inSim);
+gridOrder(inSim, playersConnections, aiPLIDs);
 
 let track3BlinkTimeout1: NodeJS.Timeout | null = null;
 let track3BlinkTimeout2: NodeJS.Timeout | null = null;

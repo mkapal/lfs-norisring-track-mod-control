@@ -18,10 +18,16 @@ const aiPLIDs: {
   N77_TRACK_3: null,
 };
 
-export function handleAiTrackIds(
+export type AITrackIDsAPI = {
+  getTrack1: () => number | null;
+  getTrack2: () => number | null;
+  getTrack3: () => number | null;
+};
+
+export function handleAITrackIDs(
   inSim: InSim,
   config: { track1name: string; track2name: string; track3name: string },
-) {
+): AITrackIDsAPI {
   const log = createLog(inSim);
 
   inSim.on(PacketType.ISP_VER, (packet) => {
