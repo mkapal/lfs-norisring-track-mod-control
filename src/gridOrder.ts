@@ -42,14 +42,19 @@ export function gridOrder(
         return;
       }
 
-      log.debug("Grid reordered with track AIs first");
-
       const trackIds = [track1Id, track2Id, track3Id];
+      log.debug("Track IDs: " + trackIds.join(","));
+
       const otherPlayers = Array.from(players.values()).filter(
         (player) => !trackIds.includes(player.PLID),
       );
+      const otherPlayerIds = otherPlayers.map((player) => player.PLID);
+      log.debug("Other players: " + otherPlayerIds.join(","));
 
-      const PLID = [...trackIds, ...otherPlayers.map((player) => player.PLID)];
+      const PLID = [...trackIds, ...otherPlayerIds];
+      log.debug("PLIDs: " + PLID.join(","));
+
+      log.debug("Grid reordered with track AIs first");
 
       inSim.send(
         new IS_REO({
