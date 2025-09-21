@@ -106,6 +106,13 @@ inSim.on(PacketType.ISP_RST, () => {
 inSim.on(PacketType.ISP_MSO, (packet) => {
   if (packet.UserType === UserType.MSO_O) {
     switch (packet.Msg) {
+      case "fix": {
+        inSim.sendMessage(`/pitlane ${config.ai.track}`);
+        inSim.sendMessage(`/pitlane ${config.ai.track2}`);
+        inSim.sendMessage(`/pitlane ${config.ai.track3}`);
+        log.debug(`Moved tracks into pit lane`);
+        break;
+      }
       case "light": {
         turnOnHeadlights();
         track3extraLightsBlink();
