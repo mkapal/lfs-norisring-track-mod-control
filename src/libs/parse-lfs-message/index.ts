@@ -4,5 +4,7 @@ export default function parseLFSMessage(msg: Uint8Array | string): string {
     return msg;
   }
 
-  return new TextDecoder().decode(msg).replace(/\0/g, "");
+  const decodedText = new TextDecoder().decode(msg);
+
+  return decodedText.replace(/\0+$/, "");
 }
