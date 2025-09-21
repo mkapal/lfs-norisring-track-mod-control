@@ -12,11 +12,12 @@ export function gridOrder(
 ) {
   const log = createLog(inSim);
 
-  inSim.on(PacketType.ISP_SMALL, (packet) => {
+  let results: number[] = [];
+
+  inSim.on(PacketType.ISP_SMALL, ({ SubT, UVal }) => {
     if (
-      packet.SubT === SmallType.SMALL_VTA &&
-      (packet.UVal === VoteAction.VOTE_RESTART ||
-        packet.UVal === VoteAction.VOTE_QUALIFY)
+      SubT === SmallType.SMALL_VTA &&
+      (UVal === VoteAction.VOTE_RESTART || UVal === VoteAction.VOTE_QUALIFY)
     ) {
       log.debug("Voting to restart or qualify");
 
@@ -42,19 +43,40 @@ export function gridOrder(
         return;
       }
 
+      log.debug(`New grid order:`);
+
       const trackIds = [track1Id, track2Id, track3Id];
-      log.debug("Track IDs: " + trackIds.join(","));
+
+      trackIds.forEach((trackId) => {
+        const player = players.get(trackId);
+
+        if (player) {
+          log.debug(`! - ${player.PName} (PLID ${trackId})`);
+        }
+      });
+
+      results.forEach((result, index) => {
+        const player = players.get(result);
+        if (player) {
+          log.debug(`${index} - ${player.PName} (PLID ${result})`);
+        }
+      });
 
       const otherPlayers = Array.from(players.values()).filter(
-        (player) => !trackIds.includes(player.PLID),
+        (player) =>
+          !trackIds.includes(player.PLID) && !results.includes(player.PLID),
       );
       const otherPlayerIds = otherPlayers.map((player) => player.PLID);
-      log.debug("Other players: " + otherPlayerIds.join(","));
 
-      const PLID = [...trackIds, ...otherPlayerIds];
-      log.debug("PLIDs: " + PLID.join(","));
+      otherPlayerIds.forEach((otherPlayerId) => {
+        const player = players.get(otherPlayerId);
 
-      log.debug("Grid reordered with track AIs first");
+        if (player) {
+          log.debug(`? - ${player.PName} (PLID ${otherPlayerId})`);
+        }
+      });
+
+      const PLID = [...trackIds, ...results, ...otherPlayerIds];
 
       inSim.send(
         new IS_REO({
@@ -63,5 +85,22 @@ export function gridOrder(
         }),
       );
     }
+  });
+
+  inSim.on(PacketType.ISP_RES, (packet) => {
+    if (packet.ReqI !== 0 || packet.ResultNum === 255) {
+      return;
+    }
+
+    const player = players.get(packet.PLID);
+
+    log.debug(
+      `Result ${packet.ResultNum}: PLID ${packet.PLID} (${player?.PName})`,
+    );
+    results[packet.ResultNum] = packet.PLID;
+  });
+
+  inSim.on(PacketType.ISP_RST, () => {
+    results = [];
   });
 }
