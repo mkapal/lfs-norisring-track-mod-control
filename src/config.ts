@@ -72,5 +72,9 @@ export function loadConfig() {
     );
   }
 
+  console.log(`- Track 1: ${config.ai.track}`);
+  console.log(`- Track 2: ${config.ai.track2}`);
+  console.log(`- Track 3: ${config.ai.track3}`);
+
   return config;
 }
