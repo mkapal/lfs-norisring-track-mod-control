@@ -15,7 +15,6 @@ import {
 
 import { handleAITrackIDs } from "./aiTrackIds";
 import { loadConfig } from "./config";
-import { gridOrder } from "./gridOrder";
 import { createLog } from "./log";
 import { handlePitLaneSpeedLimit } from "./pitLaneSpeedLimit";
 import { playerTracking } from "./playerTracking";
@@ -46,7 +45,6 @@ const aiPLIDs = handleAITrackIDs(inSim, {
 
 const raceState = handleRaceState(inSim);
 const playersConnections = playerTracking(inSim);
-gridOrder(inSim, playersConnections, aiPLIDs);
 
 let track3BlinkTimeout1: NodeJS.Timeout | null = null;
 let track3BlinkTimeout2: NodeJS.Timeout | null = null;
