@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsup --clean src/index.ts",
+    "build": "run-s build:ts copy-config",
+    "build:ts": "tsup --clean src/index.ts",
+    "copy-config": "cp config.toml config.local.toml dist/",
     "package": "./scripts/package.sh",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -36,6 +38,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "npm-run-all": "^4.1.5",
     "pkg": "^5.8.1",
     "prettier": "^3.6.2",
     "tsup": "^8.4.0",
