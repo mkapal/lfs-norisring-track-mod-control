@@ -78,6 +78,7 @@ inSim.on(PacketType.ISP_VER, (packet) => {
   console.log(
     chalk.green(`Connected to LFS ${packet.Product} ${packet.Version}`),
   );
+  inSim.sendMessage("/msg Norisring AI Control InSim connected");
 });
 
 inSim.on(PacketType.ISP_PLL, (packet) => {
