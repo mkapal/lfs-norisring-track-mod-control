@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "run-s build:ts copy-config",
-    "build:ts": "tsup --clean src/index.ts",
+    "build:ts": "tsup src/index.ts",
     "copy-config": "cp config.toml config.local.toml dist/",
     "package": "./scripts/package.sh",
     "format": "prettier --write .",
