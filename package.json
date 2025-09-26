@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsup --clean src/index.ts && ./scripts/package.sh",
+    "build": "tsup --clean src/index.ts",
+    "package": "./scripts/package.sh",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint \"./src/**/*\" --ext .ts",
