@@ -31,7 +31,7 @@ inSim.connect({
   Host: config.insim.host,
   Port: config.insim.port,
   Admin: config.insim.admin,
-  Flags: InSimFlags.ISF_MCI | InSimFlags.ISF_LOCAL,
+  Flags: InSimFlags.ISF_MCI,
   ReqI: IS_ISI_ReqI.SEND_VERSION,
   Interval: config.insim.carPositionPacketInterval,
 });
