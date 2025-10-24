@@ -366,3 +366,20 @@ function track3extraLightsBlink() {
     }, config.ai.track3BlinkTimeout);
   }, config.ai.track3BlinkTimeout);
 }
+
+inSim.on("disconnect", () => {
+  console.log("Disconnected from LFS");
+  process.exit(1);
+});
+
+process.on("SIGINT", () => {
+  inSim.disconnect();
+  process.exit(0);
+});
+
+process.on("uncaughtException", (err) => {
+  console.log("Uncaught Exception:");
+  console.error(err);
+  inSim.disconnect();
+  process.exit(1);
+});
