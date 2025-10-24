@@ -32,6 +32,7 @@ const configSchema = z.object({
   }),
   rcm: z.object({
     goMessageTimeout: z.number().min(0).default(3000),
+    rollingStartMessageTimeout: z.number().min(0).default(6000),
   }),
 });
 

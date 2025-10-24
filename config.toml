@@ -18,3 +18,4 @@ track3BlinkTimeout = 5000
 
 [rcm]
 goMessageTimeout = 3000
+rollingStartMessageTimeout = 6000

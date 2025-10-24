@@ -7,6 +7,7 @@
 - `/o start` - start sequence on N77 TRACK 2, and on N77 TRACK 3 if it is present
   - turn on rear fog lights after `config.ai.rearFogLightsOnDelay` seconds
   - turn off rear fog lights and turn on front fog lights after a random time between `config.ai.frontFogLightsOnDelayMin` and `config.ai.frontFogLightsOnDelayMax` seconds
+- `/o roll` - show a rolling race start RCM for 6 seconds
 
 ## Features
 

@@ -269,6 +269,17 @@ inSim.on(PacketType.ISP_MSO, (packet) => {
           }, config.ai.rearFogLightsOnDelay);
         }
         break;
+
+      case "roll":
+        {
+          inSim.sendMessage("/rcm ^7Rolling Race Start - ^3Do Not Move");
+          inSim.sendMessage("/rcm_all");
+
+          setTimeout(() => {
+            inSim.sendMessage("/rcc_all");
+          }, config.rcm.rollingStartMessageTimeout);
+        }
+        break;
       default:
         log.error(`Invalid command: ${packet.Msg}`);
     }
