@@ -25,15 +25,53 @@ const config = loadConfig();
 console.log(`Connecting to ${config.insim.host}:${config.insim.port}`);
 
 const inSim = new InSim();
-inSim.connect({
-  IName: "Norisring AI",
-  Host: config.insim.host,
-  Port: config.insim.port,
-  Admin: config.insim.admin,
-  Flags: InSimFlags.ISF_MCI,
-  ReqI: IS_ISI_ReqI.SEND_VERSION,
-  Interval: config.insim.carPositionPacketInterval,
-});
+
+let reconnectTimer: NodeJS.Timeout | null = null;
+let shuttingDown = false;
+let isConnected = false;
+let reconnectAttemptInProgress = false;
+
+const clearReconnectTimer = () => {
+  if (reconnectTimer) {
+    clearInterval(reconnectTimer);
+    reconnectTimer = null;
+  }
+};
+
+const connectInSim = () => {
+  if (shuttingDown || isConnected || reconnectAttemptInProgress) {
+    return;
+  }
+
+  reconnectAttemptInProgress = true;
+
+  console.log(`Connecting to ${config.insim.host}:${config.insim.port}`);
+
+  inSim.connect({
+    IName: "Norisring AI",
+    Host: config.insim.host,
+    Port: config.insim.port,
+    Admin: config.insim.admin,
+    Flags: InSimFlags.ISF_MCI,
+    ReqI: IS_ISI_ReqI.SEND_VERSION,
+    Interval: config.insim.carPositionPacketInterval,
+  });
+
+  reconnectAttemptInProgress = false;
+};
+
+const scheduleReconnect = () => {
+  if (shuttingDown || reconnectTimer) {
+    return;
+  }
+
+  console.log("Reconnecting to InSim every 10 seconds...");
+
+  connectInSim();
+  reconnectTimer = setInterval(() => {
+    connectInSim();
+  }, 10_000);
+};
 
 const log = createLog(inSim);
 
@@ -72,6 +110,9 @@ inSim.on(PacketType.ISP_VER, (packet) => {
   if (packet.ReqI !== IS_ISI_ReqI.SEND_VERSION) {
     return;
   }
+
+  isConnected = true;
+  clearReconnectTimer();
 
   console.log(
     chalk.green(`Connected to LFS ${packet.Product} ${packet.Version}`),
@@ -379,18 +420,39 @@ function track3extraLightsBlink() {
 }
 
 inSim.on("disconnect", () => {
-  console.log("Disconnected from LFS");
-  process.exit(1);
+  if (shuttingDown) {
+    return;
+  }
+
+  isConnected = false;
+  scheduleReconnect();
 });
 
+inSim.on("error", () => {
+  if (shuttingDown) {
+    return;
+  }
+
+  isConnected = false;
+  scheduleReconnect();
+});
+
+scheduleReconnect();
+
 process.on("SIGINT", () => {
+  shuttingDown = true;
+  clearReconnectTimer();
   inSim.disconnect();
   process.exit(0);
 });
 
 process.on("uncaughtException", (err) => {
+  shuttingDown = true;
+  clearReconnectTimer();
+
   console.log("Uncaught Exception:");
   console.error(err);
+
   inSim.disconnect();
   process.exit(1);
 });
