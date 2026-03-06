@@ -1,4 +1,4 @@
-import defaults from "lodash/defaults";
+import defaults from "lodash.defaults";
 import { TypedEmitter } from "tiny-typed-emitter";
 
 import { InSimError } from "../errors";
@@ -23,12 +23,16 @@ type OutSimConnectionOptions = {
   OutSimOpts: number;
 };
 
+type OutSimOptions = {
+  timeout?: number;
+};
+
 export class OutSim extends TypedEmitter<OutSimEvents> {
   private _options: OutSimConnectionOptions = defaultOutSimOptions;
   private connection: UDP | null = null;
   private timeout = 0;
 
-  constructor(timeout = 0) {
+  constructor({ timeout = 0 }: OutSimOptions = {}) {
     super();
     this.timeout = timeout;
 
@@ -82,7 +86,7 @@ export class OutSim extends TypedEmitter<OutSimEvents> {
     this.connection.disconnect();
   }
 
-  private handleMessage(data: Uint8Array) {
+  private handleMessage(data: Uint8Array<ArrayBuffer>) {
     const outSimPack =
       this._options.OutSimOpts > 0
         ? new OutSimPack2(this._options.OutSimOpts)

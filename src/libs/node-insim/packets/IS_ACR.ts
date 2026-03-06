@@ -2,7 +2,6 @@ import { byte, getFormat, stringNull } from "../decorators";
 import { InSimError } from "../errors";
 import { unpack } from "../lfspack";
 import { Packet } from "./base";
-import { type AdminCommandResult } from "./enums";
 import { PacketType } from "./enums";
 
 /**
@@ -31,7 +30,7 @@ export class IS_ACR extends Packet {
   /** 4, 8, 12... 64 characters - last byte is zero */
   @stringNull(64) Text = "";
 
-  unpack(buffer: Uint8Array): this {
+  unpack(buffer: Uint8Array<ArrayBuffer>): this {
     const data = unpack(`<${getFormat(this, "Size")}`, buffer.buffer);
 
     if (!data || data.length === 0) {
@@ -47,4 +46,10 @@ export class IS_ACR extends Packet {
 
     return this;
   }
+}
+
+export enum AdminCommandResult {
+  PROCESSED = 1,
+  REJECTED = 2,
+  UNKNOWN_COMMAND = 3,
 }

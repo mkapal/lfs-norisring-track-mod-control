@@ -1,18 +1,15 @@
 import { testInstructionPacket } from "../tests";
-import {
-  ObjectIndex,
-  OCOAction,
-  OCOAutocrossStartLights,
-  PacketType,
-} from "./enums";
+import { ObjectIndex, PacketType } from "./enums";
 import { type IS_OCO_Data } from "./IS_OCO";
+import { OCOAutocrossStartLights } from "./IS_OCO";
+import { OCOAction } from "./IS_OCO";
 import { IS_OCO } from "./IS_OCO";
 
 const size = 8;
 
 const data: IS_OCO_Data = {
   OCOAction: OCOAction.OCO_LIGHTS_SET,
-  Index: ObjectIndex.AXO_START_LIGHTS,
+  Index: ObjectIndex.AXO_START_LIGHTS1,
   Identifier: 35,
   Data: OCOAutocrossStartLights.RED | OCOAutocrossStartLights.AMBER,
 };

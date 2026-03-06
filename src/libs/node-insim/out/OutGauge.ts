@@ -1,4 +1,4 @@
-import defaults from "lodash/defaults";
+import defaults from "lodash.defaults";
 import { TypedEmitter } from "tiny-typed-emitter";
 
 import { InSimError } from "../errors";
@@ -20,12 +20,16 @@ type OutGaugeConnectionOptions = {
   Port: number;
 };
 
+type OutGaugeOptions = {
+  timeout?: number;
+};
+
 export class OutGauge extends TypedEmitter<OutGaugeEvents> {
   private _options: OutGaugeConnectionOptions = defaultOutGaugeOptions;
   private connection: UDP | null = null;
   private timeout = 0;
 
-  constructor(timeout = 0) {
+  constructor({ timeout = 0 }: OutGaugeOptions = {}) {
     super();
     this.timeout = timeout;
 
@@ -79,7 +83,7 @@ export class OutGauge extends TypedEmitter<OutGaugeEvents> {
     this.connection.disconnect();
   }
 
-  private handleMessage(data: Uint8Array) {
+  private handleMessage(data: Uint8Array<ArrayBuffer>) {
     const outGaugePack = new OutGaugePack();
     this.emit("packet", outGaugePack.unpack(data));
   }

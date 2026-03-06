@@ -1,6 +1,6 @@
-import { byte, short, struct, word } from "../decorators";
+import { byte, short, struct, unsigned, word } from "../decorators";
 import { Packet } from "./base";
-import { type ObjectHitFlags, type ObjectIndex } from "./enums";
+import { type ObjectIndex } from "./enums";
 import { PacketType } from "./enums";
 import { CarContOBJ } from "./structs";
 
@@ -10,7 +10,7 @@ import { CarContOBJ } from "./structs";
  * Set the {@link ISF_OBH} flag in the {@link IS_ISI} to receive object contact reports.
  */
 export class IS_OBH extends Packet {
-  @byte() readonly Size = 24;
+  @byte() readonly Size = 28;
   @byte() readonly Type = PacketType.ISP_OBH;
   @byte() readonly ReqI = 0;
 
@@ -20,8 +20,10 @@ export class IS_OBH extends Packet {
   /** High 4 bits: reserved / low 12 bits: closing speed (10 = 1 m/s) */
   @word() SpClose = 0;
 
-  /** Looping time stamp (hundredths - time since reset - like {@link TINY_GTH}) */
-  @word() Time = 0;
+  @word() private readonly SpW = 0;
+
+  /** Time stamp (ms) */
+  @unsigned() Time = 0;
 
   /** Contact object */
   @struct(CarContOBJ) C = new CarContOBJ();
@@ -41,4 +43,18 @@ export class IS_OBH extends Packet {
   @byte() Index: ObjectIndex = 0;
 
   @byte() OBHFlags: ObjectHitFlags | 0 = 0;
+}
+
+export enum ObjectHitFlags {
+  /** An added object */
+  OBH_LAYOUT = 1,
+
+  /** A movable object */
+  OBH_CAN_MOVE = 2,
+
+  /** Was moving before this hit */
+  OBH_WAS_MOVING = 4,
+
+  /** Object in original position */
+  OBH_ON_SPOT = 8,
 }

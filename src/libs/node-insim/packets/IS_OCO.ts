@@ -1,7 +1,6 @@
 import { byte } from "../decorators";
 import { SendablePacket } from "./base";
-import { type OCOAutocrossStartLights, type OCOMainLights } from "./enums";
-import { ObjectIndex, OCOAction, PacketType } from "./enums";
+import { ObjectIndex, PacketType } from "./enums";
 import { type PacketData } from "./types";
 
 /**
@@ -16,7 +15,12 @@ export class IS_OCO extends SendablePacket {
   @byte() OCOAction: OCOAction = OCOAction.OCO_ZERO;
 
   /** Specifies which lights you want to override **/
-  @byte() Index: ObjectIndex = ObjectIndex.AXO_NULL;
+  @byte() Index:
+    | ObjectIndex.AXO_START_LIGHTS1
+    | ObjectIndex.AXO_START_LIGHTS2
+    | ObjectIndex.AXO_START_LIGHTS3
+    | typeof OCO_INDEX_MAIN
+    | ObjectIndex.AXO_NULL = ObjectIndex.AXO_NULL;
 
   /**
    * Identify particular start lights objects (0 to 63 or 255 = all)
@@ -53,3 +57,33 @@ export class IS_OCO extends SendablePacket {
 }
 
 export type IS_OCO_Data = PacketData<IS_OCO>;
+
+export enum OCOAction {
+  /** Reserved */
+  OCO_ZERO,
+
+  /** Give up control of all lights */
+  OCO_LIGHTS_RESET = 4,
+
+  /** Use Data byte to set the bulbs */
+  OCO_LIGHTS_SET = 5,
+
+  /** Give up control of the specified lights */
+  OCO_LIGHTS_UNSET = 6,
+}
+
+export enum OCOAutocrossStartLights {
+  RED = 1,
+  AMBER = 2,
+  GREEN = 8,
+}
+
+export enum OCOMainLights {
+  RED_1 = 1,
+  RED_2 = 2,
+  RED_3 = 4,
+  GREEN = 8,
+}
+
+/** Special value to override the main start light system */
+export const OCO_INDEX_MAIN = 240;

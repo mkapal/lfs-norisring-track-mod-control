@@ -1,16 +1,16 @@
 import { type PacketTestData } from "../tests";
 import { testInfoPacket } from "../tests";
-import { ObjectHitFlags, ObjectIndex, PacketType } from "./enums";
-import { IS_OBH } from "./IS_OBH";
+import { ObjectIndex, PacketType } from "./enums";
+import { IS_OBH, ObjectHitFlags } from "./IS_OBH";
 import { CarContOBJ } from "./structs";
 
-const size = 24;
+const size = 28;
 
 const data: PacketTestData<IS_OBH> = {
   ReqI: 0,
   PLID: 3,
   SpClose: 23,
-  Time: 497,
+  Time: 32572417,
   C: new CarContOBJ({
     Direction: 2,
     Heading: 254,
@@ -22,7 +22,7 @@ const data: PacketTestData<IS_OBH> = {
   X: -10990,
   Y: -31058,
   Zbyte: 1,
-  Index: ObjectIndex.AXO_BANNER2,
+  Index: ObjectIndex.AXO_BANNER,
   OBHFlags:
     ObjectHitFlags.OBH_LAYOUT |
     ObjectHitFlags.OBH_CAN_MOVE |
@@ -36,8 +36,12 @@ const buffer = new Uint8Array([
   3, // PLID
   23, // SpClose (1)
   0, // SpClose (2)
-  241, // Time (1)
-  1, // Time (2)
+  0, // SpW (1)
+  0, // SpW (2)
+  1, // Time (1)
+  4, // Time (2)
+  241, // Time (3)
+  1, // Time (4)
   2, // C - Direction
   254, // C - Heading
   3, // C - Speed
@@ -52,7 +56,7 @@ const buffer = new Uint8Array([
   134, // Y (2)
   1, // Zbyte
   0, // Sp1
-  113, // Index
+  112, // Index
   11, // OBHFlags
 ]);
 

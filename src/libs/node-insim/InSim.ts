@@ -1,9 +1,8 @@
 import crypto from "crypto";
-import defaults from "lodash/defaults";
+import defaults from "lodash.defaults";
 import { TypedEmitter } from "tiny-typed-emitter";
+import unicodeToLfs from "unicode-to-lfs";
 
-import unicodeToLfs from "../unicode-to-lfs";
-import { InSimError } from "./errors";
 import { type InSimEvents } from "./InSimEvents";
 import { unpack } from "./lfspack";
 import { log as baseLog } from "./log";
@@ -21,6 +20,7 @@ import {
   packetTypeToClass,
   TinyType,
 } from "./packets";
+import { type InSimPacketInstance } from "./packets/types";
 import { type Protocol } from "./protocols";
 import { TCP, UDP } from "./protocols";
 
@@ -37,7 +37,7 @@ export type InSimOptions = Omit<IS_ISI_Data, "InSimVer"> &
 
 export class InSim extends TypedEmitter<InSimEvents> {
   /** Currently supported InSim version */
-  static INSIM_VERSION = 9;
+  static INSIM_VERSION = 10;
 
   private static COMMAND_PREFIX = "/";
 
@@ -78,76 +78,13 @@ export class InSim extends TypedEmitter<InSimEvents> {
       return;
     }
 
-    this._connect(options);
-  };
-
-  /**
-   * Connect to InSim Relay.
-   *
-   * After you are connected you can request a host list, so you can see
-   * which hosts you can connect to.
-   * Then you can send a packet to the Relay to select a host. After that
-   * the Relay will send you all insim data from that host.
-   *
-   * Some hosts require a spectator password in order to be selectable.
-   *
-   * You do not need to specify a spectator password if you use a valid administrator password.
-   *
-   * If you connect with an administrator password, you can send just about every
-   * regular InSim packet there is available in LFS, just like as if you were connected
-   * to the host directly.
-   *
-   * Regular insim packets that a relay client can send to host:
-   *
-   * For anyone
-   * TINY_VER
-   * TINY_PING
-   * TINY_SCP
-   * TINY_SST
-   * TINY_GTH
-   * TINY_ISM
-   * TINY_NCN
-   * TINY_NPL
-   * TINY_RES
-   * TINY_REO
-   * TINY_RST
-   * TINY_AXI
-   *
-   * Admin only
-   * TINY_VTC
-   * ISP_MST
-   * ISP_MSX
-   * ISP_MSL
-   * ISP_MTC
-   * ISP_SCH
-   * ISP_BFN
-   * ISP_BTN
-   *
-   * The relay will also accept, but not forward
-   * TINY_NONE    // for relay-connection maintenance
-   */
-  connectRelay = () => {
-    this._connect(
-      {
-        Host: "isrelay.lfs.net",
-        Port: 47474,
-        Protocol: "TCP",
-      },
-      true,
-    );
-  };
-
-  private _connect = (
-    options: Partial<IS_ISI_Data> & InSimConnectionOptions,
-    isRelay = false,
-  ) => {
     this._options = defaults(options, defaultInSimOptions);
 
     log(
       `Connecting to ${this._options.Host}:${this._options.Port} using ${this._options.Protocol}...`,
     );
 
-    this.sizeMultiplier = isRelay ? 1 : 4;
+    this.sizeMultiplier = 4;
 
     this.connection =
       this._options.Protocol === "TCP"
@@ -160,20 +97,18 @@ export class InSim extends TypedEmitter<InSimEvents> {
           });
     this.connection.connect();
     this.connection.on("connect", () => {
-      if (!isRelay) {
-        this.send(
-          new IS_ISI({
-            Flags: this._options.Flags,
-            Prefix: this._options.Prefix,
-            Admin: this._options.Admin,
-            UDPPort: this._options.UDPPort,
-            ReqI: this._options.ReqI,
-            Interval: this._options.Interval,
-            IName: this._options.IName,
-            InSimVer: InSim.INSIM_VERSION,
-          }),
-        );
-      }
+      this.send(
+        new IS_ISI({
+          Flags: this._options.Flags,
+          Prefix: this._options.Prefix,
+          Admin: this._options.Admin,
+          UDPPort: this._options.UDPPort,
+          ReqI: this._options.ReqI,
+          Interval: this._options.Interval,
+          IName: this._options.IName,
+          InSimVer: InSim.INSIM_VERSION,
+        }),
+      );
       this.emit("connect", this);
     });
 
@@ -182,9 +117,7 @@ export class InSim extends TypedEmitter<InSimEvents> {
     });
 
     this.connection.on("error", (error: Error) => {
-      throw new InSimError(
-        `${this._options.Protocol} connection error: ${error.message}`,
-      );
+      this.emit("error", error);
     });
 
     this.connection.on("data", (data) => this.handlePacket(data));
@@ -305,7 +238,45 @@ export class InSim extends TypedEmitter<InSimEvents> {
     );
   };
 
-  private handlePacket = async (data: Uint8Array) => {
+  sendAwait = <TPacketTypeToAwait extends keyof typeof packetTypeToClass>(
+    packet: SendablePacket,
+    packetTypeToAwait: TPacketTypeToAwait,
+    filterPacketData: (
+      packet: InSimPacketInstance<TPacketTypeToAwait>,
+    ) => boolean = () => true,
+  ) => {
+    return new Promise<InSimPacketInstance<TPacketTypeToAwait>>(
+      (resolve, reject) => {
+        if (this.connection === null) {
+          log("Cannot send a packet with await - not connected");
+          reject();
+          return;
+        }
+
+        this.send(packet);
+
+        log("Await packet:", PacketType[packetTypeToAwait]);
+        const packetListener = (
+          receivedPacket: InSimPacketInstance<TPacketTypeToAwait>,
+        ) => {
+          if (
+            receivedPacket.ReqI === packet.ReqI &&
+            filterPacketData(receivedPacket)
+          ) {
+            resolve(receivedPacket);
+          }
+        };
+        this.once(packetTypeToAwait, packetListener);
+
+        this.on("disconnect", () => {
+          this.removeListener(packetTypeToAwait, packetListener);
+          reject();
+        });
+      },
+    );
+  };
+
+  private handlePacket = async (data: Uint8Array<ArrayBuffer>) => {
     const header = unpack("<BB", data.buffer);
 
     if (!header) {
@@ -335,7 +306,9 @@ export class InSim extends TypedEmitter<InSimEvents> {
     this.emit(packetType, packetInstance.unpack(data) as never, this);
   };
 
-  private handleKeepAlive = (packet: IS_TINY) => {
+  private handleKeepAlive = (
+    packet: InSimPacketInstance<PacketType.ISP_TINY>,
+  ) => {
     if (packet.SubT === TinyType.TINY_NONE) {
       this.send(
         new IS_TINY({

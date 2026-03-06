@@ -1,6 +1,5 @@
 import { byte, struct, unsigned } from "../decorators";
 import { Packet } from "./base";
-import { type CSCAction } from "./enums";
 import { PacketType } from "./enums";
 import { CarContOBJ } from "./structs";
 
@@ -22,9 +21,17 @@ export class IS_CSC extends Packet {
   @byte() private readonly Sp2 = 0;
   @byte() private readonly Sp3 = 0;
 
-  /** Hundredths of a second since start (as in {@link SMALL_RTP}) */
+  /** Milliseconds since start (as in {@link SMALL_RTP}) */
   @unsigned() Time = 0;
 
   /** Car contact object */
   @struct(CarContOBJ) C = new CarContOBJ();
+}
+
+export enum CSCAction {
+  /** Car stopped */
+  CSC_STOP,
+
+  /** Car started */
+  CSC_START,
 }

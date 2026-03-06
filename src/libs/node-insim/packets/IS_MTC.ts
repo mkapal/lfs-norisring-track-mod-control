@@ -1,4 +1,5 @@
-import unicodeToLfs from "../../unicode-to-lfs";
+import unicodeToLfs from "unicode-to-lfs";
+
 import { byte, stringNull } from "../decorators";
 import { SendablePacket } from "./base";
 import { type MessageSound } from "./enums";
