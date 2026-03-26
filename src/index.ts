@@ -16,6 +16,7 @@ import {
 import { handleAITrackIDs } from "./aiTrackIds";
 import { loadConfig } from "./config";
 import { createLog } from "./log";
+import { handlePitExitLight } from "./pitExitLight";
 import { handlePitLaneSpeedLimit } from "./pitLaneSpeedLimit";
 import { playerTracking } from "./playerTracking";
 import { handleRaceState } from "./raceState";
@@ -83,6 +84,8 @@ const aiPLIDs = handleAITrackIDs(inSim, {
 
 const raceState = handleRaceState(inSim);
 const playersConnections = playerTracking(inSim);
+
+handlePitExitLight(inSim);
 
 let track3BlinkTimeout1: NodeJS.Timeout | null = null;
 let track3BlinkTimeout2: NodeJS.Timeout | null = null;
