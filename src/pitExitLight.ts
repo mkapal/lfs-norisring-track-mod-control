@@ -18,13 +18,6 @@ export function handlePitExitLight(inSim: InSim) {
       return;
     }
 
-    console.log({
-      X: packet.Info.X,
-      Y: packet.Info.Y,
-      Z: packet.Info.Zbyte,
-      Flags: packet.Info.Flags,
-    });
-
     const isCheckpoint3 =
       (packet.Info.Flags & 1) !== 0 && (packet.Info.Flags & 2) !== 0;
 
