@@ -346,7 +346,7 @@ function turnOnHeadlights() {
   const track3PLID = aiPLIDs.getTrack3();
   if (track3PLID === null) {
     log.error(
-      `${config.ai.track}^1: Cannot turn on headlights - track 3 car was not found on track`,
+      `${config.ai.track3}^1: Cannot turn on headlights - track 3 car was not found on track`,
     );
     return;
   }
@@ -359,6 +359,10 @@ function turnOnHeadlights() {
         new AIInputVal({
           Input: AICInput.CS_HEADLIGHTS,
           Value: AICHeadlights.LOW,
+        }),
+        new AIInputVal({
+          Input: AICInput.CS_EXTRALIGHT,
+          Value: AICToggleValue.SWITCH_ON,
         }),
       ],
     }),
