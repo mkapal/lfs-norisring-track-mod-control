@@ -9,50 +9,59 @@ import {
 } from "node-insim/packets";
 
 export function handlePitExitLight(inSim: InSim) {
-  const DETECTION_START_CIRCLE = 2;
-  const DETECTION_END_CIRCLE = 3;
+  const END_CHECKPOINT = { X: -11153, Y: -5998, Z: 8 };
+  const START_CHECKPOINT = { X: -11811, Y: -9101, Z: 8 };
   const PIT_EXIT_START_LIGHT = 10;
 
-  const playerIdsInZone = new Set<number>([]);
-
   inSim.on(PacketType.ISP_UCO, (packet) => {
-    if (
-      packet.UCOAction === UCOAction.UCO_CIRCLE_ENTER &&
-      packet.Info.Index === ObjectIndex.MARSH_IS_AREA &&
-      packet.Info.Heading === DETECTION_START_CIRCLE
-    ) {
-      playerIdsInZone.add(packet.PLID);
+    if (packet.Info.Index !== ObjectIndex.MARSH_IS_CP) {
+      return;
     }
 
-    if (
-      packet.UCOAction === UCOAction.UCO_CIRCLE_ENTER &&
-      packet.Info.Index === ObjectIndex.MARSH_IS_AREA &&
-      packet.Info.Heading === DETECTION_END_CIRCLE
-    ) {
-      playerIdsInZone.delete(packet.PLID);
+    console.log({
+      X: packet.Info.X,
+      Y: packet.Info.Y,
+      Z: packet.Info.Zbyte,
+      Flags: packet.Info.Flags,
+    });
+
+    const isCheckpoint3 =
+      (packet.Info.Flags & 1) !== 0 && (packet.Info.Flags & 2) !== 0;
+
+    const isStartCheckpoint =
+      isCheckpoint3 &&
+      packet.Info.X === START_CHECKPOINT.X &&
+      packet.Info.Y === START_CHECKPOINT.Y &&
+      packet.Info.Zbyte === START_CHECKPOINT.Z;
+    const isEndCheckpoint =
+      isCheckpoint3 &&
+      packet.Info.X === END_CHECKPOINT.X &&
+      packet.Info.Y === END_CHECKPOINT.Y &&
+      packet.Info.Zbyte === END_CHECKPOINT.Z;
+
+    if (isStartCheckpoint) {
+      if (packet.UCOAction === UCOAction.UCO_CP_FWD) {
+        setGreen();
+      } else if (packet.UCOAction === UCOAction.UCO_CP_REV) {
+        setRed();
+      }
     }
 
-    if (playerIdsInZone.size === 0) {
-      setGreen();
-    } else {
-      setRed();
+    if (isEndCheckpoint) {
+      if (packet.UCOAction === UCOAction.UCO_CP_FWD) {
+        setRed();
+      } else if (packet.UCOAction === UCOAction.UCO_CP_REV) {
+        setGreen();
+      }
     }
   });
 
-  inSim.on(PacketType.ISP_PLP, (packet) => {
-    playerIdsInZone.delete(packet.PLID);
-
-    if (playerIdsInZone.size === 0) {
-      setGreen();
-    }
+  inSim.on(PacketType.ISP_PLP, () => {
+    setGreen();
   });
 
-  inSim.on(PacketType.ISP_PLL, (packet) => {
-    playerIdsInZone.delete(packet.PLID);
-
-    if (playerIdsInZone.size === 0) {
-      setGreen();
-    }
+  inSim.on(PacketType.ISP_PLL, () => {
+    setGreen();
   });
 
   function setRed() {
