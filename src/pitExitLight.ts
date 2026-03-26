@@ -39,6 +39,14 @@ export function handlePitExitLight(inSim: InSim) {
     }
   });
 
+  inSim.on(PacketType.ISP_PLP, (packet) => {
+    playerIdsInZone.delete(packet.PLID);
+
+    if (playerIdsInZone.size === 0) {
+      setGreen();
+    }
+  });
+
   inSim.on(PacketType.ISP_PLL, (packet) => {
     playerIdsInZone.delete(packet.PLID);
 
