@@ -13,7 +13,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint \"./src/**/*\" --ext .ts",
-    "lint:fix": "eslint \"./src/**/*\" --ext .ts --fix"
+    "lint:fix": "eslint \"./src/**/*\" --ext .ts --fix",
+    "precommit": "run-s format lint:fix build",
+    "ci": "run-s format:check lint build"
   },
   "dependencies": {
     "chalk": "^5.6.2",
