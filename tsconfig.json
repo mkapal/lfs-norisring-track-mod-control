@@ -15,6 +15,7 @@
     "noImplicitAny": true,
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
+    "types": ["node"],
     "paths": {
       "parse-lfs-message": ["./src/libs/parse-lfs-message"],
       "unicode-to-lfs": ["./src/libs/unicode-to-lfs"],
