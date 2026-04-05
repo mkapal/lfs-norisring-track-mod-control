@@ -10,6 +10,7 @@
     "build:ts": "tsup src/index.ts",
     "copy-config": "cp config.toml config.local.toml dist/",
     "package": "./scripts/package.sh",
+    "dist": "run-s build package",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint \"./src/**/*\" --ext .ts",
