@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { InSim } from "node-insim";
 import {
   AICHeadlights,
+  AICIndicators,
   AICInput,
   AICToggleValue,
   AIInputVal,
@@ -368,7 +369,7 @@ function turnOnHeadlights() {
     }),
   );
 
-  log.debug(`${config.ai.track3}^8: Turn on headlights`);
+  log.debug(`${config.ai.track3}^8: Turn on headlights and indicators`);
   inSim.send(
     new IS_AIC({
       PLID: track3PLID,
@@ -376,6 +377,10 @@ function turnOnHeadlights() {
         new AIInputVal({
           Input: AICInput.CS_HEADLIGHTS,
           Value: AICHeadlights.LOW,
+        }),
+        new AIInputVal({
+          Input: AICInput.CS_INDICATORS,
+          Value: AICIndicators.HAZARD,
         }),
       ],
     }),
