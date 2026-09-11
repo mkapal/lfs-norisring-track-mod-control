@@ -24,7 +24,7 @@
     "dotenv": "^17.4.0",
     "lodash.defaults": "^4.2.0",
     "reflect-metadata": "^0.2.2",
-    "smol-toml": "^1.6.1",
+    "smol-toml": "^1.7.1",
     "supports-color": "^10.2.2",
     "tiny-typed-emitter": "^2.1.0",
     "zod": "^4.3.6",
