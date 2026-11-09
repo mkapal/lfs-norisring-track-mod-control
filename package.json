@@ -27,7 +27,7 @@
     "smol-toml": "^1.6.1",
     "supports-color": "^10.2.2",
     "tiny-typed-emitter": "^2.1.0",
-    "zod": "^4.3.6",
+    "zod": "^4.6.6",
     "zod-config": "^1.4.0"
   },
   "devDependencies": {
